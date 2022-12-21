@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="../libs/vue.global.js"></script>
+    <script src="../libs/dayjs/dayjs.min.js"></script>
+    <script src="../libs/dayjs/plugin/customParseFormat.js"></script>
+    <script src="../libs/dayjs/plugin/weekday.js"></script>
+    <script src="../libs/dayjs/plugin/localeData.js"></script>
+    <script src="../libs/dayjs/plugin/weekOfYear.js"></script>
+    <script src="../libs/dayjs/plugin/weekYear.js"></script>
+    <script src="../libs/dayjs/plugin/advancedFormat.js"></script>
+    <script src="../libs/antd/antd.js"></script>
+    <link rel="stylesheet" href="../libs/antd/antd.css"/>
+
+</head>
+<body>
+<div id="app">
+    <button @click="count++">{{ count }}</button>
+    <h1>{{title}}</h1>
+    <div>
+        <a-button type="primary">Primary Button</a-button>
+        <a-button>Default Button</a-button>
+        <a-button type="dashed">Dashed Button</a-button>
+        <a-button type="text">Text Button</a-button>
+        <a-button type="link">Link Button</a-button>
+    </div>
+</div>
+
+</body>
+<script>
+
+    const counter = {
+        data() {
+            return {
+                count: 1,
+                title: 'hello word'
+            }
+        },
+        created() {
+        console.log('init')
+        }
+    }
+    Vue.createApp(counter).use(antd).mount('#app')
+</script>
+</html>

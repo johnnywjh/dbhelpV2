@@ -12,7 +12,7 @@
     <artifactId>dbhelp</artifactId>
     <version>v.2.0</version> <!-- self -->
     <packaging>jar</packaging>
-    
+
 
     <properties>
         <spring-boot.version>2.6.11</spring-boot.version>
@@ -47,18 +47,6 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>2.0.21</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>8.0.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator-annotation-processor</artifactId>
-            <version>8.0.0.Final</version>
         </dependency>
 
         <dependency>
@@ -112,6 +100,18 @@
                     <imageTags>
                         <imageTag>${docker.image.tag}</imageTag>
                     </imageTags>
+                </configuration>
+            </plugin>
+            <!--            https://gitee.com/sesame_kim/maven-plugins.git-->
+            <plugin>
+                <groupId>kim.sesame</groupId>
+                <artifactId>reload-resources-file</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <updateAll>false</updateAll>
+                    <srcFiles>
+                        <srcFile>${project.basedir}/src/main/resources/static/view</srcFile>
+                    </srcFiles>
                 </configuration>
             </plugin>
         </plugins>

@@ -3,3 +3,7 @@ server:
   servlet:
     session:
       timeout: 0
+
+spring:
+  thymeleaf:
+    cache: false
