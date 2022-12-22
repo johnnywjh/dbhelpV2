@@ -110,13 +110,9 @@
                 <configuration>
                     <updateAll>true</updateAll>
                     <srcFiles>
-                        <srcFile>${project.basedir}/src/main/resources/static</srcFile>
+                        <srcFile>${project.basedir}/src/main/resources/static/index.html</srcFile>
+                        <srcFile>${project.basedir}/src/main/resources/static/script/index.js</srcFile>
                     </srcFiles>
-                    <excludeLog>false</excludeLog>
-                    <excludes>
-                        <exclude>/libs</exclude>
-                        <exclude>.DS_Store</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
