@@ -143,6 +143,7 @@
                 <configuration>
                     <updateAll>true</updateAll>
                     <srcFiles>
+                        <srcFile>${project.basedir}/src/main/resources/static/1.html</srcFile>
                         <srcFile>${project.basedir}/src/main/resources/static/index.html</srcFile>
                         <srcFile>${project.basedir}/src/main/resources/static/index</srcFile>
                     </srcFiles>

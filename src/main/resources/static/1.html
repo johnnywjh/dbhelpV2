@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="./libs/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!--
+    <script src="https://unpkg.com/dayjs/dayjs.min.js"></script>
+    <script src="https://unpkg.com/dayjs/plugin/customParseFormat.js"></script>
+    <script src="https://unpkg.com/dayjs/plugin/weekday.js"></script>
+    <script src="https://unpkg.com/dayjs/plugin/localeData.js"></script>
+    <script src="https://unpkg.com/dayjs/plugin/weekOfYear.js"></script>
+    <script src="https://unpkg.com/dayjs/plugin/weekYear.js"></script>
+    <script src="https://unpkg.com/dayjs/plugin/advancedFormat.js"></script>
+-->
+
+    <script src="./libs/dayjs/dayjs.min.js"></script>
+    <script src="./libs/dayjs/plugin/customParseFormat.js"></script>
+    <script src="./libs/dayjs/plugin/weekday.js"></script>
+    <script src="./libs/dayjs/plugin/localeData.js"></script>
+    <script src="./libs/dayjs/plugin/weekOfYear.js"></script>
+    <script src="./libs/dayjs/plugin/weekYear.js"></script>
+    <script src="./libs/dayjs/plugin/advancedFormat.js"></script>
+
+
+    <script src="./libs/antd/antd.js"></script>
+    <!--    <link rel="stylesheet" href="./libs/antd/antd.min.css"/>-->
+    <link rel="stylesheet" href="./libs/antd/antd.dark.min.css"/>
+
+
+</head>
+<body>
+<div id="app">
+    <h1>{{title}}</h1>
+    <a-table :dataSource="dataSource" :columns="columns"/>
+</div>
+
+</body>
+<script>
+   const dataSource=
+        [
+            {
+                key: '1',
+                name: '胡彦斌',
+                age: 32,
+                address: '西湖区湖底公园1号',
+            },
+            {
+                key: '2',
+                name: '胡彦祖',
+                age: 42,
+                address: '西湖区湖底公园1号',
+            },
+        ];
+   const columns=
+       [
+           {
+               title: '姓名',
+               dataIndex: 'name',
+               key: 'name',
+           },
+           {
+               title: '年龄',
+               dataIndex: 'age',
+               key: 'age',
+           },
+           {
+               title: '住址',
+               dataIndex: 'address',
+               key: 'address',
+           },
+       ];
+    const Counter = {
+            data() {
+                return {
+                    title:'111',
+                    dataSource,
+                    columns,
+                };
+            }
+        }
+
+        Vue.createApp(Counter).use(antd).mount('#app')
+
+</script>
+
+</html>
