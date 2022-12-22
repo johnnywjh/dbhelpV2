@@ -61,7 +61,7 @@
                             @change="selectDbValue"
                     ></a-select>
                     &nbsp;
-                    <a-button >清除当前DB缓存</a-button>
+                    <a-button @click="cleanDbCache">清除当前DB缓存</a-button>
                     &nbsp;
                     <a-button  type="primary">对比数据库</a-button>
                     &nbsp;
@@ -85,7 +85,7 @@
 
     </div>
     <div class="content">
-        3
+        <a-table :dataSource="tableList" :columns="columns" />
     </div>
 </div>
 
