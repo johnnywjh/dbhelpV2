@@ -1,7 +1,9 @@
 package com.sesame.common.web;
 
 
-
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import com.sesame.common.exception.BizArgumentException;
 import com.sesame.common.utils.UUIDUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +17,7 @@ public abstract class AbstractRequest extends PrintFriendliness {
 
     private static final long serialVersionUID = 1L;
 
-//    private static Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
+    private static Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     /**
      * 客户端应用ID
@@ -52,14 +54,14 @@ public abstract class AbstractRequest extends PrintFriendliness {
      * @Size：java中的size()方法是针对泛型集合说的,如果想看这个泛型有多少个元素,一般用于集合、数组、字符序列长度的判断
      */
     public void validate() {
-//        StringBuilder errorMsgs = new StringBuilder();
-//        Set<ConstraintViolation<AbstractRequest>> violations = VALIDATOR.validate(this);
-//        if (violations != null && violations.size() > 0) {
-//            for (ConstraintViolation<AbstractRequest> violation : violations) {
-//                errorMsgs.append(violation.getPropertyPath()).append(":").append(violation.getMessage()).append("|");
-//            }
-//            throw new BizArgumentException(errorMsgs.substring(0, errorMsgs.length() - 1));
-//        }
+        StringBuilder errorMsgs = new StringBuilder();
+        Set<ConstraintViolation<AbstractRequest>> violations = VALIDATOR.validate(this);
+        if (violations != null && violations.size() > 0) {
+            for (ConstraintViolation<AbstractRequest> violation : violations) {
+                errorMsgs.append(violation.getPropertyPath()).append(":").append(violation.getMessage()).append("|");
+            }
+            throw new BizArgumentException(errorMsgs.substring(0, errorMsgs.length() - 1));
+        }
     }
 
 

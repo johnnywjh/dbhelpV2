@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/db")
 public class DbController  extends AbstractWebController {
 
-//    @ReqParamsCheck
+    @ReqParamsCheck
     @PostMapping("/getTables")
     public Response getTables(@RequestBody DbInfo bean) {
 
