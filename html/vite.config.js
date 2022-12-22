@@ -10,13 +10,5 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  },
-  build:{
-    outDir:'../src/main/resources/public'
-  },
-  server: {
-    proxy: {
-      '/': 'http://localhost:4567'
-    },
-  },
+  }
 })
