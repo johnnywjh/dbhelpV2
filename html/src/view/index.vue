@@ -43,11 +43,11 @@
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="列表">
           <a-table :data-source="tableList" :columns="columns">
-            <!--                    <template #bodyCell="{ column, text, record }">-->
-            <!--                        <template v-if="column.dataIndex === 'operation'">-->
-            <!--                            <a-button type="primary" ghost>编辑</a-button>-->
-            <!--                        </template>-->
-            <!--                    </template>-->
+            <template #bodyCell="{ column, text, record }">
+              <template v-if="column.dataIndex === 'operation'">
+                <a-button type="primary" ghost>编辑</a-button>
+              </template>
+            </template>
 
 
           </a-table>
