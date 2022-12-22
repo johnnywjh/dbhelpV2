@@ -1,51 +1,19 @@
-const tableList = [{"tableName":"demo_test","className":"DemoTest","comment":"测试Demo","exJson":null,"columns":null,"ddl":null,"index":1,"tableNameStr":"demo_test","commentStr":"测试Demo"},{"tableName":"sys_menu","className":"SysMenu","comment":"系统菜单表","exJson":null,"columns":null,"ddl":null,"index":2,"tableNameStr":"sys_menu","commentStr":"系统菜单表"},{"tableName":"sys_role","className":"SysRole","comment":"系统角色表","exJson":null,"columns":null,"ddl":null,"index":3,"tableNameStr":"sys_role","commentStr":"系统角色表"},{"tableName":"sys_role_menu","className":"SysRoleMenu","comment":"系统角色菜单关系表","exJson":null,"columns":null,"ddl":null,"index":4,"tableNameStr":"sys_role_menu","commentStr":"系统角色菜单关系表"},{"tableName":"sys_user_login","className":"SysUserLogin","comment":"系统用户登录表","exJson":null,"columns":null,"ddl":null,"index":5,"tableNameStr":"sys_user_login","commentStr":"系统用户登录表"},{"tableName":"sys_user_role","className":"SysUserRole","comment":"系统用户角色关系表","exJson":null,"columns":null,"ddl":null,"index":6,"tableNameStr":"sys_user_role","commentStr":"系统用户角色关系表"}]
-
 const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-    },
-    {
-        title: 'Cash Assets',
-        className: 'column-money',
-        dataIndex: 'money',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-    },
-];
-
-const dataSource = [
-    {
-        key: '1',
-        name: 'John Brown',
-        money: '￥300,000.00',
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        money: '￥1,256,000.00',
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        money: '￥120,000.00',
-        address: 'Sidney No. 1 Lake Park',
-    },
-];
+    {title: '序号', dataIndex: 'index', key: 'index'},
+    // {title: '操作', dataIndex: 'id', key: 'id'},
+    {title: '表名', dataIndex: 'tableNameStr', key: 'tableNameStr'},
+    {title: '注释', dataIndex: 'tableNameStr', key: 'tableNameStr'},
+]
 
 const Counter = {
     data() {
         return {
+            title: 'init',
             dbList: [{label: "选择数据-0", value: 0}],
             dbKey: '0',
-            tableList,
             searchTableText: '',
             columns,
-            dataSource,
+            tableList: []
 
 
         }
@@ -59,7 +27,8 @@ const Counter = {
         reloadDbSelect,
         selectDbValue,
         reLoadTables,
-        cleanDbCache
+        cleanDbCache,
+        filterList
     }
 }
 Vue.createApp(Counter).use(antd).mount('#app')
@@ -114,25 +83,27 @@ function reLoadTables() {
         antd.message.warning('需要选择一个数据源');
         return;
     }
+    this.title = 'load done'
     var list = getTables(key);
-
-    if (list) {
-        filterList(list);
-    } else {
-        axios.post('/db/getTables', userinfo.db)
-            .then(function (res) {
-                var list = res.data.data;
-                setTables(key, list);
-                filterList(list);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    this.tableList = list;
+    console.log(title)
+    // if (list) {
+    //     filterList(list);
+    // } else {
+    //     axios.post('/db/getTables', userinfo.db)
+    //         .then(function (res) {
+    //             var list = res.data.data;
+    //             setTables(key, list);
+    //             filterList(list);
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
 }
 
 // 过滤搜索的表格数据
-const filterList = (list) => {
+function filterList(list) {
     let vm = this;
     if (vm.searchTableText) {
         var contentArr = vm.searchTableText.split(",");
@@ -171,11 +142,12 @@ const filterList = (list) => {
         }
     }
     vm.tableList = list;
-    console.log(JSON.stringify(vm.tableList))
+    console.log(JSON.stringify(list))
+    this.title = 'load done'
 }
 
 // 清除数据库缓存
-function cleanDbCache (){
+function cleanDbCache() {
     if (this.dbKey == '0') {
         return;
     }

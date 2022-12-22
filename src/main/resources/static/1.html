@@ -34,56 +34,44 @@
 </head>
 <body>
 <div id="app">
-    <h1>{{title}}</h1>
-    <a-table :dataSource="dataSource" :columns="columns"/>
+    <a-button @click="count++">{{count}}</a-button>
+    <a-button @click="loadTable">loadTable</a-button>
+    <a-table :data-source="tableList" :columns="columns" />
 </div>
 
 </body>
 <script>
-   const dataSource=
-        [
-            {
-                key: '1',
-                name: '胡彦斌',
-                age: 32,
-                address: '西湖区湖底公园1号',
-            },
-            {
-                key: '2',
-                name: '胡彦祖',
-                age: 42,
-                address: '西湖区湖底公园1号',
-            },
-        ];
-   const columns=
-       [
-           {
-               title: '姓名',
-               dataIndex: 'name',
-               key: 'name',
-           },
-           {
-               title: '年龄',
-               dataIndex: 'age',
-               key: 'age',
-           },
-           {
-               title: '住址',
-               dataIndex: 'address',
-               key: 'address',
-           },
-       ];
+    const columns = [
+        {title: '序号', dataIndex: 'index', key: 'index'},
+        // {title: '操作', dataIndex: 'id', key: 'id'},
+        {title: '表名', dataIndex: 'tableNameStr', key: 'tableNameStr'},
+        {title: '注释', dataIndex: 'tableNameStr', key: 'tableNameStr'},
+    ]
+    const tableList=[]
+    function loadTable(){
+        console.log("load")
+        this.tableList =
+            [{
+                index:1,tableNameStr:'system',tableNameStr:'aaa'
+            }]
+    }
     const Counter = {
-            data() {
-                return {
-                    title:'111',
-                    dataSource,
-                    columns,
-                };
-            }
+        data() {
+            return {
+                count: 1,
+                columns,
+                tableList
+            };
         }
+        ,methods:{
+            loadTable
+        }
+        , created() {
+            console.log(1)
+        },
+    }
 
-        Vue.createApp(Counter).use(antd).mount('#app')
+    Vue.createApp(Counter).use(antd).mount('#app')
 
 </script>
 
