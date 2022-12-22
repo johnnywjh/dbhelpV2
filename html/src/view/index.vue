@@ -40,7 +40,7 @@
       </a-row>
     </div>
     <div class="content">
-      <a-tabs :activeKey="activeKey">
+      <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="列表">
           <a-table :data-source="tableList" :columns="columns">
             <!--                    <template #bodyCell="{ column, text, record }">-->
@@ -79,7 +79,7 @@ const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
 const searchTableText = ref('')
 const userinfo = ref({db: {}})
-const activeKey = ref(1)
+const activeKey = ref("1")
 const columns = ref([
   {title: '序号', dataIndex: 'index'},
   {title: '操作', dataIndex: 'operation'},
@@ -162,6 +162,7 @@ const filterList = function (list) {
     }
   }
   tableList.value = list;
+  console.log(tableList.value)
 }
 
 // 搜索输入框的回车键事件
