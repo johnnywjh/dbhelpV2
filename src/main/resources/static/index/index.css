@@ -1,0 +1,24 @@
+#app {
+    padding: 20px 50px;
+}
+.topDiv {
+    margin-left: 10px;
+}
+.content {
+    margin-top: 20px;
+}
+.content .topSpan{
+    margin-left: 20px;
+}
+
+
+
+
+.gutter-example :deep(.ant-row > div) {
+    background: transparent;
+    border: 0;
+}
+.gutter-box {
+    background: #00a0e9;
+    padding: 5px 0;
+}

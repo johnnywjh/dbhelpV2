@@ -5,7 +5,9 @@
     <title>Title</title>
 
     <script src="./libs/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <!--
     <script src="https://unpkg.com/dayjs/dayjs.min.js"></script>
     <script src="https://unpkg.com/dayjs/plugin/customParseFormat.js"></script>
     <script src="https://unpkg.com/dayjs/plugin/weekday.js"></script>
@@ -13,8 +15,8 @@
     <script src="https://unpkg.com/dayjs/plugin/weekOfYear.js"></script>
     <script src="https://unpkg.com/dayjs/plugin/weekYear.js"></script>
     <script src="https://unpkg.com/dayjs/plugin/advancedFormat.js"></script>
+-->
 
-<!--
     <script src="./libs/dayjs/dayjs.min.js"></script>
     <script src="./libs/dayjs/plugin/customParseFormat.js"></script>
     <script src="./libs/dayjs/plugin/weekday.js"></script>
@@ -22,17 +24,65 @@
     <script src="./libs/dayjs/plugin/weekOfYear.js"></script>
     <script src="./libs/dayjs/plugin/weekYear.js"></script>
     <script src="./libs/dayjs/plugin/advancedFormat.js"></script>
--->
+
 
     <script src="./libs/antd/antd.js"></script>
-    <link rel="stylesheet" href="./libs/antd/antd.css"/>
+    <!--    <link rel="stylesheet" href="./libs/antd/antd.min.css"/>-->
     <link rel="stylesheet" href="./libs/antd/antd.dark.min.css"/>
+
+    <script src="index/util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="index/db.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
 <body>
 <div id="app">
     <div class="topDiv">
-        2
+        <div class="gutter-example">
+            <a-row :gutter="16">
+                <a-col :span="4">
+                    <a-button class="topBut">Default Button</a-button>
+                </a-col>
+                <a-col :span="3">
+                    <a-upload
+                            action="/user/readDbCofig"
+                            name="file"
+                            accept=".json"
+                            @change="handleFileChange" >
+                        <a-button>
+                            上传数据源
+                        </a-button>
+                    </a-upload>
+                </a-col>
+                <a-col :span="16">
+                    <a-select
+                            v-model:value="dbKey"
+                            style="width: 200px"
+                            :options="dbList"
+                            @change="selectDbValue"
+                    ></a-select>
+                    &nbsp;
+                    <a-button >清除当前DB缓存</a-button>
+                    &nbsp;
+                    <a-button  type="primary">对比数据库</a-button>
+                    &nbsp;
+                    <a-button type="primary">搜索字段</a-button>
+
+                </a-col>
+<!--
+                <a-col :span="4">
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+                <a-col :span="4">
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+                <a-col :span="4">
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+-->
+
+            </a-row>
+        </div>
+
     </div>
     <div class="content">
         3
@@ -40,21 +90,7 @@
 </div>
 
 </body>
-<script src="./script/index.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="./index/index.css"/>
+<script src="./index/index.js" type="text/javascript" charset="utf-8"></script>
 
 </html>
-<style>
-
-
-    #app {
-        padding: 20px 50px;
-    }
-    .topDiv {
-        margin-left: 10px;
-    }
-    .content {
-        margin-top: 20px;
-    }
-
-
-</style>
