@@ -17,18 +17,17 @@
           </a-upload>
         </a-col>
         <a-col :span="16">
-          <a-select
-              v-model:value="dbKey"
-              style="width: 200px"
-              :options="dbList"
-              @change="selectDbValue"
-          ></a-select>
-          &nbsp;
-          <a-button @click="cleanDbCache">清除当前DB缓存</a-button>
-          &nbsp;
-          <a-button type="primary">对比数据库</a-button>
-          &nbsp;
-          <a-button type="primary">搜索字段</a-button>
+          <a-space>
+            <a-select
+                v-model:value="dbKey"
+                style="width: 200px"
+                :options="dbList"
+                @change="selectDbValue"
+            ></a-select>
+            <a-button @click="cleanDbCache">清除当前DB缓存</a-button>
+            <a-button type="primary">对比数据库</a-button>
+            <a-button type="primary">搜索字段</a-button>
+          </a-space>
 
         </a-col>
         <!--
@@ -40,12 +39,26 @@
       </a-row>
     </div>
     <div class="content">
+
+      <a-input-search style="width: 400px"
+                      v-model:value="searchTableText"
+                      placeholder="输入表名或注释"
+                      enter-button
+                      @search="reLoadTables"
+      />
+
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="列表">
-          <a-table :data-source="tableList" :columns="columns">
+          <a-table :data-source="tableList" :columns="columns" :pagination="false">
             <template #bodyCell="{ column, text, record }">
               <template v-if="column.dataIndex === 'operation'">
                 <a-button type="primary" ghost>编辑</a-button>
+              </template>
+              <template v-else-if="column.dataIndex === 'tableNameStr'">
+                <p v-html="record.tableNameStr"></p>
+              </template>
+              <template v-else-if="column.dataIndex === 'commentStr'">
+                <p v-html="record.commentStr"></p>
               </template>
             </template>
 
@@ -208,7 +221,7 @@ const cleanDbCache = function () {
 
 </script>
 
-<style scoped>
+<style>
 #container {
   padding: 20px 50px;
 }
@@ -223,5 +236,9 @@ const cleanDbCache = function () {
 
 .content .topSpan {
   margin-left: 20px;
+}
+
+.searchText {
+  color: #fe7300;
 }
 </style>
