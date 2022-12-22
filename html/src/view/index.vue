@@ -39,6 +39,25 @@
 
       </a-row>
     </div>
+    <div class="content">
+      <a-tabs :activeKey="activeKey">
+        <a-tab-pane key="1" tab="列表">
+          <a-table :data-source="tableList" :columns="columns">
+            <!--                    <template #bodyCell="{ column, text, record }">-->
+            <!--                        <template v-if="column.dataIndex === 'operation'">-->
+            <!--                            <a-button type="primary" ghost>编辑</a-button>-->
+            <!--                        </template>-->
+            <!--                    </template>-->
+
+
+          </a-table>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="代码">
+          2222222222222
+        </a-tab-pane>
+
+      </a-tabs>
+    </div>
   </div>
 </template>
 
@@ -60,6 +79,13 @@ const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
 const searchTableText = ref('')
 const userinfo = ref({db: {}})
+const activeKey = ref(1)
+const columns = ref([
+  {title: '序号', dataIndex: 'index'},
+  {title: '操作', dataIndex: 'operation'},
+  {title: '表名', dataIndex: 'tableNameStr',},
+  {title: '注释', dataIndex: 'commentStr'},
+])
 
 const handleFileChange = function (e) {
   if (e.file.status == 'done') {
@@ -98,6 +124,46 @@ const selectDbValue = function () {
     tableList.value = [];
   }
 }
+
+const filterList = function (list) {
+  if (searchTableText.value) {
+    var contentArr = searchTableText.value.split(",");
+    var arr = [];
+    for (let l of list) {
+      for (let content of contentArr) {
+        let includesFlag = false;
+        if (l.tableName.includes(content)) {
+          l.tableNameStr = l.tableName.replace(new RegExp(content, 'g'), `<b class="searchText">${content}</b>`);
+          includesFlag = true;
+        }
+        if (l.comment) {
+          if (l.comment.includes(content)) {
+            l.commentStr = l.comment.replace(new RegExp(content, 'g'), `<b class="searchText">${content}</b>`);
+            includesFlag = true;
+          }
+        }
+        if (includesFlag) {
+          arr.push(l)
+        }
+      }
+    }
+    list = arr;
+  }
+  if (list) {
+    for (var i = 0; i < list.length; i++) {
+      list[i].index = i + 1;
+      if (!list[i].tableNameStr) {
+        list[i].tableNameStr = list[i].tableName;
+      }
+      if (!list[i].commentStr) {
+        list[i].commentStr = list[i].comment;
+      }
+      list[i].index = i + 1;
+    }
+  }
+  tableList.value = list;
+}
+
 // 搜索输入框的回车键事件
 const reLoadTables = function () {
   var key = userinfo.value.db.key;
@@ -120,45 +186,6 @@ const reLoadTables = function () {
         .catch(function (error) {
           console.log(error);
         });
-  }
-  const filterList = function (list) {
-    if (searchTableText.value) {
-      var contentArr = searchTableText.value.split(",");
-      var arr = [];
-      for (let l of list) {
-        for (let content of contentArr) {
-          let includesFlag = false;
-          if (l.tableName.includes(content)) {
-            l.tableNameStr = l.tableName.replace(new RegExp(content, 'g'), `<b class="searchText">${content}</b>`);
-            includesFlag = true;
-          }
-          if (l.comment) {
-            if (l.comment.includes(content)) {
-              l.commentStr = l.comment.replace(new RegExp(content, 'g'), `<b class="searchText">${content}</b>`);
-              includesFlag = true;
-            }
-          }
-          if (includesFlag) {
-            arr.push(l)
-          }
-        }
-      }
-      list = arr;
-    }
-    if (list) {
-      for (var i = 0; i < list.length; i++) {
-        list[i].index = i + 1;
-        if (!list[i].tableNameStr) {
-          list[i].tableNameStr = list[i].tableName;
-        }
-        if (!list[i].commentStr) {
-          list[i].commentStr = list[i].comment;
-        }
-        list[i].index = i + 1;
-      }
-    }
-    tableList.value = list;
-    console.log(tableList.value)
   }
 }
 
