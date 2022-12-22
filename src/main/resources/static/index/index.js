@@ -1,4 +1,4 @@
-// const tableList = [{"tableName":"demo_test","className":"DemoTest","comment":"测试Demo","exJson":null,"columns":null,"ddl":null,"index":1,"tableNameStr":"demo_test","commentStr":"测试Demo"},{"tableName":"sys_menu","className":"SysMenu","comment":"系统菜单表","exJson":null,"columns":null,"ddl":null,"index":2,"tableNameStr":"sys_menu","commentStr":"系统菜单表"},{"tableName":"sys_role","className":"SysRole","comment":"系统角色表","exJson":null,"columns":null,"ddl":null,"index":3,"tableNameStr":"sys_role","commentStr":"系统角色表"},{"tableName":"sys_role_menu","className":"SysRoleMenu","comment":"系统角色菜单关系表","exJson":null,"columns":null,"ddl":null,"index":4,"tableNameStr":"sys_role_menu","commentStr":"系统角色菜单关系表"},{"tableName":"sys_user_login","className":"SysUserLogin","comment":"系统用户登录表","exJson":null,"columns":null,"ddl":null,"index":5,"tableNameStr":"sys_user_login","commentStr":"系统用户登录表"},{"tableName":"sys_user_role","className":"SysUserRole","comment":"系统用户角色关系表","exJson":null,"columns":null,"ddl":null,"index":6,"tableNameStr":"sys_user_role","commentStr":"系统用户角色关系表"}]
+const tableList = [{"tableName":"demo_test","className":"DemoTest","comment":"测试Demo","exJson":null,"columns":null,"ddl":null,"index":1,"tableNameStr":"demo_test","commentStr":"测试Demo"},{"tableName":"sys_menu","className":"SysMenu","comment":"系统菜单表","exJson":null,"columns":null,"ddl":null,"index":2,"tableNameStr":"sys_menu","commentStr":"系统菜单表"},{"tableName":"sys_role","className":"SysRole","comment":"系统角色表","exJson":null,"columns":null,"ddl":null,"index":3,"tableNameStr":"sys_role","commentStr":"系统角色表"},{"tableName":"sys_role_menu","className":"SysRoleMenu","comment":"系统角色菜单关系表","exJson":null,"columns":null,"ddl":null,"index":4,"tableNameStr":"sys_role_menu","commentStr":"系统角色菜单关系表"},{"tableName":"sys_user_login","className":"SysUserLogin","comment":"系统用户登录表","exJson":null,"columns":null,"ddl":null,"index":5,"tableNameStr":"sys_user_login","commentStr":"系统用户登录表"},{"tableName":"sys_user_role","className":"SysUserRole","comment":"系统用户角色关系表","exJson":null,"columns":null,"ddl":null,"index":6,"tableNameStr":"sys_user_role","commentStr":"系统用户角色关系表"}]
 
 const columns = [
     {
@@ -16,7 +16,7 @@ const columns = [
     },
 ];
 
-const tableList = [
+const dataSource = [
     {
         key: '1',
         name: 'John Brown',
@@ -45,6 +45,7 @@ const Counter = {
             tableList,
             searchTableText: '',
             columns,
+            dataSource,
 
 
         }
