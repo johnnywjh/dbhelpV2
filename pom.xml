@@ -108,10 +108,15 @@
                 <artifactId>reload-resources-file</artifactId>
                 <version>1.0</version>
                 <configuration>
-                    <updateAll>false</updateAll>
+                    <updateAll>true</updateAll>
                     <srcFiles>
-                        <srcFile>${project.basedir}/src/main/resources/static/view</srcFile>
+                        <srcFile>${project.basedir}/src/main/resources/static</srcFile>
                     </srcFiles>
+                    <excludeLog>false</excludeLog>
+                    <excludes>
+                        <exclude>/libs</exclude>
+                        <exclude>.DS_Store</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
