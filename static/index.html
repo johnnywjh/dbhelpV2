@@ -36,7 +36,7 @@
 </head>
 <body>
 <div id="app">
-    <h1>{{title}}</h1>
+    <!--    <h4>{{title}}</h4>-->
     <div class="topDiv">
         <div class="gutter-example">
             <a-row :gutter="16">
@@ -48,7 +48,7 @@
                             action="/user/readDbCofig"
                             name="file"
                             accept=".json"
-                            @change="handleFileChange" >
+                            @change="handleFileChange">
                         <a-button>
                             上传数据源
                         </a-button>
@@ -64,29 +64,49 @@
                     &nbsp;
                     <a-button @click="cleanDbCache">清除当前DB缓存</a-button>
                     &nbsp;
-                    <a-button  type="primary">对比数据库</a-button>
+                    <a-button type="primary">对比数据库</a-button>
                     &nbsp;
                     <a-button type="primary">搜索字段</a-button>
 
                 </a-col>
-<!--
-                <a-col :span="4">
-                    <div class="gutter-box">col-6</div>
-                </a-col>
-                <a-col :span="4">
-                    <div class="gutter-box">col-6</div>
-                </a-col>
-                <a-col :span="4">
-                    <div class="gutter-box">col-6</div>
-                </a-col>
--->
+                <!--
+                                <a-col :span="4">
+                                    <div class="gutter-box">col-6</div>
+                                </a-col>
+                                <a-col :span="4">
+                                    <div class="gutter-box">col-6</div>
+                                </a-col>
+                                <a-col :span="4">
+                                    <div class="gutter-box">col-6</div>
+                                </a-col>
+                -->
 
             </a-row>
         </div>
 
     </div>
     <div class="content">
-        <a-table :data-source="tableList" :columns="columns" />
+        <a-tabs :activeKey="activeKey">
+            <a-tab-pane key="1" tab="列表">
+                <a-table :data-source="tableList" :columns="columns">
+<!--                    <template #bodyCell="{ column, text, record }">-->
+<!--                        <template v-if="column.dataIndex === 'operation'">-->
+<!--                            <a-button type="primary" ghost>编辑</a-button>-->
+<!--                        </template>-->
+<!--                    </template>-->
+                    <template #bodyCell="{ column, record };debugger">
+                        <div >
+                            <a-button type="primary">编辑</a-button>
+                        </div>
+                    </template>
+
+                </a-table>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="代码">
+
+            </a-tab-pane>
+
+        </a-tabs>
     </div>
 </div>
 
