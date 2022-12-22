@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/db")
+@RequestMapping("/api/db")
 public class DbController  extends AbstractWebController {
 
     @ReqParamsCheck
