@@ -139,7 +139,7 @@
     <!--    模块框=>代码预览 -->
     <a-modal v-model:visible="previewVisible" width="800px" title="预览" @cancel="previewClose">
       <a-row :gutter="16">
-        <a-col :span="6">
+        <a-col :span="12">
           <a-directory-tree
               v-model:expandedKeys="expandedKeys"
               v-model:selectedKeys="selectedKeys"
@@ -147,7 +147,7 @@
               :tree-data="treeData"
           ></a-directory-tree>
         </a-col>
-        <a-col :span="18">
+        <a-col :span="12">
 
         </a-col>
       </a-row>
@@ -488,8 +488,6 @@ const preview = function () {
       .then(function (res) {
         dirVo.value = res.data.data.dirVo
         treeData.value = res.data.data.list
-        console.log(dirVo.value)
-        console.log(treeData.value)
         previewVisible.value = true
 
         expandedKeys.value = []
