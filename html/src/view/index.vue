@@ -372,50 +372,68 @@ const selectTableDel = function (row) {
 // 提交
 const subform = function () {
   var data = getSubmitdata();
-  var form = document.createElement("form");
-  form.action = ApiUrls.db.generate;
-  form.method = 'post';
-  form.target = '_blank';
-  form.style = "display: none";
+  // var form = document.createElement("form");
+  // form.action = ApiUrls.db.generate;
+  // form.method = 'post';
+  // form.target = '_blank';
+  // form.style = "display: none";
+  //
+  // var inputUrl = document.createElement("input");
+  // inputUrl.name = 'url'
+  // inputUrl.value = data.url
+  // inputUrl.type = "hidden"
+  // form.appendChild(inputUrl);
+  //
+  // var inputName = document.createElement("input");
+  // inputName.name = 'name'
+  // inputName.value = data.name
+  // inputName.type = "hidden"
+  // form.appendChild(inputName);
+  //
+  // var inputPwd = document.createElement("input");
+  // inputPwd.name = 'pwd'
+  // inputPwd.value = data.pwd
+  // inputPwd.type = "hidden"
+  // form.appendChild(inputPwd);
+  //
+  // var inputfkType = document.createElement("input");
+  // inputfkType.name = 'fkType'
+  // inputfkType.value = data.fkType
+  // inputfkType.type = "hidden"
+  // form.appendChild(inputfkType);
+  //
+  // var i = 0;
+  // for (let t of data.tables) {
+  //   for (let c in t) {
+  //     var input = document.createElement("input");
+  //     input.name = `tables[${i}].${c}`
+  //     input.value = `${t[c]}`
+  //     input.type = "hidden"
+  //     form.appendChild(input);
+  //   }
+  //   i++;
+  // }
+  //
+  // document.body.appendChild(form);
+  // form.submit();
 
-  var inputUrl = document.createElement("input");
-  inputUrl.name = 'url'
-  inputUrl.value = data.url
-  inputUrl.type = "hidden"
-  form.appendChild(inputUrl);
-
-  var inputName = document.createElement("input");
-  inputName.name = 'name'
-  inputName.value = data.name
-  inputName.type = "hidden"
-  form.appendChild(inputName);
-
-  var inputPwd = document.createElement("input");
-  inputPwd.name = 'pwd'
-  inputPwd.value = data.pwd
-  inputPwd.type = "hidden"
-  form.appendChild(inputPwd);
-
-  var inputfkType = document.createElement("input");
-  inputfkType.name = 'fkType'
-  inputfkType.value = data.fkType
-  inputfkType.type = "hidden"
-  form.appendChild(inputfkType);
-
-  var i = 0;
-  for (let t of data.tables) {
-    for (let c in t) {
-      var input = document.createElement("input");
-      input.name = `tables[${i}].${c}`
-      input.value = `${t[c]}`
-      input.type = "hidden"
-      form.appendChild(input);
-    }
-    i++;
-  }
-
-  document.body.appendChild(form);
-  form.submit();
+  Http.post(ApiUrls.db.generate, data, {responseType: 'blob'})
+      .then(res => {
+        const {data, headers} = res
+        const fileName = headers['content-disposition'].replace(/\w+;filename=(.*)/, '$1').split('=')[1]
+        // 此处当返回json文件时需要先对data进行JSON.stringify处理，其他类型文件不用做处理
+        //const blob = new Blob([JSON.stringify(data)], ...)
+        const blob = new Blob([data], {type: headers['content-type']})
+        let dom = document.createElement('a')
+        let url = window.URL.createObjectURL(blob)
+        dom.href = url
+        dom.download = decodeURI(fileName)
+        dom.style.display = 'none'
+        document.body.appendChild(dom)
+        dom.click()
+        dom.parentNode.removeChild(dom)
+        window.URL.revokeObjectURL(url)
+      })
 }
 
 function getSubmitdata() {

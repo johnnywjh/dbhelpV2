@@ -101,7 +101,7 @@ public class DbController  extends AbstractWebController {
     }
 
     @RequestMapping("/generate")
-    public void generate(DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
+    public void generate(@RequestBody DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
         bean.viferyDbType();
         String basePath = getFileDir("download");
         String systime = DateUtil.formatString(new Date(), "yyyyMMddHHmmss");
