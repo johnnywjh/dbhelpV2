@@ -167,8 +167,26 @@
             <a-switch v-model:checked="detailCodeShowDoc" checked-children="开" un-checked-children="关"/>
           </a-space>
           <a-typography-paragraph :code="detailCodeShowDoc" copyable class="liInfo_div">
+            <span v-if="liInfo_doc_class==4">
+                <span>字段  |  类型  | 描述</span> <br/>
+                <span>:----|:----|:----</span><br/>
+            </span>
             <span v-for="item in detailDataSelectList">
-              <span>{{ item.javaName }} : {{ item.comment }}</span><br/>
+              <span v-if="liInfo_doc_class==1">
+                {{ item.javaName }} : {{ item.comment }}
+              </span>
+              <span v-if="liInfo_doc_class==2">
+                private {{ item.javaType }} {{ item.javaName }}; // {{item.comment}}
+              </span>
+              <span v-if="liInfo_doc_class==3">
+                /** {{item.comment}} */ <br/>
+                private {{ item.javaType }} {{ item.javaName }};
+              </span>
+              <span v-if="liInfo_doc_class==4">
+                  <span>{{ item.javaName }} | {{ item.javaType }} | {{item.comment}}</span>
+              </span>
+
+              <br/>
             </span>
           </a-typography-paragraph>
         </a-tab-pane>
