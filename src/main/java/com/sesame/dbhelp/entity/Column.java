@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Data
 public class Column implements Serializable {
 
+	private int index;
 	private String name; // 字段名称
 	private String type; // 类型
 	private boolean primary; // 是否是主键
@@ -29,7 +30,8 @@ public class Column implements Serializable {
 	public Column() {
 
 	}
-	public Column(String name, String type, boolean primary, boolean empty, String comment) {
+	public Column(int index,String name, String type, boolean primary, boolean empty, String comment) {
+		this.index = index;
 		this.name = name;
 		this.type = type;
 		this.primary = primary;

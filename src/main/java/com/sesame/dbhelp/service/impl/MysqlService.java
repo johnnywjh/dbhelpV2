@@ -70,6 +70,7 @@ public class MysqlService extends DBService {
         try {
             PreparedStatement pstmt = conn.prepareStatement(strsql);
             ResultSet rs = pstmt.executeQuery(strsql);
+            int index = 1;
             while (rs.next()) {
                 name = rs.getString("Field"); // 字段名称
                 type = rs.getString("Type"); // 类型
@@ -78,8 +79,9 @@ public class MysqlService extends DBService {
                 comment = rs.getString("Comment"); // 列注释
                 comment = comment == null ? "null" : comment;
 
-                bean = new Column(name, type, primary, empty, comment);
+                bean = new Column(index, name, type, primary, empty, comment);
                 list.add(bean);
+                index++;
             }
             init(list);
             pstmt.close();
