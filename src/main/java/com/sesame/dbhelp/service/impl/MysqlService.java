@@ -79,7 +79,8 @@ public class MysqlService extends DBService {
                 comment = rs.getString("Comment"); // 列注释
                 comment = comment == null ? "null" : comment;
 
-                bean = new Column(index, name, type, primary, empty, comment);
+                String id = tableName+name;
+                bean = new Column(id,index, name, type, primary, empty, comment);
                 list.add(bean);
                 index++;
             }

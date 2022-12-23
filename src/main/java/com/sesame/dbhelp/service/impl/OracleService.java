@@ -76,7 +76,9 @@ public class OracleService extends DBService {
                 empty = rs.getString("nullable").equals("Y") ? true : false; // 是否为空
                 comment = rs.getString("comments"); // 表注释
                 comment = comment == null ? "null" : comment;
-                bean = new Column(index, name, type, primary, empty, comment);
+
+                String id = tableName + name;
+                bean = new Column(id, index, name, type, primary, empty, comment);
                 list.add(bean);
                 index++;
             }

@@ -103,7 +103,7 @@
           <a-table
               :data-source="detailData.columns"
               :columns="detailDataColumns"
-              row-key="name"
+              row-key="id"
               :pagination="false" size="small"
               :row-selection="detailDataRowSelect"
           >
