@@ -93,11 +93,15 @@
           </template>
           <div>
             <a-space>
-              <a-select
-                  v-model:value="selectThemeValue"
-                  style="width: 200px"
-                  :options="themeList"
+              <a-button>强制刷新</a-button>
+              <a-select :placeholder="themeTitle"
+                        v-model:value="selectThemeValue"
+                        style="width: 200px"
+                        :options="themeList"
               ></a-select>
+              <a-button v-if="selectThemeValue" type="primary">提交</a-button>
+              <a-button v-else>选择模板后提交</a-button>
+              <a-button>预览</a-button>
             </a-space>
           </div>
         </a-tab-pane>
@@ -161,13 +165,11 @@ const dbSelectTitle = ref()
 // 从本地缓存中读取数据库下拉框
 const reloadDbSelect = function () {
   var arr = [{label: "空", value: null}]
-  var count = 0;
   for (let l in DbData.getDb()) {
     arr.push({label: l, value: l})
-    count++;
   }
   dbList.value = arr
-  dbSelectTitle.value = '请选择数据--' + count
+  dbSelectTitle.value = '请选择数据--' + arr.length
 }
 
 const selectDbValue = function () {
@@ -307,6 +309,7 @@ function initcolumns(queryTable) {
 // 第二个选项卡
 const selectThemeValue = ref(undefined)
 const themeList = ref([])
+const themeTitle = ref()
 const getTheme = function () {
   Http.post(ApiUrls.user.getThemes, null)
       .then(function (res) {
@@ -316,6 +319,7 @@ const getTheme = function () {
           arr.push({label: l, value: l})
         }
         themeList.value = arr
+        themeTitle.value = '选择模板--' + arr.length
       })
       .catch(function (error) {
         console.log(error);
