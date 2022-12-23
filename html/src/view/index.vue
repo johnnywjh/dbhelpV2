@@ -59,7 +59,7 @@
         <a-tab-pane key="1">
           <template #tab>
             列表
-            <a-tag color="red">{{ table_size }}</a-tag>
+            <a-tag color="red">{{ tableList.length }}</a-tag>
           </template>
           <a-table :data-source="tableList" :columns="columns"
                    :pagination="false" size="small"
@@ -88,7 +88,7 @@
         <a-tab-pane key="2">
           <template #tab>
             代码
-            <a-tag color="red">{{ table_size }}</a-tag>
+            <a-tag color="red">{{ code_count }}</a-tag>
           </template>
         </a-tab-pane>
 
@@ -118,7 +118,6 @@ onMounted(() => {
 
 const updateUrl = ref('/api/user/readDbCofig')
 const dbKey = ref('')
-const table_size = ref(0)
 const code_count = ref(0)
 const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
@@ -210,7 +209,6 @@ const filterList = function (list) {
     }
   }
   tableList.value = list;
-  table_size.value = 0
   code_count.value = 0
   activeKey.value = '1'
 }
