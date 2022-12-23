@@ -18,10 +18,10 @@ public class DbInfo  extends BaseRequest {
 	private String name; // 数据库用户名
 	private String pwd; // 数据库密码
 
-//	private String fkType;// 模板
-//	private String tableName;
+	private String fkType;// 模板
+	private String tableName;
 
-//	private List<Table> tables; // 表的集合
+	private List<Table> tables; // 表的集合
 
 	/**
 	 * 根据数据库连接自动判断数据库类型

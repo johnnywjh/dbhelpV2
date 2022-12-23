@@ -35,7 +35,7 @@ const DbData = {
     },
     /** 获取表的详情 */
     getTablesDetail(key, tableName) {
-        var list = getTables(key);
+        var list = this.getTables(key);
         if (!list) {
             return null;
         }
@@ -45,6 +45,19 @@ const DbData = {
                 break;
             }
         }
+    },
+    setTablesDetail(key, tableName, columns) {
+        var list = this.getTables(key);
+        if (list) {
+            for (let l of list) {
+                if (l.tableName == tableName) {
+                    l.columns = columns;
+                    break;
+                }
+            }
+            this.setTables(key, list);
+        }
+
     }
 }
 

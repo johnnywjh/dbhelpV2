@@ -60,13 +60,13 @@
           >
             <template #bodyCell="{ column, text, record }">
               <template v-if="column.dataIndex === 'operation'">
-                <a-tag class="but" color="green">详情</a-tag>
+                <a-tag class="but" color="green" @click="detailLayerClick(record)">详情</a-tag>
 
                 <a-tag v-if="record.selected" color="bule">已选</a-tag>
-                <a-tag class="but" v-else>选择</a-tag>
+                <a-tag v-else>选择</a-tag>
 
-                <a-tag class="but" v-if="record.columns" color="orange">清除缓存1</a-tag>
-                <a-tag class="but" v-else>清除缓存</a-tag>
+                <a-tag class="but" v-if="record.columns" @click="cleanCache(record)" color="orange">清除缓存</a-tag>
+                <a-tag v-else>清除缓存</a-tag>
               </template>
               <template v-else-if="column.dataIndex === 'tableNameStr'">
                 <p v-html="record.tableNameStr"></p>
@@ -118,6 +118,13 @@ const columns = ref([
   {title: '表名', dataIndex: 'tableNameStr',},
   {title: '注释', dataIndex: 'commentStr'},
 ])
+// 详情弹出层
+const layerTitle = ref('')
+const tableDDl= ref('')
+const allSelect= ref(false)
+// 弹出层数据
+const detailColumns= ref([{sel: false, name: '', selected: false}])
+const selectTable= ref([])
 
 const handleFileChange = function (e) {
   if (e.file.status == 'done') {
@@ -239,7 +246,55 @@ const cleanDbCache = function () {
   });
 }
 
+/*界面详情按钮*/
+function detailLayerClick(row) {
+  layerTitle.value = `${row.comment} : ${row.tableName}`
+  var queryTable = DbData.getTablesDetail(dbKey.value, row.tableName);
+  if (!queryTable) {
+    var queryData = userinfo.value.db;
+    queryData.tableName = row.tableName;
+    Http.post('/api/db/searchTableDetail', queryData)
+        .then(function (res) {
+          let table = res.data.data;
+          DbData.setTablesDetail(dbKey.value, row.tableName, table);
+          initcolumns(table);
+          row.columns = table.columns;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  } else {
+    initcolumns(queryTable);
+    row.columns = queryTable.columns;
+  }
+}
 
+// 列表加载
+function initcolumns(queryTable) {
+  let columnsData = queryTable.columns;
+  tableDDl.value = queryTable.ddl?queryTable.ddl.replace(new RegExp("\n", 'gm'), "</br>"):""
+  allSelect.value = false;
+  for (let c of columnsData) {
+    c.sel = false;
+    c.selected = false
+  }
+  detailColumns.value = columnsData;
+  console.log(detailColumns.value)
+}
+
+const cleanCache = function (row){
+  row.columns = null;
+  DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
+  // var arr = [];
+  // for (let t of tableList.value) {
+  //   if (t.tableName == row.tableName) {
+  //     t.selected = true
+  //     selectTable.value.push(t);
+  //   }
+  //   arr.push(t);
+  // }
+  // tableList.value = arr
+}
 </script>
 
 <style>
