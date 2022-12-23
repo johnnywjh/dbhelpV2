@@ -83,8 +83,6 @@
                 <p v-html="record.commentStr"></p>
               </template>
             </template>
-
-
           </a-table>
         </a-tab-pane>
         <a-tab-pane key="2">
@@ -97,20 +95,62 @@
       </a-tabs>
     </div>
 
-<!--    模块框 -->
-    <a-modal v-model:visible="detailLayerVisible" :title="detailLayerTitle" >
+    <!--    模块框 -->
+    <a-modal v-model:visible="detailLayerVisible" width="800px" :title="detailLayerTitle">
       <a-tabs v-model:activeKey="detailActiveKey">
         <a-tab-pane key="field" tab="字段">
-          字段
+          <!--          <h3>{{ detailDataSelectList.length }}</h3>-->
+          <a-table
+              :data-source="detailData.columns"
+              :columns="detailDataColumns"
+              row-key="name"
+              :pagination="false" size="small"
+              :row-selection="detailDataRowSelect"
+          >
+            <template #bodyCell="{ column, text, record }">
+              <template v-if="column.dataIndex === 'javaName'">
+                <span v-if="record.javaName!=record.name">{{ record.javaName }}</span>
+                <span v-else></span>
+              </template>
+            </template>
+          </a-table>
         </a-tab-pane>
         <a-tab-pane key="query" tab="查询sql">
-          查询
+          <a-space>
+            <a-input v-model:value="as" style="width: 100px;" placeholder="表的别名"/>
+            代码样式<a-switch v-model:checked="detailCodeShowSql" checked-children="开" un-checked-children="关"/>
+          </a-space>
+          <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
+            select <br/>
+            {{ liInfo_div1 }} <br/>
+            from {{ detailData.tableName }} {{ as }}
+          </a-typography-paragraph>
+          <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
+            select <br/>
+            {{ liInfo_div2 }} <br/>
+            from {{ detailData.tableName }} {{ as }}
+          </a-typography-paragraph>
+          <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
+            select <br/>
+            {{ liInfo_div3 }} <br/>
+            from {{ detailData.tableName }} {{ as }}
+          </a-typography-paragraph>
         </a-tab-pane>
         <a-tab-pane key="doc" tab="文档">
-          文档
+          <a-space>
+            代码样式<a-switch v-model:checked="detailCodeShowDoc" checked-children="开" un-checked-children="关"/>
+          </a-space>
+          <a-typography-paragraph :code="detailCodeShowDoc" copyable class="liInfo_div">
+            <a-typography-text v-html="liInfo_doc"></a-typography-text>
+          </a-typography-paragraph>
         </a-tab-pane>
         <a-tab-pane key="ddl" tab="DDL">
-          DDL
+          <a-space>
+            代码样式<a-switch v-model:checked="detailCodeShowDDL" checked-children="开" un-checked-children="关"/>
+          </a-space>
+          <a-typography-paragraph :code="detailCodeShowDDL" copyable class="liInfo_div">
+            <a-typography-text v-html="detailData.ddl"></a-typography-text><br/>
+          </a-typography-paragraph>
         </a-tab-pane>
       </a-tabs>
     </a-modal>
@@ -118,7 +158,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted} from "vue";
+import {ref, reactive, computed, onMounted} from "vue";
 import DbData from '@/utils/DbData'
 import {message, Modal} from 'ant-design-vue';
 import Http from '@/utils/Http'
@@ -144,17 +184,10 @@ const columns = ref([
   {title: '表名', dataIndex: 'tableNameStr',},
   {title: '注释', dataIndex: 'commentStr'},
 ])
-// 详情弹出层
-const detailLayerVisible = ref(false)
-const detailLayerTitle = ref('xxx:xxx')
-const detailActiveKey = ref('field')
-const layerTitle = ref('')
-const tableDDl= ref('')
-const allSelect= ref(false)
-// 弹出层数据
-const detailColumns= ref([{sel: false, name: '', selected: false}])
-const selectTable= ref([])
 
+// -------------------
+// ------- 界面上的方法
+// -------------------
 const handleFileChange = function (e) {
   if (e.file.status == 'done') {
     var res = e.fileList[0]
@@ -266,17 +299,80 @@ const cleanDbCache = function () {
   // setTimeout(() => location.reload(), 1000);
   DbData.cleanDb(dbKey.value)
   message.success({
-    content:'清除成功',
-    duration:1,
-    onClose:function (){
+    content: '清除成功',
+    duration: 1,
+    onClose: function () {
       location.reload()
     }
   });
 }
-const cleanCache = function (row){
+const cleanCache = function (row) {
   row.columns = null;
   DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
 }
+
+// ------------- 弹出层
+// 详情弹出层
+const detailLayerVisible = ref(false)
+const detailLayerTitle = ref('xxx:xxx')
+const detailActiveKey = ref('field')
+const layerTitle = ref('')
+const detailData = ref({columns: [], ddl: ''})  // 选中的表的数据
+const detailDataColumns = ref([
+  {title: '字段', dataIndex: 'name', width: '200px'},
+  {title: '类型', dataIndex: 'type', width: '200px'},
+  {title: '注释', dataIndex: 'comment', ellipsis: true, width: '200px'},
+  {title: '驼峰', dataIndex: 'javaName'},
+])
+// 选中的宝哥数据
+const detailDataSelectList = ref([])
+const detailDataRowSelect = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    detailDataSelectList.value = selectedRows
+  }
+};
+
+const detailCodeShowSql = ref(true)
+const detailCodeShowDoc = ref(true)
+const detailCodeShowDDL = ref(true)
+const as = ref('')
+const ass = computed(() => {
+  return as.value.length > 0 ? as.value + '.' : ''
+})
+const liInfo_div1 = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    arr.push(`${ass.value}${l.name}`)
+  }
+  return arr.join(' , ');
+})
+const liInfo_div2 = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    if (l.name == l.javaName) {
+      arr.push(`${ass.value}${l.name}`)
+    } else {
+      arr.push(`${ass.value}${l.name} '${l.javaName}'`)
+    }
+  }
+  return arr.join(' , ');
+})
+const liInfo_div3 = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    let com = l.comment || l.name;
+    arr.push(`${ass.value}${l.name} '${com}'`)
+  }
+  return arr.join(' , ');
+})
+const liInfo_doc = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    arr.push(`${l.javaName} : ${l.comment}<br/>`)
+  }
+  return arr.join('');
+})
 
 /*界面详情按钮*/
 function detailLayerClick(row) {
@@ -289,7 +385,7 @@ function detailLayerClick(row) {
         .then(function (res) {
           let table = res.data.data;
           row.columns = table.columns
-          row.ddl = table.ddl
+          row.ddl = table.ddl ? table.ddl.replace(new RegExp("\n", 'gm'), "</br>") : ""
           DbData.setTablesDetail(dbKey.value, row.tableName, row);
           initcolumns(row);
         })
@@ -304,19 +400,11 @@ function detailLayerClick(row) {
 
 // 列表加载
 function initcolumns(queryTable) {
-  let columnsData = queryTable.columns;
-  tableDDl.value = queryTable.ddl?queryTable.ddl.replace(new RegExp("\n", 'gm'), "</br>"):""
-  allSelect.value = false;
-  for (let c of columnsData) {
-    c.sel = false;
-    c.selected = false
-  }
-  detailColumns.value = columnsData;
-  console.log(queryTable)
-
-  detailLayerVisible.value=true
+  detailLayerVisible.value = true
   detailActiveKey.value = 'field'
-  detailLayerTitle.value = queryTable.comment+" : "+ queryTable.tableName
+  detailLayerTitle.value = queryTable.comment + " : " + queryTable.tableName
+
+  detailData.value = queryTable;
 }
 
 </script>
@@ -348,5 +436,12 @@ function initcolumns(queryTable) {
 
 .but {
   cursor: pointer;
+}
+
+.liInfo_div {
+  border: solid 1px #CCC;
+  padding: 10px;
+  margin-top: 10px;
+  height: auto;
 }
 </style>
