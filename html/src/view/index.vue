@@ -99,7 +99,7 @@
                         style="width: 200px"
                         :options="themeList"
               ></a-select>
-              <a-button v-if="selectThemeValue && selectTable.length>0" type="primary">提交</a-button>
+              <a-button v-if="selectThemeValue && selectTable.length>0" @click="subform" type="primary">提交</a-button>
               <a-button v-else>选择模板后提交</a-button>
               <a-button>预览</a-button>
             </a-space>
@@ -369,7 +369,75 @@ const selectTableDel = function (row) {
   }
   selectTable.value = arr
 }
+// 提交
+const subform = function () {
+  var data = getSubmitdata();
+  var form = document.createElement("form");
+  form.action = ApiUrls.db.generate;
+  form.method = 'post';
+  form.target = '_blank';
+  form.style = "display: none";
 
+  var inputUrl = document.createElement("input");
+  inputUrl.name = 'url'
+  inputUrl.value = data.url
+  inputUrl.type = "hidden"
+  form.appendChild(inputUrl);
+
+  var inputName = document.createElement("input");
+  inputName.name = 'name'
+  inputName.value = data.name
+  inputName.type = "hidden"
+  form.appendChild(inputName);
+
+  var inputPwd = document.createElement("input");
+  inputPwd.name = 'pwd'
+  inputPwd.value = data.pwd
+  inputPwd.type = "hidden"
+  form.appendChild(inputPwd);
+
+  var inputfkType = document.createElement("input");
+  inputfkType.name = 'fkType'
+  inputfkType.value = data.fkType
+  inputfkType.type = "hidden"
+  form.appendChild(inputfkType);
+
+  var i = 0;
+  for (let t of data.tables) {
+    for (let c in t) {
+      var input = document.createElement("input");
+      input.name = `tables[${i}].${c}`
+      input.value = `${t[c]}`
+      input.type = "hidden"
+      form.appendChild(input);
+    }
+    i++;
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+function getSubmitdata() {
+  var tables = [];
+  for (let l of selectTable.value) {
+    tables.push({
+      tableName: l.tableName,
+      className: l.className,
+      comment: l.comment
+    })
+  }
+  // var user = DbData.getUser();
+  var user = userinfo.value;
+  var data = {
+    url: user.db.url,
+    name: user.db.name,
+    pwd: user.db.pwd,
+    fkType: selectThemeValue.value,
+    tables: tables
+  };
+  return data;
+}
 </script>
 
 <style>

@@ -61,7 +61,7 @@ const service = axios.create({
 
 const Http = {
     get(url, params, _object = {}){
-        return service.get(url, params,_object)
+        return service.get(url, {params, ..._object})
     },
     post(url, params, _object = {}){
         return service.post(url, params,_object)
