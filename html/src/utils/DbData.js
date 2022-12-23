@@ -13,8 +13,9 @@ const DbData = {
     getDb() {
         return LocalData.data(datakey_db).db;
     },
-    cleanDb() {
-        LocalData.data(datakey_tables, null)
+    cleanDb(key) {
+        // LocalData.data(datakey_tables, null)
+        LocalData.data(datakey_tables, {key: key, value: null});
     },
     /** 保存用户信息 */
     setUser(user) {

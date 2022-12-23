@@ -24,7 +24,16 @@
                 :options="dbList"
                 @change="selectDbValue"
             ></a-select>
-            <a-button @click="cleanDbCache">清除当前DB缓存</a-button>
+            <a-popconfirm
+                :title="'确定要清除 ' + dbKey + ' 的所有缓存?'"
+                @confirm="cleanDbCache"
+                v-if="dbKey"
+            >
+
+              <a-button>清除当前DB缓存</a-button>
+            </a-popconfirm>
+            <a-button v-else>选择数据库</a-button>
+
             <a-button type="primary">对比数据库</a-button>
             <a-button type="primary">搜索字段</a-button>
           </a-space>
@@ -233,16 +242,15 @@ const reLoadTables = function () {
 
 // 清除数据库缓存
 const cleanDbCache = function () {
-  if (dbKey.value == '0') {
-    return;
-  }
-  Modal.confirm({
-    title: '确定要清除 ' + dbKey.value + ' 的所有缓存?',
-    onOk() {
-      DbData.cleanDb()
-      setTimeout(() => location.reload(), 1000);
-    },
-    class: 'test',
+  // DbData.cleanDb()
+  // setTimeout(() => location.reload(), 1000);
+  DbData.cleanDb(dbKey.value)
+  message.success({
+    content:'清除成功',
+    duration:1,
+    onClose:function (){
+      location.reload()
+    }
   });
 }
 
@@ -285,15 +293,6 @@ function initcolumns(queryTable) {
 const cleanCache = function (row){
   row.columns = null;
   DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
-  // var arr = [];
-  // for (let t of tableList.value) {
-  //   if (t.tableName == row.tableName) {
-  //     t.selected = true
-  //     selectTable.value.push(t);
-  //   }
-  //   arr.push(t);
-  // }
-  // tableList.value = arr
 }
 </script>
 
