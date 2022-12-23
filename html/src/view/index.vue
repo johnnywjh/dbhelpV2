@@ -17,8 +17,9 @@
           </a-upload>
         </a-col>
         <a-col :span="16">
+<!--          -->
           <a-space>
-            <a-select
+            <a-select :placeholder="dbSelectTitle"
                 v-model:value="dbKey"
                 style="width: 200px"
                 :options="dbList"
@@ -71,7 +72,7 @@
                 <a-tag class="but" color="green" @click="detailLayerClick(record)">详情</a-tag>
 
                 <a-tag v-if="record.selected" color="bule">已选</a-tag>
-                <a-tag v-else>选择</a-tag>
+                <a-tag v-else class="but">选择</a-tag>
 
                 <a-tag class="but" v-if="record.columns" @click="cleanCache(record)" color="orange">清除缓存</a-tag>
                 <a-tag v-else>清除缓存</a-tag>
@@ -88,8 +89,18 @@
         <a-tab-pane key="2">
           <template #tab>
             代码
-            <a-tag color="red">{{ code_count }}</a-tag>
+            <a-tag color="red">{{ selectTable.length }}</a-tag>
           </template>
+          <div>
+            <a-space>
+<!--              <a-select-->
+<!--                  v-model:value="dbKey"-->
+<!--                  style="width: 200px"-->
+<!--                  :options="dbList"-->
+<!--                  @change="selectDbValue"-->
+<!--              ></a-select>-->
+            </a-space>
+          </div>
         </a-tab-pane>
 
       </a-tabs>
@@ -117,8 +128,7 @@ onMounted(() => {
 });
 
 const updateUrl = ref('/api/user/readDbCofig')
-const dbKey = ref('')
-const code_count = ref(0)
+const dbKey = ref(undefined)
 const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
 const searchTableText = ref('')
@@ -130,6 +140,8 @@ const columns = ref([
   {title: '表名', dataIndex: 'tableNameStr',},
   {title: '注释', dataIndex: 'commentStr'},
 ])
+// 选择的数据
+const selectTable= ref([])
 
 // -------------------
 // ------- 界面上的方法
@@ -144,21 +156,23 @@ const handleFileChange = function (e) {
     }
   }
 }
+const dbSelectTitle = ref()
 // 从本地缓存中读取数据库下拉框
 const reloadDbSelect = function () {
-  var arr = [{label: "选择数据", value: 0}];
+  var arr = [{label: "空", value: null}];
+  // var arr = [];
   var count = 0;
   for (let l in DbData.getDb()) {
     arr.push({label: l, value: l});
     count++;
   }
-  // arr[0].label = '选择数据-' + count
   dbList.value = arr
+  dbSelectTitle.value = '请选择数据--'+count
 }
 
 const selectDbValue = function () {
   let val = dbKey.value
-  if (val != '0') {
+  if (val && val != '0') {
     searchTableText.value = '';
     var db = DbData.getDb()[val];
     db.key = val;
@@ -209,7 +223,6 @@ const filterList = function (list) {
     }
   }
   tableList.value = list;
-  code_count.value = 0
   activeKey.value = '1'
 }
 
