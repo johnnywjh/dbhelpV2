@@ -12,7 +12,7 @@
               accept=".json"
               @change="handleFileChange">
             <a-button>
-              上传数据源
+              解析数据源
             </a-button>
           </a-upload>
         </a-col>
@@ -48,11 +48,25 @@
       />
 
       <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane key="1" tab="列表">
-          <a-table :data-source="tableList" :columns="columns" :pagination="false">
+        <a-tab-pane key="1">
+          <template #tab>
+            列表
+            <a-tag color="red">{{ table_size }}</a-tag>
+          </template>
+          <a-table :data-source="tableList" :columns="columns"
+                   :pagination="false" size="small"
+                   class="ant-table-striped"
+                   :row-class-name="(_record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+          >
             <template #bodyCell="{ column, text, record }">
               <template v-if="column.dataIndex === 'operation'">
-                <a-button type="primary" ghost>编辑</a-button>
+                <a-tag class="but" color="green">详情</a-tag>
+
+                <a-tag v-if="record.selected" color="bule">已选</a-tag>
+                <a-tag class="but" v-else>选择</a-tag>
+
+                <a-tag class="but" v-if="record.columns" color="orange">清除缓存1</a-tag>
+                <a-tag class="but" v-else>清除缓存</a-tag>
               </template>
               <template v-else-if="column.dataIndex === 'tableNameStr'">
                 <p v-html="record.tableNameStr"></p>
@@ -65,8 +79,11 @@
 
           </a-table>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="代码">
-          2222222222222
+        <a-tab-pane key="2">
+          <template #tab>
+            代码
+            <a-tag color="red">{{ table_size }}</a-tag>
+          </template>
         </a-tab-pane>
 
       </a-tabs>
@@ -88,14 +105,16 @@ onMounted(() => {
 
 const updateUrl = ref('/api/user/readDbCofig')
 const dbKey = ref('')
+const table_size = ref(0)
+const code_count = ref(0)
 const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
 const searchTableText = ref('')
 const userinfo = ref({db: {}})
 const activeKey = ref("1")
 const columns = ref([
-  {title: '序号', dataIndex: 'index'},
-  {title: '操作', dataIndex: 'operation'},
+  {title: '序号', dataIndex: 'index', width: '100px'},
+  {title: '操作', dataIndex: 'operation', width: '200px'},
   {title: '表名', dataIndex: 'tableNameStr',},
   {title: '注释', dataIndex: 'commentStr'},
 ])
@@ -125,6 +144,7 @@ const reloadDbSelect = function () {
 const selectDbValue = function () {
   let val = dbKey.value
   if (val != '0') {
+    searchTableText.value = '';
     var db = DbData.getDb()[val];
     db.key = val;
 
@@ -132,7 +152,6 @@ const selectDbValue = function () {
     DbData.setUser(userinfo.value);
 
     reLoadTables();
-    // searchTableText.value = '';
   } else {
     tableList.value = [];
   }
@@ -175,7 +194,9 @@ const filterList = function (list) {
     }
   }
   tableList.value = list;
-  console.log(tableList.value)
+  table_size.value = 0
+  code_count.value = 0
+  activeKey.value = '1'
 }
 
 // 搜索输入框的回车键事件
@@ -240,5 +261,13 @@ const cleanDbCache = function () {
 
 .searchText {
   color: #fe7300;
+}
+
+.ant-table-striped :deep(.table-striped) td {
+  background-color: #fafafa;
+}
+
+.but {
+  cursor: pointer;
 }
 </style>
