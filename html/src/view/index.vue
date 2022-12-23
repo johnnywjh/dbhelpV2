@@ -99,9 +99,9 @@
                         style="width: 200px"
                         :options="themeList"
               ></a-select>
-              <a-button v-if="selectThemeValue && selectTable.length>0" @click="subform" type="primary">提交</a-button>
-              <a-button v-else>选择模板后提交</a-button>
-              <a-button>预览</a-button>
+              <a-button v-if="subformShow" @click="subform" type="primary">提交</a-button>
+              <a-button v-if="subformShow" @click="preview">预览</a-button>
+              <a-button v-if="!subformShow">选择模板后提交</a-button>
             </a-space>
             <div style="margin-top: 20px">
               <a-row :gutter="16">
@@ -369,6 +369,9 @@ const selectTableDel = function (row) {
   }
   selectTable.value = arr
 }
+const subformShow = computed(() => {
+  return selectThemeValue.value && selectTable.value.length > 0
+})
 // 提交
 const subform = function () {
   var data = getSubmitdata();
@@ -456,6 +459,18 @@ function getSubmitdata() {
   };
   return data;
 }
+
+const preview = function () {
+  var data = getSubmitdata();
+  Http.post(ApiUrls.db.preview, data)
+      .then(function (res) {
+        console.log(res.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
 </script>
 
 <style>

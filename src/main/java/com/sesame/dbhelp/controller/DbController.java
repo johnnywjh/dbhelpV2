@@ -27,7 +27,7 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/db")
-public class DbController  extends AbstractWebController {
+public class DbController extends AbstractWebController {
 
     @Autowired
     private BaseConfig baseConfig;
@@ -143,7 +143,7 @@ public class DbController  extends AbstractWebController {
 
     @RequestMapping("/preview")
     @ResponseBody
-    public Response preview(DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
+    public Response preview(@RequestBody DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
         bean.viferyDbType();
         String basePath = getFileDir("preview");// preview
         String systime = DateUtil.formatString(new Date(), "yyyyMMddHHmmss");
@@ -155,7 +155,7 @@ public class DbController  extends AbstractWebController {
         request.getSession().setAttribute("outPath", outPath);
         request.getSession().setAttribute("fileDir", fileDir);
 
-        return returnSuccess();
+        return returnSuccess(fileDir);
     }
 
     public String getFileDir(String name) {

@@ -19,7 +19,7 @@ public class StringUtil {
      */
     public static boolean equals(String str, String str2) {
 
-        return str.toLowerCase().equals(str2.toLowerCase());
+        return str.equalsIgnoreCase(str2);
     }
 
     public static boolean equals(String str, String[] arr) {
