@@ -118,38 +118,68 @@
         <a-tab-pane key="query" tab="查询sql">
           <a-space>
             <a-input v-model:value="as" style="width: 100px;" placeholder="表的别名"/>
-            代码样式<a-switch v-model:checked="detailCodeShowSql" checked-children="开" un-checked-children="关"/>
+            代码样式
+            <a-switch v-model:checked="detailCodeShowSql" checked-children="开" un-checked-children="关"/>
           </a-space>
+          <!-- div1 -->
           <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
             select <br/>
-            {{ liInfo_div1 }} <br/>
+            <span v-for="(item, index) in detailDataSelectList">
+              <span>{{ ass }}{{ item.name }}
+                <span v-if="index<detailDataSelectList.length-1"> , </span>
+              </span>
+            </span><br/>
             from {{ detailData.tableName }} {{ as }}
           </a-typography-paragraph>
+          <!-- div2 -->
           <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
             select <br/>
-            {{ liInfo_div2 }} <br/>
+            <span v-for="(item, index) in detailDataSelectList">
+              <span>
+                <span>{{ ass }}{{ item.name }}</span>
+                <span v-if="item.name != item.javaName"> '{{ item.javaName }}'</span>
+                <span v-if="index<detailDataSelectList.length-1"> , </span>
+              </span>
+            </span><br/>
             from {{ detailData.tableName }} {{ as }}
           </a-typography-paragraph>
+          <!-- div3 -->
           <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
             select <br/>
-            {{ liInfo_div3 }} <br/>
+            <span v-for="(item, index) in detailDataSelectList">
+              <span>
+                <span>{{ ass }}{{ item.name }} '{{ item.comment || item.name }}'</span>
+                <span v-if="index<detailDataSelectList.length-1"> , </span>
+              </span>
+            </span><br/>
             from {{ detailData.tableName }} {{ as }}
           </a-typography-paragraph>
         </a-tab-pane>
         <a-tab-pane key="doc" tab="文档">
           <a-space>
-            代码样式<a-switch v-model:checked="detailCodeShowDoc" checked-children="开" un-checked-children="关"/>
+            <a-radio-group v-model:value="liInfo_doc_class" button-style="solid">
+              <a-radio-button value="1">普通</a-radio-button>
+              <a-radio-button value="2">java1</a-radio-button>
+              <a-radio-button value="3">java2</a-radio-button>
+              <a-radio-button value="4">markdown</a-radio-button>
+            </a-radio-group>
+            代码样式
+            <a-switch v-model:checked="detailCodeShowDoc" checked-children="开" un-checked-children="关"/>
           </a-space>
           <a-typography-paragraph :code="detailCodeShowDoc" copyable class="liInfo_div">
-            <a-typography-text v-html="liInfo_doc"></a-typography-text>
+            <span v-for="item in detailDataSelectList">
+              <span>{{ item.javaName }} : {{ item.comment }}</span><br/>
+            </span>
           </a-typography-paragraph>
         </a-tab-pane>
         <a-tab-pane key="ddl" tab="DDL">
           <a-space>
-            代码样式<a-switch v-model:checked="detailCodeShowDDL" checked-children="开" un-checked-children="关"/>
+            代码样式
+            <a-switch v-model:checked="detailCodeShowDDL" checked-children="开" un-checked-children="关"/>
           </a-space>
           <a-typography-paragraph :code="detailCodeShowDDL" copyable class="liInfo_div">
-            <a-typography-text v-html="detailData.ddl"></a-typography-text><br/>
+            <a-typography-text v-html="detailData.ddl"></a-typography-text>
+            <br/>
           </a-typography-paragraph>
         </a-tab-pane>
       </a-tabs>
@@ -340,39 +370,8 @@ const as = ref('')
 const ass = computed(() => {
   return as.value.length > 0 ? as.value + '.' : ''
 })
-const liInfo_div1 = computed(() => {
-  let arr = [];
-  for (let l of detailDataSelectList.value) {
-    arr.push(`${ass.value}${l.name}`)
-  }
-  return arr.join(' , ');
-})
-const liInfo_div2 = computed(() => {
-  let arr = [];
-  for (let l of detailDataSelectList.value) {
-    if (l.name == l.javaName) {
-      arr.push(`${ass.value}${l.name}`)
-    } else {
-      arr.push(`${ass.value}${l.name} '${l.javaName}'`)
-    }
-  }
-  return arr.join(' , ');
-})
-const liInfo_div3 = computed(() => {
-  let arr = [];
-  for (let l of detailDataSelectList.value) {
-    let com = l.comment || l.name;
-    arr.push(`${ass.value}${l.name} '${com}'`)
-  }
-  return arr.join(' , ');
-})
-const liInfo_doc = computed(() => {
-  let arr = [];
-  for (let l of detailDataSelectList.value) {
-    arr.push(`${l.javaName} : ${l.comment}<br/>`)
-  }
-  return arr.join('');
-})
+
+const liInfo_doc_class = ref('1')
 
 /*界面详情按钮*/
 function detailLayerClick(row) {
