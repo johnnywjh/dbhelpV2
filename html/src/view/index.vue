@@ -137,18 +137,27 @@
       <DetailPage :detailData="detailData"/>
     </a-modal>
     <!--    模块框=>代码预览 -->
-    <a-modal v-model:visible="previewVisible" width="800px" title="预览" @cancel="previewClose">
+    <a-modal v-model:visible="previewVisible" width="900px" title="预览" @cancel="previewClose">
       <a-row :gutter="16">
         <a-col :span="12">
           <a-directory-tree
               v-model:expandedKeys="expandedKeys"
-              v-model:selectedKeys="selectedKeys"
               multiple
               :tree-data="treeData"
+              @select="selectTreeNode"
           ></a-directory-tree>
         </a-col>
         <a-col :span="12">
-
+          <a-space>
+            代码样式
+            <a-switch v-model:checked="previewCode" checked-children="开" un-checked-children="关"/>
+          </a-space>
+          <a-typography-paragraph :code="previewCode" copyable class="liInfo_div">
+            <span v-for="(item, index) in fileContent">
+              <a-typography-text v-html="item"></a-typography-text>
+              <br/>
+            </span>
+          </a-typography-paragraph>
         </a-col>
       </a-row>
     </a-modal>
@@ -481,7 +490,8 @@ const dirVo = ref()
 const treeData = ref()
 const previewVisible = ref(false)
 const expandedKeys = ref(['java']);
-const selectedKeys = ref([]);
+const fileContent = ref()
+const previewCode = ref(true)
 const preview = function () {
   var data = getSubmitdata();
   Http.post(ApiUrls.db.preview, data)
@@ -489,6 +499,7 @@ const preview = function () {
         dirVo.value = res.data.data.dirVo
         treeData.value = res.data.data.list
         previewVisible.value = true
+        fileContent.value = []
 
         expandedKeys.value = []
         for(let tree of treeData.value){
@@ -507,6 +518,23 @@ const previewClose = function () {
       .catch(function (error) {
         console.log(error);
       });
+}
+
+const selectTreeNode = function(selectedKeys, e){
+  if(!e.node.dir){
+    Http.get(ApiUrls.db.getfilecontent, {path: e.node.basicData})
+        .then(function (res) {
+          fileContent.value = res.data.data
+          for (let c of fileContent.value) {
+            // 全局替换
+            c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
+            console.log(c)
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  }
 }
 
 </script>
@@ -539,5 +567,10 @@ const previewClose = function () {
 .but {
   cursor: pointer;
 }
-
+.liInfo_div {
+  border: solid 1px #CCC;
+  padding: 10px;
+  margin-top: 10px;
+  height: auto;
+}
 </style>

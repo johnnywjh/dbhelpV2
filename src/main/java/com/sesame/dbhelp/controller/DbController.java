@@ -246,6 +246,7 @@ public class DbController extends AbstractWebController {
             map.put("parentId", parentId);
             map.put("title", f.getName());
             map.put("basicData", path);
+            map.put("dir", f.isDirectory());
 
             if (f.isDirectory()) {
                 List<Map> list = searchfile(f, key);

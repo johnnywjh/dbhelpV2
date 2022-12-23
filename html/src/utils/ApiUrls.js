@@ -5,6 +5,7 @@ const ApiUrls = {
         generate: '/api/db/generate',
         preview: '/api/db/preview',
         deletedir: '/api/db/deletedir',
+        getfilecontent: '/api/db/getfilecontent',
     },
     user: {
         getThemes: '/api/user/getThemes'
