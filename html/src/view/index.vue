@@ -71,8 +71,8 @@
               <template v-if="column.dataIndex === 'operation'">
                 <a-tag class="but" color="green" @click="detailLayerClick(record)">详情</a-tag>
 
-                <a-tag v-if="record.selected" color="bule">已选</a-tag>
-                <a-tag v-else class="but">选择</a-tag>
+                <a-tag v-if="record.selected" color="purple">已选</a-tag>
+                <a-tag v-else class="but" color="cyan" @click="selectClick(record)">选择</a-tag>
 
                 <a-tag class="but" v-if="record.columns" @click="cleanCache(record)" color="orange">清除缓存</a-tag>
                 <a-tag v-else>清除缓存</a-tag>
@@ -99,10 +99,33 @@
                         style="width: 200px"
                         :options="themeList"
               ></a-select>
-              <a-button v-if="selectThemeValue" type="primary">提交</a-button>
+              <a-button v-if="selectThemeValue && selectTable.length>0" type="primary">提交</a-button>
               <a-button v-else>选择模板后提交</a-button>
               <a-button>预览</a-button>
             </a-space>
+            <div style="margin-top: 20px">
+              <a-row :gutter="16">
+                <a-col :span="2"></a-col>
+                <a-col :span="10">
+                  <a-table :data-source="selectTable" :columns="selectTableColumns"
+                           :pagination="false" size="small"
+                           class="ant-table-striped"
+                           :row-class-name="(_record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+                  >
+                    <template #bodyCell="{ column, text, record }">
+                      <template v-if="column.dataIndex === 'operation'">
+                        <a-tag class="but" color="red" @click="selectTableDel(record)">删除</a-tag>
+                      </template>
+                      <template v-else-if="column.dataIndex === 'className'">
+                        <a-input v-model:value="record.className"/>
+                      </template>
+                    </template>
+                  </a-table>
+                </a-col>
+                <a-col :span="10">
+                </a-col>
+              </a-row>
+            </div>
           </div>
         </a-tab-pane>
 
@@ -324,6 +347,27 @@ const getTheme = function () {
       .catch(function (error) {
         console.log(error);
       });
+}
+
+// 选择
+const selectTableColumns = ref([
+  {title: '操作', dataIndex: 'operation', width: '100px'},
+  {title: '表名', dataIndex: 'tableName', width: '200px'},
+  {title: '类名', dataIndex: 'className', width: '300px'},
+])
+const selectClick = function (row) {
+  row.selected = true
+  selectTable.value.push(row)
+}
+const selectTableDel = function (row) {
+  row.selected = false
+  var arr = []
+  for (let t of selectTable.value) {
+    if (t.tableName != row.tableName) {
+      arr.push(t)
+    }
+  }
+  selectTable.value = arr
 }
 
 </script>
