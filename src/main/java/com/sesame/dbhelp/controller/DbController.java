@@ -7,6 +7,7 @@ import com.sesame.common.response.Response;
 import com.sesame.dbhelp.config.BaseConfig;
 import com.sesame.dbhelp.entity.Column;
 import com.sesame.dbhelp.entity.DbInfo;
+import com.sesame.dbhelp.entity.DirVo;
 import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.service.DBService;
 import com.sesame.dbhelp.service.DBServicePool;
@@ -155,11 +156,18 @@ public class DbController extends AbstractWebController {
         request.getSession().setAttribute("outPath", outPath);
         request.getSession().setAttribute("fileDir", fileDir);
 
-        return returnSuccess(fileDir);
+        File file = new File(outPath);
+        List<Map> list = searchfile(file, null);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("dirVo", new DirVo(outPath, fileDir));
+        map.put("list", list);
+
+        return returnSuccess(map);
     }
 
     public String getFileDir(String name) {
-        String basePath = baseConfig.getBasePath() + "/code/" + name;
+        String basePath = baseConfig.getBasePath() + "/dbhelp/" + name;
         File f = new File(basePath);
         if (!f.exists()) {
             f.mkdirs();
@@ -231,16 +239,16 @@ public class DbController extends AbstractWebController {
             File f = files[i];
 
             String path = f.getAbsolutePath();
-            String id = path.hashCode() + "";
+            String key = path.hashCode() + "";
 
             Map map = new HashMap();
-            map.put("id", id);
+            map.put("key", key);
             map.put("parentId", parentId);
             map.put("title", f.getName());
             map.put("basicData", path);
 
             if (f.isDirectory()) {
-                List<Map> list = searchfile(f, id);
+                List<Map> list = searchfile(f, key);
                 map.put("children", list);
             }
             listAll.add(map);
@@ -269,17 +277,10 @@ public class DbController extends AbstractWebController {
 
     /**
      * 删除预览锁产生的文件
-     *
-     * @param request
-     * @return int
-     * @author wangjianghai
-     * @date 2017年5月11日 下午9:41:14
-     * @Title deletedir
-     * @Description
      */
     @RequestMapping("/deletedir")
     @ResponseBody
-    public int deletedir(HttpServletRequest request) {
+    public int deletedir(@RequestBody DirVo vo, HttpServletRequest request) {
 
         String outPath = (String) request.getSession().getAttribute("outPath");
         String fileDir = (String) request.getSession().getAttribute("fileDir");
@@ -287,7 +288,7 @@ public class DbController extends AbstractWebController {
         // System.out.println(outPath);
         // System.out.println(fileDir);
         //
-        FileUtil.clearFiles(new File(outPath));
+        FileUtil.clearFiles(new File(vo.getOutPath()));
 
         return 1;
     }

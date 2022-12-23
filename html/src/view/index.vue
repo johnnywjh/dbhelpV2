@@ -132,9 +132,25 @@
       </a-tabs>
     </div>
 
-    <!--    模块框 -->
+    <!--    模块框=>表格详情 -->
     <a-modal v-model:visible="detailLayerVisible" width="800px" :title="detailLayerTitle">
       <DetailPage :detailData="detailData"/>
+    </a-modal>
+    <!--    模块框=>代码预览 -->
+    <a-modal v-model:visible="previewVisible" width="800px" title="预览" @cancel="previewClose">
+      <a-row :gutter="16">
+        <a-col :span="6">
+          <a-directory-tree
+              v-model:expandedKeys="expandedKeys"
+              v-model:selectedKeys="selectedKeys"
+              multiple
+              :tree-data="treeData"
+          ></a-directory-tree>
+        </a-col>
+        <a-col :span="18">
+
+        </a-col>
+      </a-row>
     </a-modal>
   </div>
 </template>
@@ -460,11 +476,35 @@ function getSubmitdata() {
   return data;
 }
 
+// 预览
+const dirVo = ref()
+const treeData = ref()
+const previewVisible = ref(false)
+const expandedKeys = ref(['java']);
+const selectedKeys = ref([]);
 const preview = function () {
   var data = getSubmitdata();
   Http.post(ApiUrls.db.preview, data)
       .then(function (res) {
-        console.log(res.data)
+        dirVo.value = res.data.data.dirVo
+        treeData.value = res.data.data.list
+        console.log(dirVo.value)
+        console.log(treeData.value)
+        previewVisible.value = true
+
+        expandedKeys.value = []
+        for(let tree of treeData.value){
+          expandedKeys.value.push(tree.title)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+const previewClose = function () {
+  Http.post(ApiUrls.db.deletedir, dirVo.value)
+      .then(function (res) {
+        message.success('清除成功')
       })
       .catch(function (error) {
         console.log(error);

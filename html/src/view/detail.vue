@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, computed, onMounted} from "vue";
+import {ref, computed} from "vue";
 
 const props = defineProps(['detailData'])
 
