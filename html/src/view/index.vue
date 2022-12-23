@@ -359,6 +359,15 @@ const cleanCache = function (row) {
   DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
 }
 
+// 列表加载
+function initcolumns(queryTable) {
+  detailLayerVisible.value = true
+  detailActiveKey.value = 'field'
+  detailLayerTitle.value = queryTable.comment + " : " + queryTable.tableName
+
+  detailData.value = queryTable;
+}
+
 // ------------- 弹出层
 // 详情弹出层
 const detailLayerVisible = ref(false)
@@ -372,7 +381,7 @@ const detailDataColumns = ref([
   {title: '注释', dataIndex: 'comment', ellipsis: true, width: '200px'},
   {title: '驼峰', dataIndex: 'javaName'},
 ])
-// 选中的宝哥数据
+// 选中的表格数据
 const detailDataSelectList = ref([])
 const detailDataRowSelect = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -413,15 +422,6 @@ function detailLayerClick(row) {
     initcolumns(queryTable);
     row.columns = queryTable.columns;
   }
-}
-
-// 列表加载
-function initcolumns(queryTable) {
-  detailLayerVisible.value = true
-  detailActiveKey.value = 'field'
-  detailLayerTitle.value = queryTable.comment + " : " + queryTable.tableName
-
-  detailData.value = queryTable;
 }
 
 </script>
