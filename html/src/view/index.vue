@@ -17,13 +17,13 @@
           </a-upload>
         </a-col>
         <a-col :span="16">
-<!--          -->
+          <!--          -->
           <a-space>
             <a-select :placeholder="dbSelectTitle"
-                v-model:value="dbKey"
-                style="width: 200px"
-                :options="dbList"
-                @change="selectDbValue"
+                      v-model:value="dbKey"
+                      style="width: 200px"
+                      :options="dbList"
+                      @change="selectDbValue"
             ></a-select>
             <a-popconfirm
                 :title="'确定要清除 ' + dbKey + ' 的所有缓存?'"
@@ -60,7 +60,7 @@
         <a-tab-pane key="1">
           <template #tab>
             列表
-            <a-tag color="red">{{ tableList.length }}</a-tag>
+            <a-tag color="red">{{ tableList ? tableList.length : -1 }}</a-tag>
           </template>
           <a-table :data-source="tableList" :columns="columns"
                    :pagination="false" size="small"
@@ -93,12 +93,11 @@
           </template>
           <div>
             <a-space>
-<!--              <a-select-->
-<!--                  v-model:value="dbKey"-->
-<!--                  style="width: 200px"-->
-<!--                  :options="dbList"-->
-<!--                  @change="selectDbValue"-->
-<!--              ></a-select>-->
+              <a-select
+                  v-model:value="selectThemeValue"
+                  style="width: 200px"
+                  :options="themeList"
+              ></a-select>
             </a-space>
           </div>
         </a-tab-pane>
@@ -118,13 +117,15 @@ import {ref, reactive, computed, onMounted} from "vue";
 import DbData from '@/utils/DbData'
 import {message, Modal} from 'ant-design-vue';
 import Http from '@/utils/Http'
-import LocalData from "@/utils/localData";
+import LocalData from "@/utils/localData"
+import ApiUrls from '@/utils/ApiUrls'
 
 import DetailPage from '@/view/detail.vue'
 
 // 页面初始加载
 onMounted(() => {
   reloadDbSelect()
+  getTheme()
 });
 
 const updateUrl = ref('/api/user/readDbCofig')
@@ -141,7 +142,7 @@ const columns = ref([
   {title: '注释', dataIndex: 'commentStr'},
 ])
 // 选择的数据
-const selectTable= ref([])
+const selectTable = ref([])
 
 // -------------------
 // ------- 界面上的方法
@@ -159,15 +160,14 @@ const handleFileChange = function (e) {
 const dbSelectTitle = ref()
 // 从本地缓存中读取数据库下拉框
 const reloadDbSelect = function () {
-  var arr = [{label: "空", value: null}];
-  // var arr = [];
+  var arr = [{label: "空", value: null}]
   var count = 0;
   for (let l in DbData.getDb()) {
-    arr.push({label: l, value: l});
+    arr.push({label: l, value: l})
     count++;
   }
   dbList.value = arr
-  dbSelectTitle.value = '请选择数据--'+count
+  dbSelectTitle.value = '请选择数据--' + count
 }
 
 const selectDbValue = function () {
@@ -239,7 +239,7 @@ const reLoadTables = function () {
   if (list) {
     filterList(list);
   } else {
-    Http.post('/api/db/getTables', userinfo.value.db)
+    Http.post(ApiUrls.db.getTables, userinfo.value.db)
         .then(function (res) {
           var list = res.data.data;
           DbData.setTables(key, list);
@@ -275,7 +275,7 @@ function detailLayerClick(row) {
   if (!queryTable) {
     var queryData = userinfo.value.db;
     queryData.tableName = row.tableName;
-    Http.post('/api/db/searchTableDetail', queryData)
+    Http.post(ApiUrls.db.searchTableDetail, queryData)
         .then(function (res) {
           let table = res.data.data;
           row.columns = table.columns
@@ -302,6 +302,24 @@ function initcolumns(queryTable) {
   detailLayerVisible.value = true
   detailLayerTitle.value = queryTable.comment + " : " + queryTable.tableName
   detailData.value = queryTable;
+}
+
+// 第二个选项卡
+const selectThemeValue = ref(undefined)
+const themeList = ref([])
+const getTheme = function () {
+  Http.post(ApiUrls.user.getThemes, null)
+      .then(function (res) {
+        let list = res.data.data
+        var arr = [];
+        for (let l of list) {
+          arr.push({label: l, value: l})
+        }
+        themeList.value = arr
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 }
 
 </script>
