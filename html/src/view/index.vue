@@ -96,6 +96,24 @@
 
       </a-tabs>
     </div>
+
+<!--    模块框 -->
+    <a-modal v-model:visible="detailLayerVisible" :title="detailLayerTitle" >
+      <a-tabs v-model:activeKey="detailActiveKey">
+        <a-tab-pane key="field" tab="字段">
+          字段
+        </a-tab-pane>
+        <a-tab-pane key="query" tab="查询sql">
+          查询
+        </a-tab-pane>
+        <a-tab-pane key="doc" tab="文档">
+          文档
+        </a-tab-pane>
+        <a-tab-pane key="ddl" tab="DDL">
+          DDL
+        </a-tab-pane>
+      </a-tabs>
+    </a-modal>
   </div>
 </template>
 
@@ -127,6 +145,9 @@ const columns = ref([
   {title: '注释', dataIndex: 'commentStr'},
 ])
 // 详情弹出层
+const detailLayerVisible = ref(false)
+const detailLayerTitle = ref('xxx:xxx')
+const detailActiveKey = ref('field')
 const layerTitle = ref('')
 const tableDDl= ref('')
 const allSelect= ref(false)
@@ -252,6 +273,10 @@ const cleanDbCache = function () {
     }
   });
 }
+const cleanCache = function (row){
+  row.columns = null;
+  DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
+}
 
 /*界面详情按钮*/
 function detailLayerClick(row) {
@@ -263,9 +288,10 @@ function detailLayerClick(row) {
     Http.post('/api/db/searchTableDetail', queryData)
         .then(function (res) {
           let table = res.data.data;
-          DbData.setTablesDetail(dbKey.value, row.tableName, table);
-          initcolumns(table);
-          row.columns = table.columns;
+          row.columns = table.columns
+          row.ddl = table.ddl
+          DbData.setTablesDetail(dbKey.value, row.tableName, row);
+          initcolumns(row);
         })
         .catch(function (error) {
           console.log(error);
@@ -286,13 +312,13 @@ function initcolumns(queryTable) {
     c.selected = false
   }
   detailColumns.value = columnsData;
-  console.log(detailColumns.value)
+  console.log(queryTable)
+
+  detailLayerVisible.value=true
+  detailActiveKey.value = 'field'
+  detailLayerTitle.value = queryTable.comment+" : "+ queryTable.tableName
 }
 
-const cleanCache = function (row){
-  row.columns = null;
-  DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
-}
 </script>
 
 <style>
