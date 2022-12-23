@@ -12,7 +12,8 @@ export default defineConfig({
         }
     },
     build: {
-        outDir: '../src/main/resources/public'
+        outDir: '../src/main/resources/public',
+        emptyOutDir:true
     },
     server: {
         proxy: {
