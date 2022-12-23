@@ -137,9 +137,9 @@
       <DetailPage :detailData="detailData"/>
     </a-modal>
     <!--    模块框=>代码预览 -->
-    <a-modal v-model:visible="previewVisible" width="900px" title="预览" @cancel="previewClose">
+    <a-modal v-model:visible="previewVisible" width="1300px" title="预览" @cancel="previewClose">
       <a-row :gutter="16">
-        <a-col :span="12">
+        <a-col :span="6">
           <a-directory-tree
               v-model:expandedKeys="expandedKeys"
               multiple
@@ -147,16 +147,16 @@
               @select="selectTreeNode"
           ></a-directory-tree>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="18">
           <a-space>
             代码样式
             <a-switch v-model:checked="previewCode" checked-children="开" un-checked-children="关"/>
           </a-space>
+
           <a-typography-paragraph :code="previewCode" copyable class="liInfo_div">
-            <span v-for="(item, index) in fileContent">
-              <a-typography-text v-html="item"></a-typography-text>
-              <br/>
-            </span>
+          <pre>
+<span v-html="fileContent"></span>
+          </pre>
           </a-typography-paragraph>
         </a-col>
       </a-row>
@@ -524,12 +524,13 @@ const selectTreeNode = function(selectedKeys, e){
   if(!e.node.dir){
     Http.get(ApiUrls.db.getfilecontent, {path: e.node.basicData})
         .then(function (res) {
-          fileContent.value = res.data.data
-          for (let c of fileContent.value) {
+          var html = ''
+          for (let c of res.data.data) {
             // 全局替换
-            c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
-            console.log(c)
+            // c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
+            html += c+"</br>"
           }
+          fileContent.value = html;
         })
         .catch(function (error) {
           console.log(error);
