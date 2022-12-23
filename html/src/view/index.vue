@@ -29,7 +29,6 @@
                 @confirm="cleanDbCache"
                 v-if="dbKey"
             >
-
               <a-button>清除当前DB缓存</a-button>
             </a-popconfirm>
             <a-button v-else>选择数据库</a-button>
