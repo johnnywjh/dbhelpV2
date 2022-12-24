@@ -1,3 +1,4 @@
+<!--数据库表 详情-->
 <template>
   <div>
     <a-tabs v-model:activeKey="detailActiveKey">
