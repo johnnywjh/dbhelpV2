@@ -2,7 +2,7 @@
 #FROM openjdk:8-jdk-slim
 FROM openjdk:8-jdk-alpine
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
-COPY help-web.jar app.jar
+COPY dbhelp.jar app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 # docker save -o ~/jar/fileName.tar image:version
