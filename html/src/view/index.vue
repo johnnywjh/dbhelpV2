@@ -3,7 +3,7 @@
     <div class="topDiv">
       <a-row :gutter="16">
         <a-col :span="4">
-          <a-button class="topBut">Default Button</a-button>
+          <a-button @click="layerFileVisible=true">数据源格式</a-button>
         </a-col>
         <a-col :span="3">
           <a-upload
@@ -93,15 +93,17 @@
           </template>
           <div>
             <a-space>
-              <a-button>强制刷新</a-button>
               <a-select :placeholder="themeTitle"
                         v-model:value="selectThemeValue"
                         style="width: 200px"
                         :options="themeList"
               ></a-select>
-              <a-button v-if="subformShow" @click="subform" type="primary">提交</a-button>
-              <a-button v-if="subformShow" @click="preview">预览</a-button>
-              <a-button v-if="!subformShow">选择模板后提交</a-button>
+              <a-space style="margin-left: 50px">
+                <a-button v-if="subformShow" @click="preview">预览</a-button>
+                <a-button v-if="subformShow" @click="subform" type="primary">提交</a-button>
+
+                <a-button v-if="!subformShow">提交 and 预览</a-button>
+              </a-space>
             </a-space>
             <div style="margin-top: 20px">
               <a-row :gutter="16">
@@ -131,7 +133,19 @@
 
       </a-tabs>
     </div>
-
+    <!--    模块框=>表格详情 -->
+    <a-modal v-model:visible="layerFileVisible" width="400px" title="数据源格式">
+<pre>
+    {
+        "dbName":{
+            "url": "jdbc:mysql://",
+            "name": "root",
+            "pwd": ""
+        }
+        ,{...}
+    }
+</pre>
+    </a-modal>
     <!--    模块框=>表格详情 -->
     <a-modal v-model:visible="detailLayerVisible" width="800px" :title="detailLayerTitle">
       <DetailPage :detailData="detailData"/>
@@ -180,6 +194,8 @@ onMounted(() => {
   getTheme()
 });
 
+const layerFileVisible = ref(false)
+
 const updateUrl = ref('/api/user/readDbCofig')
 const dbKey = ref(undefined)
 const dbList = ref([{label: "选择数据-0", value: 0}])
@@ -188,7 +204,7 @@ const searchTableText = ref('')
 const userinfo = ref({db: {}})
 const activeKey = ref("1")
 const columns = ref([
-  {title: '序号', dataIndex: 'index', width: '100px'},
+  {title: '序号', dataIndex: 'index', align: 'right', width: '100px'},
   {title: '操作', dataIndex: 'operation', width: '200px'},
   {title: '表名', dataIndex: 'tableNameStr',},
   {title: '注释', dataIndex: 'commentStr'},
@@ -362,7 +378,7 @@ const getTheme = function () {
   Http.post(ApiUrls.user.getThemes, null)
       .then(function (res) {
         let list = res.data.data
-        var arr = [];
+        var arr = [{label: "空", value: null}]
         for (let l of list) {
           arr.push({label: l, value: l})
         }
@@ -502,7 +518,7 @@ const preview = function () {
         fileContent.value = []
 
         expandedKeys.value = []
-        for(let tree of treeData.value){
+        for (let tree of treeData.value) {
           expandedKeys.value.push(tree.title)
         }
       })
@@ -520,15 +536,15 @@ const previewClose = function () {
       });
 }
 
-const selectTreeNode = function(selectedKeys, e){
-  if(!e.node.dir){
+const selectTreeNode = function (selectedKeys, e) {
+  if (!e.node.dir) {
     Http.get(ApiUrls.db.getfilecontent, {path: e.node.basicData})
         .then(function (res) {
           var html = ''
           for (let c of res.data.data) {
             // 全局替换
             // c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
-            html += c+"</br>"
+            html += c + "</br>"
           }
           fileContent.value = html;
         })
@@ -568,6 +584,7 @@ const selectTreeNode = function(selectedKeys, e){
 .but {
   cursor: pointer;
 }
+
 .liInfo_div {
   border: solid 1px #CCC;
   padding: 10px;
