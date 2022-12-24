@@ -92,19 +92,27 @@
             <a-tag color="red">{{ selectTable.length }}</a-tag>
           </template>
           <div>
-            <a-space>
-              <a-select :placeholder="themeTitle"
-                        v-model:value="selectThemeValue"
-                        style="width: 200px"
-                        :options="themeList"
-              ></a-select>
-              <a-space style="margin-left: 50px">
+            <a-form style="margin-left: 50px"
+                    layout="inline"
+                    autocomplete="off"
+            >
+              <a-form-item label="代码模板">
+                <a-select :placeholder="themeTitle"
+                          v-model:value="selectThemeValue"
+                          style="width: 200px"
+                          :options="themeList"
+                ></a-select>
+              </a-form-item>
+              <a-form-item label="按表名分组">
+                <a-switch v-model:checked="tableNameGruop"/>
+              </a-form-item>
+              <a-form-item>
                 <a-button v-if="subformShow" @click="preview">预览</a-button>
                 <a-button v-if="subformShow" @click="subform" type="primary">提交</a-button>
 
                 <a-button v-if="!subformShow">提交 and 预览</a-button>
-              </a-space>
-            </a-space>
+              </a-form-item>
+            </a-form>
             <div style="margin-top: 20px">
               <a-row :gutter="16">
                 <a-col :span="2"></a-col>
@@ -373,7 +381,10 @@ function initcolumns(queryTable) {
   detailData.value = queryTable;
 }
 
-// 第二个选项卡
+// -------------------
+// 生成代码
+// -------------------
+const tableNameGruop = ref(false)
 const selectThemeValue = ref(undefined)
 const themeList = ref([])
 const themeTitle = ref()
@@ -499,7 +510,8 @@ function getSubmitdata() {
     name: user.db.name,
     pwd: user.db.pwd,
     fkType: selectThemeValue.value,
-    tables: tables
+    tables: tables,
+    tableNameGruop: tableNameGruop.value
   };
   return data;
 }

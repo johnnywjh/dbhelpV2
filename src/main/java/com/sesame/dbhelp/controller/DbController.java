@@ -211,7 +211,7 @@ public class DbController extends AbstractWebController {
 
 
             for (ThemeVo vo : fileList) {
-                Generate.file(params, vo, path);
+                Generate.file(params, vo, path,bean.isTableNameGruop());
             }
 
         } // for

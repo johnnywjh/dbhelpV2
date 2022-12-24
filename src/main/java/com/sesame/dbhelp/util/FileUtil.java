@@ -1,5 +1,7 @@
 package com.sesame.dbhelp.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 /**
  * 文件操作
  */
+@Slf4j
 public class FileUtil {
 
 	/**
@@ -22,7 +25,8 @@ public class FileUtil {
 		String filePath = path + "/" + filename;
 		try {
 			org.apache.commons.io.FileUtils.writeStringToFile(new File(filePath), content, "UTF-8");
-			System.err.println(filePath + "  创建成功!");
+//			System.err.println(filePath + "  创建成功!");
+			log.info(filePath + "  创建成功!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
