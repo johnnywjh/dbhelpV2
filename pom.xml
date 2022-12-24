@@ -126,6 +126,20 @@
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- 开启注册为liunx服务功能 -->
+                <!-- <configuration><executable>true</executable></configuration> -->
+            </plugin>
             <!--docker 构建-->
             <plugin>
                 <groupId>com.spotify</groupId>
