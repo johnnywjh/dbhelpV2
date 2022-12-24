@@ -73,13 +73,12 @@
         </a-typography-paragraph>
       </a-tab-pane>
       <a-tab-pane key="ddl" tab="DDL">
-        <a-space>
-          代码样式
-          <a-switch v-model:checked="detailCodeShowDDL" checked-children="开" un-checked-children="关"/>
-        </a-space>
+<!--        <a-space>-->
+<!--          代码样式-->
+<!--          <a-switch v-model:checked="detailCodeShowDDL" checked-children="开" un-checked-children="关"/>-->
+<!--        </a-space>-->
         <a-typography-paragraph :code="detailCodeShowDDL" copyable class="liInfo_div">
-          <a-typography-text v-html="detailData.ddl"></a-typography-text>
-          <br/>
+          <highlightjs language="sql" :code="detailData.ddl" />
         </a-typography-paragraph>
       </a-tab-pane>
     </a-tabs>
@@ -110,7 +109,7 @@ const detailDataRowSelect = {
 
 const detailCodeShowSql = ref(false)
 const detailCodeShowDoc = ref(true)
-const detailCodeShowDDL = ref(true)
+const detailCodeShowDDL = ref(false)
 const as = ref('')
 const ass = computed(() => {
   return as.value.length > 0 ? as.value + '.' : ''
