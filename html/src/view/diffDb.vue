@@ -114,7 +114,7 @@ function loadDbAndDiff(dbKey1, dbKey2, db1, db2) {
     list1 = resList1
     getTable(dbKey2, db2, list2, function (resList2) {
       list2 = resList2
-      diffDb(dbKey1, dbKey2, list1, list2)
+      diffDbData(dbKey1, dbKey2, list1, list2)
     })
   })
 }
@@ -138,7 +138,7 @@ function getTable(key, db, list, fun) {
 }
 
 // 对比数据库
-function diffDb(dbKey1, dbKey2, list1, list2) {
+function diffDbData(dbKey1, dbKey2, list1, list2) {
   var arr1 = [];
   var arr2 = [];
   for (let l1 of list1) {
