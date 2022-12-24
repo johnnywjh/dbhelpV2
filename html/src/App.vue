@@ -8,6 +8,6 @@ import Index from './view/index.vue'
   </main>
 </template>
 
-<style scoped>
+<style>
 
 </style>
