@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbhelp-deployment
+  labels:
+    app: dbhelp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbhelp
+  template:
+    metadata:
+      labels:
+        app: dbhelp
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: dbhelp
+          image: johnnywjh/dbhelp:v.2.0
+          ports:
+            - containerPort: 8071
+              name: dbhelp-pod-port
+          env:
+            - name: code.data.git-url
+              value: https://gitee.com/resources1/themeList.git
+          volumeMounts:
+            - mountPath: /root/ars/dbhelp
+              name: dbhelp-log
+            - mountPath: /root/themeList
+              name: dbhelp-theme
+      volumes:
+        - name: dbhelp-log
+          persistentVolumeClaim:
+            claimName: dbhelp-log-pvc
+        - name: dbhelp-theme
+          persistentVolumeClaim:
+            claimName: dbhelp-theme-pvc
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbhelp-service
+spec:
+  selector:
+    app: dbhelp
+  ports:
+    - port: 80
+      protocol: TCP
+      #      targetPort: 8071
+      targetPort: dbhelp-pod-port
+#      nodePort: 30001
+#  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: d-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dbhelp.node.cn
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: dbhelp-service
+                port:
+                  number: 80

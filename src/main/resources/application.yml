@@ -1,9 +1,0 @@
-server:
-  port: 8072
-  servlet:
-    session:
-      timeout: 0
-
-spring:
-  thymeleaf:
-    cache: false

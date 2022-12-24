@@ -12,13 +12,13 @@ export default defineConfig({
         }
     },
     build: {
-        outDir: '../src/main/resources/public',
+        // outDir: '../src/main/resources/public',
         // outDir: '../target/classes/public',
-        emptyOutDir:true
+        emptyOutDir: true
     },
     server: {
         proxy: {
-            '/api': 'http://localhost:8072'
+            '/api': 'http://localhost:8071'
         },
     },
 })

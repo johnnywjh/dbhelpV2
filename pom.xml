@@ -35,6 +35,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
@@ -99,6 +105,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
+        </dependency>
 
     </dependencies>
 
@@ -133,20 +144,6 @@
                     <imageTags>
                         <imageTag>${docker.image.tag}</imageTag>
                     </imageTags>
-                </configuration>
-            </plugin>
-            <!--            https://gitee.com/sesame_kim/maven-plugins.git-->
-            <plugin>
-                <groupId>kim.sesame</groupId>
-                <artifactId>reload-resources-file</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <updateAll>true</updateAll>
-                    <srcFiles>
-                        <srcFile>${project.basedir}/src/main/resources/static/1.html</srcFile>
-                        <srcFile>${project.basedir}/src/main/resources/static/index.html</srcFile>
-                        <srcFile>${project.basedir}/src/main/resources/static/index</srcFile>
-                    </srcFiles>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {DEPLOY_NAME}-deployment
+  labels:
+    app: {DEPLOY_NAME}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {DEPLOY_NAME}
+  template:
+    metadata:
+      labels:
+        app: {DEPLOY_NAME}
+    spec:
+      containers:
+        - name: {DEPLOY_NAME}
+          image: {newimagename}
+          ports:
+            - containerPort: {port}
+              name: c-pod-port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {DEPLOY_NAME}-service
+spec:
+  selector:
+    app: {DEPLOY_NAME}
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: c-pod-port
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {DEPLOY_NAME}-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {JOB_NAME}
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: {DEPLOY_NAME}-service
+                port:
+                  number: 80
