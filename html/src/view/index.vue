@@ -184,10 +184,10 @@
           ></a-directory-tree>
         </a-col>
         <a-col :span="18">
-          <a-space>
-            代码样式
-            <a-switch v-model:checked="previewCode" checked-children="开" un-checked-children="关"/>
-          </a-space>
+<!--          <a-space>-->
+<!--            代码样式-->
+<!--            <a-switch v-model:checked="previewCode" checked-children="开" un-checked-children="关"/>-->
+<!--          </a-space>-->
 
           <a-typography-paragraph :code="previewCode" copyable class="liInfo_div">
             <!--          <pre>-->
@@ -565,7 +565,7 @@ const dirVo = ref()
 const treeData = ref()
 const previewVisible = ref(false)
 const fileContent = ref()
-const previewCode = ref(true)
+const previewCode = ref(false)
 const preview = function () {
   var data = getSubmitdata();
   Http.post(ApiUrls.db.preview, data)
