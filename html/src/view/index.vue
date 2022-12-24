@@ -133,8 +133,14 @@
                   </a-table>
                 </a-col>
                 <a-col :span="10">
-                  扩展区域
-                  <a-button @click="exAddClick">添加字段</a-button>
+                  <a-space>
+                    扩展区域
+                    <a-button @click="exAddClick">添加字段</a-button>
+                    模板中要判断是否为空 如:
+                    <a-typography-paragraph code copyable>
+                       ${key!'defaultVal'}
+                    </a-typography-paragraph>
+                  </a-space>
                   <div class="add_div">
                     <a-form>
                       <a-form-item v-for="item in userinfo.exAddList">
