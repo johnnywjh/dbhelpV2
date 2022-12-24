@@ -64,8 +64,6 @@
           </template>
           <a-table :data-source="tableList" :columns="columns"
                    :pagination="false" size="small"
-                   class="ant-table-striped"
-                   :row-class-name="(_record, index) => (index % 2 === 1 ? 'table-striped' : null)"
           >
             <template #bodyCell="{ column, text, record }">
               <template v-if="column.dataIndex === 'operation'">
