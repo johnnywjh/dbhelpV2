@@ -17,7 +17,7 @@ docker run -p 8071:8071 --restart always  --name dbhelp \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
 -d johnnywjh/dbhelp:v.2.0
 
-# 也可以自己编译镜像 在dbhelp-web 目录下执行
+# 也可以自己编译镜像
 mvn clean package docker:build
 ```
 - [Dockerfile](./src/main/docker/Dockerfile)
