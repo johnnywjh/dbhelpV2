@@ -114,7 +114,7 @@
               </a-form-item>
             </a-form>
             <div style="margin-top: 20px">
-              <a-row :gutter="16">
+              <a-row :gutter="20">
                 <a-col :span="2"></a-col>
                 <a-col :span="10">
                   <a-table :data-source="selectTable" :columns="selectTableColumns"
@@ -133,6 +133,21 @@
                   </a-table>
                 </a-col>
                 <a-col :span="10">
+                  扩展区域
+                  <a-button @click="exAddClick">添加字段</a-button>
+                  <div class="add_div">
+                    <a-form>
+                      <a-form-item v-for="item in exAddList">
+                        <a-space>
+                          <a-input class="add_input" v-model:value="item.key" placeholder="模板中的 ${key}"/>
+                          <a-input class="add_input" v-model:value="item.value" placeholder="value"/>
+                          <!--                          <delete-outlined style="font-size: 20px" />-->
+                          <delete-two-tone class="but" @click="exDelClick(item.id)" style="font-size: 20px"/>
+                        </a-space>
+                      </a-form-item>
+
+                    </a-form>
+                  </div>
                 </a-col>
               </a-row>
             </div>
@@ -143,7 +158,7 @@
     </div>
     <!--    模块框=>表格详情 -->
     <a-modal v-model:visible="layerFileVisible" :footer="false" width="400px" title="数据源格式">
-      <a-typography-paragraph code="true" copyable class="liInfo_div">
+      <a-typography-paragraph code copyable class="liInfo_div">
 <pre>
     {
         "dbName":{
@@ -168,7 +183,6 @@
           <a-directory-tree
               multiple
               :tree-data="treeData"
-              auto-expand-parent="true"
               @select="selectTreeNode"
           ></a-directory-tree>
         </a-col>
@@ -192,7 +206,8 @@
 <script setup>
 import {ref, reactive, computed, onMounted} from "vue";
 import DbData from '@/utils/DbData'
-import {message, Modal} from 'ant-design-vue';
+import {message, Modal} from 'ant-design-vue'
+import {DeleteOutlined, DeleteTwoTone} from '@ant-design/icons-vue';
 import Http from '@/utils/Http'
 import LocalData from "@/utils/localData"
 import ApiUrls from '@/utils/ApiUrls'
@@ -503,6 +518,12 @@ function getSubmitdata() {
       comment: l.comment
     })
   }
+  var exMap = {}
+  if (exAddList.value) {
+    for (let ex of exAddList.value) {
+      exMap[ex.key] = ex.value
+    }
+  }
   // var user = DbData.getUser();
   var user = userinfo.value;
   var data = {
@@ -511,7 +532,8 @@ function getSubmitdata() {
     pwd: user.db.pwd,
     fkType: selectThemeValue.value,
     tables: tables,
-    tableNameGruop: tableNameGruop.value
+    tableNameGruop: tableNameGruop.value,
+    exMap: exMap
   };
   return data;
 }
@@ -564,6 +586,34 @@ const selectTreeNode = function (selectedKeys, e) {
   }
 }
 
+// ==============================
+// 扩展区域
+// ==============================
+const exAddList = ref([{id: guid(), key: 'author', value: 'xxx'}])
+
+const exAddClick = function () {
+  exAddList.value.push({id: guid(), key: '', value: ''})
+}
+const exDelClick = function (id) {
+  var arr = []
+  for (let item of exAddList.value) {
+    if (id != item.id) {
+      arr.push(item)
+    }
+  }
+  exAddList.value = arr
+}
+
+
+function guid() {
+  return S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4();
+}
+
+//用于生成uuid
+function S4() {
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+}
+
 </script>
 
 <style>
@@ -600,5 +650,14 @@ const selectTreeNode = function (selectedKeys, e) {
   padding: 10px;
   margin-top: 10px;
   height: auto;
+}
+
+.add_div {
+  margin: 30px;
+  width: 600px;
+}
+
+.add_input {
+  width: 200px;
 }
 </style>

@@ -1,5 +1,6 @@
 package com.sesame.dbhelp.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sesame.common.annotation.ReqParamsCheck;
 import com.sesame.common.controller.AbstractWebController;
 import com.sesame.common.exception.BizException;
@@ -182,6 +183,10 @@ public class DbController extends AbstractWebController {
 
         Connection conn = DBService.getConn(bean);
 
+        Map<String, String> exMap = bean.getExMap();
+        if (exMap != null) {
+            log.info("扩展参数 : {}", JSONObject.toJSONString(exMap));
+        }
         HashMap<String, Object> params = null; // 封装参数
 
         for (Table t : bean.getTables()) {
@@ -209,9 +214,12 @@ public class DbController extends AbstractWebController {
             params.put("fk_java", TableUtil.hump(params.get("fk").toString(), false));// 表的主键
             params.put("tableComment", t.getComment());// 表注释
 
+            if (exMap != null) {
+                params.putAll(exMap);
+            }
 
             for (ThemeVo vo : fileList) {
-                Generate.file(params, vo, path,bean.isTableNameGruop());
+                Generate.file(params, vo, path, bean.isTableNameGruop());
             }
 
         } // for

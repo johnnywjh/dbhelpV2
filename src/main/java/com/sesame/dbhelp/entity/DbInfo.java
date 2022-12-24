@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库信息
@@ -20,6 +21,7 @@ public class DbInfo extends BaseRequest {
 
     private String fkType;// 模板
     private String tableName;
+    private Map<String,String> exMap;
 
     private List<Table> tables; // 表的集合
     private boolean tableNameGruop;// 是否按表名分组
