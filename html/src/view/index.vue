@@ -32,10 +32,13 @@
             >
               <a-button>清除当前DB缓存</a-button>
             </a-popconfirm>
-            <a-button v-else>选择数据库</a-button>
+            <a-button v-else disabled>选择数据库</a-button>
 
-            <a-button type="primary">对比数据库</a-button>
-            <a-button type="primary">搜索字段</a-button>
+            <a-button type="primary" v-if="dbList.length>2"  @click="diffDbClidk">对比数据库</a-button>
+            <a-button type="primary" v-else disabled>对比数据库</a-button>
+
+            <a-button type="primary" v-if="dbList.length>2">搜索字段</a-button>
+            <a-button type="primary" v-else disabled>搜索字段</a-button>
           </a-space>
 
         </a-col>
@@ -196,6 +199,15 @@
         </a-col>
       </a-row>
     </a-modal>
+
+    <!--    对比数据库 -->
+    <a-modal
+        v-model:visible="diffDbVisible"
+        :footer="false" width="800px"
+        :maskClosable="false"
+        title="选择两个数据库进行对比">
+      <DiffDb :db-list="diffDbList" />
+    </a-modal>
   </div>
 </template>
 
@@ -209,6 +221,7 @@ import LocalData from "@/utils/localData"
 import ApiUrls from '@/utils/ApiUrls'
 
 import DetailPage from '@/view/detail.vue'
+import DiffDb from '@/view/diffDb.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -632,6 +645,20 @@ function S4() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 
+// ==============
+// 对比数据库
+// ==============
+const diffDbVisible = ref(false)
+const diffDbList = ref([])
+const diffDbClidk = function () {
+  diffDbVisible.value = true
+  diffDbList.value = []
+  for (let db of dbList.value) {
+    if (db.value) {
+      diffDbList.value.push(db.value)
+    }
+  }
+}
 </script>
 
 <style>
