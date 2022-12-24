@@ -142,7 +142,7 @@
       </a-tabs>
     </div>
     <!--    模块框=>表格详情 -->
-    <a-modal v-model:visible="layerFileVisible" width="400px" title="数据源格式">
+    <a-modal v-model:visible="layerFileVisible" :footer="false" width="400px" title="数据源格式">
       <a-typography-paragraph code="true" copyable class="liInfo_div">
 <pre>
     {
@@ -158,11 +158,11 @@
 
     </a-modal>
     <!--    模块框=>表格详情 -->
-    <a-modal v-model:visible="detailLayerVisible" width="800px" :title="detailLayerTitle">
+    <a-modal v-model:visible="detailLayerVisible" :footer="false" width="800px" :title="detailLayerTitle">
       <DetailPage :detailData="detailData"/>
     </a-modal>
     <!--    模块框=>代码预览 -->
-    <a-modal v-model:visible="previewVisible" width="1300px" title="预览" @cancel="previewClose">
+    <a-modal v-model:visible="previewVisible" :footer="false" width="1300px" title="预览" @cancel="previewClose">
       <a-row :gutter="16">
         <a-col :span="6">
           <a-directory-tree
@@ -529,6 +529,7 @@ const preview = function () {
         dirVo.value = res.data.data.dirVo
         treeData.value = res.data.data.list
         previewVisible.value = true
+        fileContent.value = ''
       })
       .catch(function (error) {
         console.log(error);
