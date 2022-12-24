@@ -135,6 +135,7 @@
     </div>
     <!--    模块框=>表格详情 -->
     <a-modal v-model:visible="layerFileVisible" width="400px" title="数据源格式">
+      <a-typography-paragraph code="true" copyable class="liInfo_div">
 <pre>
     {
         "dbName":{
@@ -145,6 +146,8 @@
         ,{...}
     }
 </pre>
+      </a-typography-paragraph>
+
     </a-modal>
     <!--    模块框=>表格详情 -->
     <a-modal v-model:visible="detailLayerVisible" width="800px" :title="detailLayerTitle">
