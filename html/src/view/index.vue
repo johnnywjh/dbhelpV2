@@ -158,9 +158,9 @@
       <a-row :gutter="16">
         <a-col :span="6">
           <a-directory-tree
-              v-model:expandedKeys="expandedKeys"
               multiple
               :tree-data="treeData"
+              auto-expand-parent="true"
               @select="selectTreeNode"
           ></a-directory-tree>
         </a-col>
@@ -508,7 +508,6 @@ function getSubmitdata() {
 const dirVo = ref()
 const treeData = ref()
 const previewVisible = ref(false)
-const expandedKeys = ref(['java']);
 const fileContent = ref()
 const previewCode = ref(true)
 const preview = function () {
@@ -518,12 +517,6 @@ const preview = function () {
         dirVo.value = res.data.data.dirVo
         treeData.value = res.data.data.list
         previewVisible.value = true
-        fileContent.value = []
-
-        expandedKeys.value = []
-        for (let tree of treeData.value) {
-          expandedKeys.value.push(tree.title)
-        }
       })
       .catch(function (error) {
         console.log(error);
@@ -543,6 +536,7 @@ const selectTreeNode = function (selectedKeys, e) {
   if (!e.node.dir) {
     Http.get(ApiUrls.db.getfilecontent, {path: e.node.basicData})
         .then(function (res) {
+          fileContent.value = ''
           var html = ''
           for (let c of res.data.data) {
             // 全局替换
