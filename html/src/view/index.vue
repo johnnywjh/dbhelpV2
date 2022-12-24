@@ -162,9 +162,9 @@
 
       </a-tabs>
     </div>
-    <!--    模块框=>表格详情 -->
+    <!--    模块框=>数据源 -->
     <a-modal v-model:visible="layerFileVisible" :footer="false" width="400px" title="数据源格式">
-      <a-typography-paragraph code copyable class="liInfo_div">
+      <a-typography-paragraph code copyable class="liInfo_div_ex">
         <highlightjs language="json" :code="layerFileText" />
       </a-typography-paragraph>
 
@@ -659,10 +659,14 @@ function S4() {
   cursor: pointer;
 }
 
+.liInfo_div_ex {
+  border: solid 1px #CCC;
+  height: auto;
+}
 .liInfo_div {
   border: solid 1px #CCC;
-  /*padding: 10px;*/
-  /*margin-top: 10px;*/
+  padding: 5px;
+  margin-top: 5px;
   height: auto;
 }
 
