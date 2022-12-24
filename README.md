@@ -2,9 +2,10 @@
 ```
 第二个版本: 重构了前端,用了 antd vue3
 前端代码在 /html 中
- npm install
- npm run dev
- npm run build
+cd html
+npm install
+npm run dev
+npm run build
 ```
 
 ### docker运行方式
