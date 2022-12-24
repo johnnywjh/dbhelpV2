@@ -138,12 +138,12 @@
                     <a-button @click="exAddClick">添加字段</a-button>
                     模板中要判断是否为空 如:
                     <a-typography-paragraph code copyable>
-                       ${key!'defaultVal'}
+                      ${key!'defaultVal'}
                     </a-typography-paragraph>
                   </a-space>
                   <div class="add_div">
                     <a-form>
-                      <a-form-item v-for="item in userinfo.exAddList">
+                      <a-form-item v-for="item in userinfo.exList">
                         <a-space>
                           <a-input class="add_input" v-model:value="item.key" placeholder="模板中的 ${key}"/>
                           <a-input class="add_input" v-model:value="item.value" placeholder="value"/>
@@ -165,7 +165,7 @@
     <!--    模块框=>数据源 -->
     <a-modal v-model:visible="layerFileVisible" :footer="false" width="400px" title="数据源格式">
       <a-typography-paragraph code copyable class="liInfo_div_ex">
-        <highlightjs language="json" :code="layerFileText" />
+        <highlightjs language="json" :code="layerFileText"/>
       </a-typography-paragraph>
 
     </a-modal>
@@ -190,10 +190,10 @@
           </a-space>
 
           <a-typography-paragraph :code="previewCode" copyable class="liInfo_div">
-<!--          <pre>-->
-<!--<span v-html="fileContent"></span>-->
-<!--          </pre>-->
-            <highlightjs language="java" :code="fileContent" />
+            <!--          <pre>-->
+            <!--<span v-html="fileContent"></span>-->
+            <!--          </pre>-->
+            <highlightjs language="java" :code="fileContent"/>
           </a-typography-paragraph>
         </a-col>
       </a-row>
@@ -216,10 +216,14 @@ import DetailPage from '@/view/detail.vue'
 onMounted(() => {
   reloadDbSelect()
   getTheme()
-  userinfo.value = DbData.getUser()
-  // if (!userinfo.value.exAddList) {
-  //   userinfo.value.exAddList = [{id: guid(), key: '', value: ''}]
-  // }
+  let userVo = DbData.getUser()
+  if (userVo) {
+    userinfo.db = userVo.db ? userVo.db : {}
+    userinfo.fkType = userVo.fkType ? userVo.fkType : undefined
+    userinfo.exList = userVo.exList ? userVo.exList : [{id: guid(), key: '', value: ''}]
+  } else {
+    userinfo.exList = [{id: guid(), key: '', value: ''}]
+  }
 });
 
 const layerFileVisible = ref(false)
@@ -237,11 +241,14 @@ const dbKey = ref(undefined)
 const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
 const searchTableText = ref('')
-const userinfo = ref({
-  db: {},
+const userinfo = reactive({
+  db: {
+    name: '', url: '', pwd: ''
+  },
   fkType: undefined,
-  exAddList: []
+  exList: []
 })
+// const exAddList = ref([])
 const activeKey = ref("1")
 const columns = ref([
   {title: '序号', dataIndex: 'index', align: 'right', width: '100px'},
@@ -283,9 +290,8 @@ const selectDbValue = function () {
     var db = DbData.getDb()[val];
     db.key = val;
 
-    userinfo.value.db = db
-    DbData.setUser(userinfo.value)
-
+    userinfo.db = db
+    DbData.setUser(userinfo)
     reLoadTables();
   } else {
     tableList.value = [];
@@ -334,7 +340,7 @@ const filterList = function (list) {
 
 // 搜索输入框的回车键事件
 const reLoadTables = function () {
-  var key = userinfo.value.db.key;
+  var key = userinfo.db.key;
   if (key == 0 || !key) {
     message.warning('需要选择一个数据源');
     return;
@@ -345,7 +351,7 @@ const reLoadTables = function () {
   if (list) {
     filterList(list);
   } else {
-    Http.post(ApiUrls.db.getTables, userinfo.value.db)
+    Http.post(ApiUrls.db.getTables, userinfo.db)
         .then(function (res) {
           var list = res.data.data;
           DbData.setTables(key, list);
@@ -372,14 +378,14 @@ const cleanDbCache = function () {
 }
 const cleanCache = function (row) {
   row.columns = null;
-  DbData.setTablesDetail(userinfo.value.db.key, row.tableName, null);
+  DbData.setTablesDetail(userinfo.db.key, row.tableName, null);
 }
 
 /*界面详情按钮*/
 function detailLayerClick(row) {
   var queryTable = DbData.getTablesDetail(dbKey.value, row.tableName);
   if (!queryTable) {
-    var queryData = userinfo.value.db;
+    var queryData = userinfo.db;
     queryData.tableName = row.tableName;
     Http.post(ApiUrls.db.searchTableDetail, queryData)
         .then(function (res) {
@@ -453,7 +459,7 @@ const selectTableDel = function (row) {
   selectTable.value = arr
 }
 const subformShow = computed(() => {
-  return userinfo.value.fkType && selectTable.value.length > 0
+  return userinfo.fkType && selectTable.value.length > 0
 })
 // 提交
 const subform = function () {
@@ -532,25 +538,25 @@ function getSubmitdata() {
     })
   }
   var exMap = {}
-  if (userinfo.value.exAddList) {
-    for (let ex of userinfo.value.exAddList) {
+  if (userinfo.exList) {
+    for (let ex of userinfo.exList) {
       if (ex.key) {
         exMap[ex.key] = ex.value
       }
     }
   }
   // var user = DbData.getUser();
-  var user = userinfo.value
   var data = {
-    url: user.db.url,
-    name: user.db.name,
-    pwd: user.db.pwd,
-    fkType: user.fkType,
+    url: userinfo.db.url,
+    name: userinfo.db.name,
+    pwd: userinfo.db.pwd,
+    fkType: userinfo.fkType,
     tables: tables,
     tableNameGruop: tableNameGruop.value,
     exMap: exMap
   }
-  DbData.setUser(userinfo.value)
+  // userinfo.exList = exAddList.value
+  DbData.setUser(userinfo)
   return data;
 }
 
@@ -606,16 +612,16 @@ const selectTreeNode = function (selectedKeys, e) {
 // 扩展区域
 // ==============================
 const exAddClick = function () {
-  userinfo.value.exAddList.push({id: guid(), key: '', value: ''})
+  userinfo.exList.push({id: guid(), key: '', value: ''})
 }
 const exDelClick = function (id) {
   var arr = []
-  for (let item of userinfo.value.exAddList) {
+  for (let item of userinfo.exList) {
     if (id != item.id) {
       arr.push(item)
     }
   }
-  userinfo.value.exAddList = arr
+  userinfo.exList = arr
 }
 
 
@@ -663,6 +669,7 @@ function S4() {
   border: solid 1px #CCC;
   height: auto;
 }
+
 .liInfo_div {
   border: solid 1px #CCC;
   padding: 5px;
