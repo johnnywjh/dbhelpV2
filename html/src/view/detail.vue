@@ -21,41 +21,20 @@
       <a-tab-pane key="query" tab="查询sql">
         <a-space>
           <a-input v-model:value="as" style="width: 100px;" placeholder="表的别名"/>
-          代码样式
-          <a-switch v-model:checked="detailCodeShowSql" checked-children="开" un-checked-children="关"/>
+<!--          代码样式-->
+<!--          <a-switch v-model:checked="detailCodeShowSql" checked-children="开" un-checked-children="关"/>-->
         </a-space>
         <!-- div1 -->
         <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
-          select <br/>
-          <span v-for="(item, index) in detailDataSelectList">
-              <span>{{ ass }}{{ item.name }}
-                <span v-if="index<detailDataSelectList.length-1"> , </span>
-              </span>
-            </span><br/>
-          from {{ detailData.tableName }} {{ as }}
+          <highlightjs language="sql" :code="liInfo_div1" />
         </a-typography-paragraph>
         <!-- div2 -->
         <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
-          select <br/>
-          <span v-for="(item, index) in detailDataSelectList">
-              <span>
-                <span>{{ ass }}{{ item.name }}</span>
-                <span v-if="item.name != item.javaName"> '{{ item.javaName }}'</span>
-                <span v-if="index<detailDataSelectList.length-1"> , </span>
-              </span>
-            </span><br/>
-          from {{ detailData.tableName }} {{ as }}
+          <highlightjs language="sql" :code="liInfo_div2" />
         </a-typography-paragraph>
         <!-- div3 -->
         <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
-          select <br/>
-          <span v-for="(item, index) in detailDataSelectList">
-              <span>
-                <span>{{ ass }}{{ item.name }} '{{ item.comment || item.name }}'</span>
-                <span v-if="index<detailDataSelectList.length-1"> , </span>
-              </span>
-            </span><br/>
-          from {{ detailData.tableName }} {{ as }}
+          <highlightjs language="sql" :code="liInfo_div3" />
         </a-typography-paragraph>
       </a-tab-pane>
       <a-tab-pane key="doc" tab="文档">
@@ -129,12 +108,39 @@ const detailDataRowSelect = {
   }
 };
 
-const detailCodeShowSql = ref(true)
+const detailCodeShowSql = ref(false)
 const detailCodeShowDoc = ref(true)
 const detailCodeShowDDL = ref(true)
 const as = ref('')
 const ass = computed(() => {
   return as.value.length > 0 ? as.value + '.' : ''
+})
+
+const liInfo_div1 = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    arr.push(`${ass.value}${l.name}`)
+  }
+  return 'select \n'+arr.join(' , ')+` \n from ${props.detailData.tableName} ` + as.value
+})
+const liInfo_div2 = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    if (l.name == l.javaName) {
+      arr.push(`${ass.value}${l.name}`)
+    } else {
+      arr.push(`${ass.value}${l.name} '${l.javaName}'`)
+    }
+  }
+  return 'select \n'+arr.join(' , ')+` \n from ${props.detailData.tableName} ` + as.value
+})
+const liInfo_div3 = computed(() => {
+  let arr = [];
+  for (let l of detailDataSelectList.value) {
+    let com = l.comment || l.name;
+    arr.push(`${ass.value}${l.name} '${com}'`)
+  }
+  return 'select \n'+arr.join(' , ')+` \n from ${props.detailData.tableName} ` + as.value
 })
 
 // 文档上单选按钮
