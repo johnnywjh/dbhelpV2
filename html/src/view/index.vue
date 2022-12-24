@@ -385,7 +385,7 @@ function detailLayerClick(row) {
         .then(function (res) {
           let table = res.data.data;
           row.columns = table.columns
-          row.ddl = table.ddl ? table.ddl.replace(new RegExp("\n", 'gm'), "</br>") : ""
+          row.ddl = table.ddl ? table.ddl.replace(new RegExp("\n", 'gm'), "\n") : ""
           DbData.setTablesDetail(dbKey.value, row.tableName, row);
           initcolumns(row);
         })
