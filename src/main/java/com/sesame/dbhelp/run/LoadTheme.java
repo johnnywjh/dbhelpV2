@@ -46,8 +46,10 @@ public class LoadTheme implements ApplicationRunner {
         File file = new File(path);
         if (file.exists()) {
             FileUtil.cleanDir(file);
+            log.info("删除路径成功: {}", path);
         } else {
             file.mkdir();
+            log.info("创建路径成功: {}", path);
         }
 
         CloneCommand cloneCommand = Git.cloneRepository()
@@ -61,5 +63,6 @@ public class LoadTheme implements ApplicationRunner {
             );
         }
         cloneCommand.call();
+        log.info("git clone 成功: {}", path);
     }
 }
