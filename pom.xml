@@ -23,8 +23,8 @@
         <jdk.version>1.8</jdk.version>
 
         <!--docker config -->
-        <docker.image.name>testimagename</docker.image.name>
-        <docker.image.tag>latest</docker.image.tag>
+        <docker.image.name>johnnywjh/dbhelp</docker.image.name>
+        <docker.image.tag>v.2.0</docker.image.tag>
 
         <fastjson.version>1.2.79</fastjson.version>
         <commons-io.version>2.4</commons-io.version>
