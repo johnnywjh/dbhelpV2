@@ -217,9 +217,9 @@ onMounted(() => {
   reloadDbSelect()
   getTheme()
   userinfo.value = DbData.getUser()
-  if (!userinfo.value.exAddList) {
-    userinfo.value.exAddList = [{id: guid(), key: '', value: ''}]
-  }
+  // if (!userinfo.value.exAddList) {
+  //   userinfo.value.exAddList = [{id: guid(), key: '', value: ''}]
+  // }
 });
 
 const layerFileVisible = ref(false)
