@@ -165,16 +165,7 @@
     <!--    模块框=>表格详情 -->
     <a-modal v-model:visible="layerFileVisible" :footer="false" width="400px" title="数据源格式">
       <a-typography-paragraph code copyable class="liInfo_div">
-<pre>
-    {
-        "dbName":{
-            "url": "jdbc:mysql://",
-            "name": "root",
-            "pwd": ""
-        }
-        ,{...}
-    }
-</pre>
+        <highlightjs language="json" :code="layerFileText" />
       </a-typography-paragraph>
 
     </a-modal>
@@ -199,9 +190,10 @@
           </a-space>
 
           <a-typography-paragraph :code="previewCode" copyable class="liInfo_div">
-          <pre>
-<span v-html="fileContent"></span>
-          </pre>
+<!--          <pre>-->
+<!--<span v-html="fileContent"></span>-->
+<!--          </pre>-->
+            <highlightjs language="java" :code="fileContent" />
           </a-typography-paragraph>
         </a-col>
       </a-row>
@@ -231,6 +223,14 @@ onMounted(() => {
 });
 
 const layerFileVisible = ref(false)
+const layerFileText = '    {\n' +
+    '        "dbName":{\n' +
+    '            "url": "jdbc:mysql://",\n' +
+    '            "name": "root",\n' +
+    '            "pwd": ""\n' +
+    '        }\n' +
+    '        ,{...}\n' +
+    '    }';
 
 const updateUrl = ref('/api/user/readDbCofig')
 const dbKey = ref(undefined)
@@ -592,7 +592,7 @@ const selectTreeNode = function (selectedKeys, e) {
           for (let c of res.data.data) {
             // 全局替换
             // c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
-            html += c + "</br>"
+            html += c + "\n"
           }
           fileContent.value = html;
         })
@@ -661,8 +661,8 @@ function S4() {
 
 .liInfo_div {
   border: solid 1px #CCC;
-  padding: 10px;
-  margin-top: 10px;
+  /*padding: 10px;*/
+  /*margin-top: 10px;*/
   height: auto;
 }
 
@@ -674,4 +674,5 @@ function S4() {
 .add_input {
   width: 200px;
 }
+
 </style>

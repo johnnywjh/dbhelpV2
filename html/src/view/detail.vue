@@ -144,10 +144,5 @@ const liInfo_doc_class = ref('1')
 </script>
 
 <style>
-.liInfo_div {
-  border: solid 1px #CCC;
-  padding: 10px;
-  margin-top: 10px;
-  height: auto;
-}
+
 </style>
