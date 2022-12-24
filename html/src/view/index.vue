@@ -98,7 +98,7 @@
             >
               <a-form-item label="代码模板">
                 <a-select :placeholder="themeTitle"
-                          v-model:value="selectThemeValue"
+                          v-model:value="userinfo.fkType"
                           style="width: 200px"
                           :options="themeList"
                 ></a-select>
@@ -137,7 +137,7 @@
                   <a-button @click="exAddClick">添加字段</a-button>
                   <div class="add_div">
                     <a-form>
-                      <a-form-item v-for="item in exAddList">
+                      <a-form-item v-for="item in userinfo.exAddList">
                         <a-space>
                           <a-input class="add_input" v-model:value="item.key" placeholder="模板中的 ${key}"/>
                           <a-input class="add_input" v-model:value="item.value" placeholder="value"/>
@@ -218,6 +218,10 @@ import DetailPage from '@/view/detail.vue'
 onMounted(() => {
   reloadDbSelect()
   getTheme()
+  userinfo.value = DbData.getUser()
+  if (!userinfo.value.exAddList) {
+    userinfo.value.exAddList = [{id: guid(), key: '', value: ''}]
+  }
 });
 
 const layerFileVisible = ref(false)
@@ -227,7 +231,11 @@ const dbKey = ref(undefined)
 const dbList = ref([{label: "选择数据-0", value: 0}])
 const tableList = ref([])
 const searchTableText = ref('')
-const userinfo = ref({db: {}})
+const userinfo = ref({
+  db: {},
+  fkType: undefined,
+  exAddList: []
+})
 const activeKey = ref("1")
 const columns = ref([
   {title: '序号', dataIndex: 'index', align: 'right', width: '100px'},
@@ -269,8 +277,8 @@ const selectDbValue = function () {
     var db = DbData.getDb()[val];
     db.key = val;
 
-    userinfo.value.db = db;
-    DbData.setUser(userinfo.value);
+    userinfo.value.db = db
+    DbData.setUser(userinfo.value)
 
     reLoadTables();
   } else {
@@ -400,7 +408,6 @@ function initcolumns(queryTable) {
 // 生成代码
 // -------------------
 const tableNameGruop = ref(false)
-const selectThemeValue = ref(undefined)
 const themeList = ref([])
 const themeTitle = ref()
 const getTheme = function () {
@@ -440,7 +447,7 @@ const selectTableDel = function (row) {
   selectTable.value = arr
 }
 const subformShow = computed(() => {
-  return selectThemeValue.value && selectTable.value.length > 0
+  return userinfo.value.fkType && selectTable.value.length > 0
 })
 // 提交
 const subform = function () {
@@ -519,22 +526,25 @@ function getSubmitdata() {
     })
   }
   var exMap = {}
-  if (exAddList.value) {
-    for (let ex of exAddList.value) {
-      exMap[ex.key] = ex.value
+  if (userinfo.value.exAddList) {
+    for (let ex of userinfo.value.exAddList) {
+      if (ex.key) {
+        exMap[ex.key] = ex.value
+      }
     }
   }
   // var user = DbData.getUser();
-  var user = userinfo.value;
+  var user = userinfo.value
   var data = {
     url: user.db.url,
     name: user.db.name,
     pwd: user.db.pwd,
-    fkType: selectThemeValue.value,
+    fkType: user.fkType,
     tables: tables,
     tableNameGruop: tableNameGruop.value,
     exMap: exMap
-  };
+  }
+  DbData.setUser(userinfo.value)
   return data;
 }
 
@@ -589,19 +599,17 @@ const selectTreeNode = function (selectedKeys, e) {
 // ==============================
 // 扩展区域
 // ==============================
-const exAddList = ref([{id: guid(), key: 'author', value: 'xxx'}])
-
 const exAddClick = function () {
-  exAddList.value.push({id: guid(), key: '', value: ''})
+  userinfo.value.exAddList.push({id: guid(), key: '', value: ''})
 }
 const exDelClick = function (id) {
   var arr = []
-  for (let item of exAddList.value) {
+  for (let item of userinfo.value.exAddList) {
     if (id != item.id) {
       arr.push(item)
     }
   }
-  exAddList.value = arr
+  userinfo.value.exAddList = arr
 }
 
 
