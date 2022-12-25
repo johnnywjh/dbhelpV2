@@ -79,7 +79,7 @@ public class DbController extends AbstractWebController {
      * @return
      */
     @RequestMapping("/queryDbTAbleInfo")
-    public Response queryDbTAbleInfo(DbInfo bean) {
+    public Response queryDbTAbleInfo(@RequestBody DbInfo bean) {
         bean.viferyDbType();
         Connection conn = DBService.getConn(bean);
 

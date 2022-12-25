@@ -21,7 +21,7 @@
           <a-space>
             <a-select :placeholder="dbSelectTitle"
                       v-model:value="dbKey"
-                      style="width: 200px"
+                      style="width: 150px"
                       :options="dbList"
                       @change="selectDbValue"
             ></a-select>
@@ -37,7 +37,7 @@
             <a-button type="primary" v-if="dbList.length>2" @click="showDiffDb">对比数据库</a-button>
             <a-button type="primary" v-else disabled>对比数据库</a-button>
 
-            <a-button type="primary" v-if="dbList.length>2">搜索字段</a-button>
+            <a-button type="primary" v-if="dbList.length>2" @click="showQueryFieid">搜索字段</a-button>
             <a-button type="primary" v-else disabled>搜索字段</a-button>
           </a-space>
 
@@ -95,7 +95,6 @@
           <div>
             <a-form style="margin-left: 50px"
                     layout="inline"
-                    autocomplete="off"
             >
               <a-form-item label="代码模板">
                 <a-select :placeholder="themeTitle"
@@ -161,7 +160,7 @@
 
       </a-tabs>
     </div>
-    <!--    模块框=>数据源 -->
+    <!--    模块框=>数据源格式 -->
     <file-style ref="fileStyleRef"/>
 
     <!--    模块框=>表格详情 -->
@@ -174,8 +173,11 @@
     <!--    模块框=>代码预览 -->
     <code-preview ref="codePreviewRef"/>
 
-    <!--    模块框=>代码预览 -->
+    <!--    模块框=>表对比 -->
     <diff-db-tables ref="diffDbTableRef"/>
+
+    <!--    模块框=>搜索字段 -->
+    <query-fieid ref="queryFieidRef" :db-list="dbList" />
 
   </div>
 </template>
@@ -193,6 +195,7 @@ import TableDetail from '@/view/modal/tableDetail.vue'
 import CodePreview from '@/view/modal/codePreview.vue'
 import DiffDbTables from '@/view/modal/diffDbTables.vue'
 import FileStyle from '@/view/modal/fileStyle.vue'
+import QueryFieid from '@/view/modal/queryFieid.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -585,6 +588,14 @@ function showDiffDb() {
   diffDbTableRef.value.show(data);// 调用子组件的弹出方法
 }
 // 子组件:对比数据库 -- end
+
+// 子组件:搜索字段 -- start
+const queryFieidRef = ref()
+function showQueryFieid() {
+  let data = {dbKey:dbKey.value}
+  queryFieidRef.value.show(data);// 调用子组件的弹出方法
+}
+// 子组件:搜索字段 -- end
 
 </script>
 

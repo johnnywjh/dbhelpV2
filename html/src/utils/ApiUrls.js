@@ -6,6 +6,7 @@ const ApiUrls = {
         preview: '/api/db/preview',
         deletedir: '/api/db/deletedir',
         getfilecontent: '/api/db/getfilecontent',
+        queryDbTAbleInfo: '/api/db/queryDbTAbleInfo',
     },
     user: {
         getThemes: '/api/user/getThemes'
