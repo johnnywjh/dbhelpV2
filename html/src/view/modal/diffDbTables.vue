@@ -168,7 +168,7 @@ function getTable(key, db, list, fun) {
         })
         .catch(function (error) {
           console.log(error);
-          startTitle.value = '加载 ' + key + ' 的表结构,==> 失败'
+          startTitle.value = '加载 ' + key + ' 的表结构 ==> 失败'
         });
   }
 }

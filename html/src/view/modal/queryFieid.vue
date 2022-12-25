@@ -120,7 +120,7 @@ const diffTypeList = ref([
 ])
 const startTitle = ref('')
 const diffTypeVal = ref(1)
-const fieldName = ref('group_type')
+const fieldName = ref('')
 const dbName = ref()
 
 var startTime;
@@ -166,6 +166,7 @@ function reloadTableInfo() {
       })
       .catch(function (error) {
         console.log(error);
+        startTitle.value = '加载 ' + key + ' 的表结构 ==> 失败'
       });
 }
 
