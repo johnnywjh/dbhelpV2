@@ -35,24 +35,27 @@ const DbData = {
         return obj[key];
     },
     /** 获取表的详情 */
-    getTablesDetail(key, tableName) {
+    getTableObj(key, tableName) {
         var list = this.getTables(key);
         if (!list) {
             return null;
         }
+        var obj = null
         for (let l of list) {
             if (l.tableName == tableName) {
-                return l.columns;
+                obj = l
                 break;
             }
         }
+        return obj
     },
-    setTablesDetail(key, tableName, columns) {
+    setTablesDetail(key, tableName, columns, ddl) {
         var list = this.getTables(key);
         if (list) {
             for (let l of list) {
                 if (l.tableName == tableName) {
                     l.columns = columns;
+                    l.ddl = ddl;
                     break;
                 }
             }

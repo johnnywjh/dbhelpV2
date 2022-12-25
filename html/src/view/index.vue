@@ -177,7 +177,7 @@
     <diff-db-tables ref="diffDbTableRef"/>
 
     <!--    模块框=>搜索字段 -->
-    <query-fieid ref="queryFieidRef" :db-list="dbList" />
+    <query-fieid ref="queryFieidRef" :db-list="dbList"/>
 
   </div>
 </template>
@@ -212,7 +212,7 @@ onMounted(() => {
 });
 
 const fileStyleRef = ref()
-const fileStyleShow = function (){
+const fileStyleShow = function () {
   fileStyleRef.value.show();// 调用子组件的弹出方法
 }
 
@@ -358,13 +358,17 @@ const cleanDbCache = function () {
 }
 const cleanCache = function (row) {
   row.columns = null;
-  DbData.setTablesDetail(userinfo.db.key, row.tableName, null);
+  DbData.setTablesDetail(userinfo.db.key, row.tableName, null, null);
 }
 
 /*界面详情按钮*/
 function detailLayerClick(row) {
-  var queryTable = DbData.getTablesDetail(dbKey.value, row.tableName);
-  if (!queryTable) {
+  var queryTable = DbData.getTableObj(dbKey.value, row.tableName);
+
+  if (queryTable && queryTable.columns) {
+    showTableDetail(queryTable);
+    row.columns = queryTable.columns;
+  } else {
     var queryData = userinfo.db;
     queryData.tableName = row.tableName;
     Http.post(ApiUrls.db.searchTableDetail, queryData)
@@ -372,15 +376,12 @@ function detailLayerClick(row) {
           let table = res.data.data;
           row.columns = table.columns
           row.ddl = table.ddl ? table.ddl.replace(new RegExp("\n", 'gm'), "\n") : ""
-          DbData.setTablesDetail(dbKey.value, row.tableName, row);
+          DbData.setTablesDetail(dbKey.value, row.tableName, row.columns, row.ddl);
           showTableDetail(row);
         })
         .catch(function (error) {
           console.log(error);
         });
-  } else {
-    showTableDetail(queryTable);
-    row.columns = queryTable.columns;
   }
 }
 
@@ -542,10 +543,12 @@ function getSubmitdata() {
 
 // 子组件:代码预览 -- start
 const codePreviewRef = ref()
+
 function showCodePreview() {
   let data = getSubmitdata()// 预览提交的数据
   codePreviewRef.value.show(data);// 调用子组件的弹出方法
 }
+
 // 子组件:代码预览 -- end
 
 
@@ -578,6 +581,7 @@ function S4() {
 
 // 子组件:对比数据库 -- start
 const diffDbTableRef = ref()
+
 function showDiffDb() {
   let data = []
   for (let db of dbList.value) {
@@ -587,14 +591,17 @@ function showDiffDb() {
   }
   diffDbTableRef.value.show(data);// 调用子组件的弹出方法
 }
+
 // 子组件:对比数据库 -- end
 
 // 子组件:搜索字段 -- start
 const queryFieidRef = ref()
+
 function showQueryFieid() {
-  let data = {dbKey:dbKey.value}
+  let data = {dbKey: dbKey.value}
   queryFieidRef.value.show(data);// 调用子组件的弹出方法
 }
+
 // 子组件:搜索字段 -- end
 
 </script>
