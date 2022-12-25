@@ -169,9 +169,11 @@
 
     </a-modal>
     <!--    模块框=>表格详情 -->
-    <a-modal v-model:visible="detailLayerVisible" :footer="false" width="800px" :title="detailLayerTitle">
-      <DetailPage :detailData="detailData"/>
-    </a-modal>
+    <table-detail
+        ref="tableDetailRef"
+        :detail-data="detailData"
+        :title="tableDetailTitle"
+    />
     <!--    模块框=>代码预览 -->
     <a-modal v-model:visible="previewVisible" :footer="false" width="1300px" title="预览" @cancel="previewClose">
       <a-row :gutter="16">
@@ -220,6 +222,8 @@ import ApiUrls from '@/utils/ApiUrls'
 
 import DetailPage from '@/view/detail.vue'
 import DiffDb from '@/view/diffDb.vue'
+
+import TableDetail from '@/view/modal/tableDetail.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -402,28 +406,27 @@ function detailLayerClick(row) {
           row.columns = table.columns
           row.ddl = table.ddl ? table.ddl.replace(new RegExp("\n", 'gm'), "\n") : ""
           DbData.setTablesDetail(dbKey.value, row.tableName, row);
-          initcolumns(row);
+          showTableDetail(row);
         })
         .catch(function (error) {
           console.log(error);
         });
   } else {
-    initcolumns(queryTable);
+    showTableDetail(queryTable);
     row.columns = queryTable.columns;
   }
 }
 
-// ------------- 弹出层
-const detailLayerVisible = ref(false)
-const detailLayerTitle = ref('xxx:xxx')
+// 子组件:弹出表格详情 -- start
+const tableDetailRef = ref()
+const tableDetailTitle = ref('xxx:xxx')
 const detailData = ref({columns: [], ddl: ''})  // 选中的表的数据
-
-// 列表加载
-function initcolumns(queryTable) {
-  detailLayerVisible.value = true
-  detailLayerTitle.value = queryTable.comment + " : " + queryTable.tableName
+function showTableDetail(queryTable) {
+  tableDetailRef.value.show();// 调用子组件的弹出方法
+  tableDetailTitle.value = queryTable.comment + " : " + queryTable.tableName
   detailData.value = queryTable;
 }
+// 子组件:弹出表格详情 -- end
 
 // -------------------
 // 生成代码
