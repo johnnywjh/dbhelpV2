@@ -375,6 +375,7 @@ function detailLayerClick(row) {
         .then(function (res) {
           let table = res.data.data;
           row.columns = table.columns
+          row.ddl = table.ddl
           DbData.setTablesDetail(dbKey.value, row.tableName, row.columns, row.ddl);
           showTableDetail(row);
         })
