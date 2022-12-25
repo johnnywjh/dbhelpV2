@@ -3,7 +3,7 @@
     <div class="topDiv">
       <a-row :gutter="16">
         <a-col :span="4">
-          <a-button @click="layerFileVisible=true">数据源格式</a-button>
+          <a-button @click="fileStyleShow">数据源格式</a-button>
         </a-col>
         <a-col :span="3">
           <a-upload
@@ -162,12 +162,8 @@
       </a-tabs>
     </div>
     <!--    模块框=>数据源 -->
-    <a-modal v-model:visible="layerFileVisible" :footer="false" width="400px" title="数据源格式">
-      <a-typography-paragraph code copyable class="liInfo_div_ex">
-        <highlightjs language="json" :code="layerFileText"/>
-      </a-typography-paragraph>
+    <file-style ref="fileStyleRef"/>
 
-    </a-modal>
     <!--    模块框=>表格详情 -->
     <table-detail
         ref="tableDetailRef"
@@ -196,6 +192,7 @@ import ApiUrls from '@/utils/ApiUrls'
 import TableDetail from '@/view/modal/tableDetail.vue'
 import CodePreview from '@/view/modal/codePreview.vue'
 import DiffDbTables from '@/view/modal/diffDbTables.vue'
+import FileStyle from '@/view/modal/fileStyle.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -211,15 +208,10 @@ onMounted(() => {
   }
 });
 
-const layerFileVisible = ref(false)
-const layerFileText = '    {\n' +
-    '        "dbName":{\n' +
-    '            "url": "jdbc:mysql://",\n' +
-    '            "name": "root",\n' +
-    '            "pwd": ""\n' +
-    '        }\n' +
-    '        ,{...}\n' +
-    '    }';
+const fileStyleRef = ref()
+const fileStyleShow = function (){
+  fileStyleRef.value.show();// 调用子组件的弹出方法
+}
 
 const updateUrl = ref('/api/user/readDbCofig')
 const dbKey = ref(undefined)
