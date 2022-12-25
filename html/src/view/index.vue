@@ -108,7 +108,7 @@
                 <a-switch v-model:checked="tableNameGruop"/>
               </a-form-item>
               <a-form-item>
-                <a-button v-if="subformShow" @click="preview">预览</a-button>
+                <a-button v-if="subformShow" @click="showCodePreview">预览</a-button>
                 <a-button v-if="subformShow" @click="subform" type="primary">提交</a-button>
 
                 <a-button v-if="!subformShow">提交 and 预览</a-button>
@@ -174,31 +174,11 @@
         :detail-data="detailData"
         :title="tableDetailTitle"
     />
+    <code-preview
+      ref="codePreviewRef"
+    />
     <!--    模块框=>代码预览 -->
-    <a-modal v-model:visible="previewVisible" :footer="false" width="1300px" title="预览" @cancel="previewClose">
-      <a-row :gutter="16">
-        <a-col :span="6">
-          <a-directory-tree
-              multiple
-              :tree-data="treeData"
-              @select="selectTreeNode"
-          ></a-directory-tree>
-        </a-col>
-        <a-col :span="18">
-<!--          <a-space>-->
-<!--            代码样式-->
-<!--            <a-switch v-model:checked="previewCode" checked-children="开" un-checked-children="关"/>-->
-<!--          </a-space>-->
 
-          <a-typography-paragraph :code="previewCode" copyable class="liInfo_div">
-            <!--          <pre>-->
-            <!--<span v-html="fileContent"></span>-->
-            <!--          </pre>-->
-            <highlightjs language="java" :code="fileContent"/>
-          </a-typography-paragraph>
-        </a-col>
-      </a-row>
-    </a-modal>
 
     <!--    对比数据库 -->
     <a-modal
@@ -206,7 +186,7 @@
         :footer="false" width="800px"
         :maskClosable="false"
         title="选择两个数据库进行对比">
-      <DiffDb :db-list="diffDbList" />
+<!--      <DiffDb :db-list="diffDbList" />-->
     </a-modal>
   </div>
 </template>
@@ -220,9 +200,9 @@ import Http from '@/utils/Http'
 import LocalData from "@/utils/localData"
 import ApiUrls from '@/utils/ApiUrls'
 
-import DiffDb from '@/view/diffDb.vue'
-
 import TableDetail from '@/view/modal/tableDetail.vue'
+import CodePreview from '@/view/modal/codePreview.vue'
+import DiffDbTables from '@/view/modal/diffDbTables.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -571,53 +551,15 @@ function getSubmitdata() {
   return data;
 }
 
-// 预览
-const dirVo = ref()
-const treeData = ref()
-const previewVisible = ref(false)
-const fileContent = ref()
-const previewCode = ref(false)
-const preview = function () {
-  var data = getSubmitdata();
-  Http.post(ApiUrls.db.preview, data)
-      .then(function (res) {
-        dirVo.value = res.data.data.dirVo
-        treeData.value = res.data.data.list
-        previewVisible.value = true
-        fileContent.value = ''
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+// 子组件:代码预览 -- start
+const codePreviewRef = ref()
+function showCodePreview() {
+  let data = getSubmitdata()// 预览提交的数据
+  codePreviewRef.value.show(data);// 调用子组件的弹出方法
 }
-const previewClose = function () {
-  Http.post(ApiUrls.db.deletedir, dirVo.value)
-      .then(function (res) {
-        message.success('清除成功')
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
+// 子组件:代码预览 -- end
 
-const selectTreeNode = function (selectedKeys, e) {
-  if (!e.node.dir) {
-    Http.get(ApiUrls.db.getfilecontent, {path: e.node.basicData})
-        .then(function (res) {
-          fileContent.value = ''
-          var html = ''
-          for (let c of res.data.data) {
-            // 全局替换
-            // c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
-            html += c + "\n"
-          }
-          fileContent.value = html;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-  }
-}
+
 
 // ==============================
 // 扩展区域
