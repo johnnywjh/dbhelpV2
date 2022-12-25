@@ -1,11 +1,30 @@
 ### 代码生成工具V2 
+#### 主要功能
+> 所有数据前端都会本地缓存
+- ========= 已有功能
+- 1 选择数据库 查询表结构
+- 1.1 表结构界面 => 选择字段生成sql查询语句
+- 1.2 表结构界面 => 选择字段生成文档
+- 1.3 表结构界面 => 查看DDL语句
+- 2 对比数据库 => 用于对比不同数据库表是否缺失
+- 3 搜索字段 => 输入字段名称,查询有哪些表里有这个字段
+- 5 根据模板 => 预览代码
+- 6 根据模板 => 下载生成的代码
 ```
-第二个版本: 重构了前端,用了 antd vue3
+模板说明 : 运行的时候需要指定模板, 支持`本地目录`和`git项目`
+```
+
+#### 下个版本功能 `未完成`
+- mysqldump 导出 `考虑中.`
+- 增加模板引擎支持 Beetl `计划中`
+- 
+```
+2.x 重构了前端,用了 antd vue3
 前端代码在 /html 中
 cd html
 npm install
 npm run dev
-npm run build
+npm run build => src/main/resources/public 里是编译好的文件
 ```
 
 ### docker运行方式
@@ -15,7 +34,7 @@ docker run -p 8071:8071 --restart always  --name dbhelp \
 -v ~/ars/dbhelp:/root/ars/dbhelp \
 -v ~/themeList:/root/themeList \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
--d johnnywjh/dbhelp:v.2.1
+-d johnnywjh/dbhelp:v.2.0
 
 # 也可以自己编译镜像
 mvn clean package docker:build
