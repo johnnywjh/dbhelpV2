@@ -123,7 +123,7 @@ function getTable(key, db, list, fun) {
   if (list && list.length > 0) {
     fun(list)
   } else {
-    startTitle.value = '加载 ' + key + ' 的表结构'
+    startTitle.value = '加载 ' + key + ' 的表结构 ...'
     Http.post(ApiUrls.db.getTables, db)
         .then(function (res) {
           var list = res.data.data;
@@ -133,6 +133,7 @@ function getTable(key, db, list, fun) {
         })
         .catch(function (error) {
           console.log(error);
+          startTitle.value = '加载 ' + key + ' 的表结构,==> 失败'
         });
   }
 }
