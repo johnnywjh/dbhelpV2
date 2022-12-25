@@ -38,7 +38,40 @@
           </a-form-item>
         </a-row>
       </a-form>
-      <a-row></a-row>
+      <a-row style="margin-top: 10px">
+        <a-tabs v-model:activeKey="activeKey">
+          <a-tab-pane key="1">
+            <template #tab>
+              存在的表
+              <a-tag color="red">{{ tableList1.length }}</a-tag>
+            </template>
+            <a-table :data-source="tableList1" :columns="columns"
+                     :pagination="false" size="small"
+            >
+              <template #bodyCell="{ column, text, record }">
+                <template v-if="column.dataIndex === 'tableName'">
+                  <a-typography-text copyable>{{ record.tableName }}</a-typography-text>
+                </template>
+              </template>
+            </a-table>
+          </a-tab-pane>
+          <a-tab-pane key="2">
+            <template #tab>
+              不存在的表
+              <a-tag color="red">{{ tableList2.length }}</a-tag>
+            </template>
+            <a-table :data-source="tableList2" :columns="columns"
+                     :pagination="false" size="small"
+            >
+              <template #bodyCell="{ column, text, record }">
+                <template v-if="column.dataIndex === 'tableName'">
+                  <a-typography-text copyable>{{ record.tableName }}</a-typography-text>
+                </template>
+              </template>
+            </a-table>
+          </a-tab-pane>
+        </a-tabs>
+      </a-row>
     </a-modal>
   </div>
 </template>
@@ -89,7 +122,13 @@ const startTitle = ref('')
 const diffTypeVal = ref(1)
 const fieldName = ref('group_type')
 const dbName = ref()
+
+var startTime;
+var endTime;
 const search = function () {
+  tableList1.value = []
+  tableList2.value = []
+  startTime = new Date().getTime();
   if (diffTypeVal.value == 1) {
     let tables = DbData.getTables(dbName.value)
     if (tables) {
@@ -130,12 +169,17 @@ function reloadTableInfo() {
       });
 }
 
+const tableList1 = ref([])
+const tableList2 = ref([])
+
 function query() {
   let key = dbName.value;
   let name = fieldName.value;
   var tables = DbData.getTables(key);
   var arr1 = [];
   var arr2 = [];
+  let x = 1
+  let y = 1
   for (let t of tables) {
     var count = 0;
 
@@ -154,12 +198,26 @@ function query() {
     };
 
     if (count > 0) {
+      obj.index = x;
+      x++
       arr1.push(obj);
     } else {
+      obj.index = y;
+      y++
       arr2.push(obj);
     }
   }
-  console.log(arr1)
-  console.log(arr2)
+  tableList1.value = arr1
+  tableList2.value = arr2
+  endTime = new Date().getTime();
+  startTitle.value = `搜索结束,耗时` + ((endTime - startTime) / 1000) + ' 秒'
 }
+
+const activeKey = ref('1')
+const columns = ref([
+  {title: '序号', dataIndex: 'index'},
+  {title: '表名', dataIndex: 'tableName'},
+  {title: '注释', dataIndex: 'comment'},
+  {title: '个数', dataIndex: 'count'},
+])
 </script>
