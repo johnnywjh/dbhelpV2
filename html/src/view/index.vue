@@ -34,7 +34,7 @@
             </a-popconfirm>
             <a-button v-else disabled>选择数据库</a-button>
 
-            <a-button type="primary" v-if="dbList.length>2"  @click="diffDbClidk">对比数据库</a-button>
+            <a-button type="primary" v-if="dbList.length>2" @click="showDiffDb">对比数据库</a-button>
             <a-button type="primary" v-else disabled>对比数据库</a-button>
 
             <a-button type="primary" v-if="dbList.length>2">搜索字段</a-button>
@@ -174,20 +174,13 @@
         :detail-data="detailData"
         :title="tableDetailTitle"
     />
-    <code-preview
-      ref="codePreviewRef"
-    />
+
     <!--    模块框=>代码预览 -->
+    <code-preview ref="codePreviewRef"/>
 
+    <!--    模块框=>代码预览 -->
+    <diff-db-tables ref="diffDbTableRef"/>
 
-    <!--    对比数据库 -->
-    <a-modal
-        v-model:visible="diffDbVisible"
-        :footer="false" width="800px"
-        :maskClosable="false"
-        title="选择两个数据库进行对比">
-<!--      <DiffDb :db-list="diffDbList" />-->
-    </a-modal>
   </div>
 </template>
 
@@ -405,6 +398,7 @@ function showTableDetail(queryTable) {
   tableDetailTitle.value = queryTable.comment + " : " + queryTable.tableName
   detailData.value = queryTable;
 }
+
 // 子组件:弹出表格详情 -- end
 
 // -------------------
@@ -560,7 +554,6 @@ function showCodePreview() {
 // 子组件:代码预览 -- end
 
 
-
 // ==============================
 // 扩展区域
 // ==============================
@@ -587,20 +580,20 @@ function S4() {
   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 
-// ==============
-// 对比数据库
-// ==============
-const diffDbVisible = ref(false)
-const diffDbList = ref([])
-const diffDbClidk = function () {
-  diffDbVisible.value = true
-  diffDbList.value = []
+
+// 子组件:对比数据库 -- start
+const diffDbTableRef = ref()
+function showDiffDb() {
+  let data = []
   for (let db of dbList.value) {
     if (db.value) {
-      diffDbList.value.push(db.value)
+      data.push(db.value)
     }
   }
+  diffDbTableRef.value.show(data);// 调用子组件的弹出方法
 }
+// 子组件:对比数据库 -- end
+
 </script>
 
 <style>
