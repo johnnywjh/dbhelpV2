@@ -220,7 +220,6 @@ import Http from '@/utils/Http'
 import LocalData from "@/utils/localData"
 import ApiUrls from '@/utils/ApiUrls'
 
-import DetailPage from '@/view/detail.vue'
 import DiffDb from '@/view/diffDb.vue'
 
 import TableDetail from '@/view/modal/tableDetail.vue'
