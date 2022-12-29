@@ -29,9 +29,9 @@ public class Generate {
             cfg.setDefaultEncoding("UTF-8");
 
             String fileName = null;
-            if (arr[1].equals("js") || arr[1].equals("vue")){
+            if (arr[1].equals("js") || arr[1].equals("vue")) {
                 fileName = arr[0] + "." + arr[1];
-            } else{
+            } else {
                 fileName = className + arr[0] + "." + arr[1];
             }
 
@@ -43,6 +43,11 @@ public class Generate {
                     : path + vo.getDirPath();
             if (outTargetPath.contains("$")) {
                 outTargetPath = convertPath(params, outTargetPath);
+            }
+            if (fileName.contains("dir1") || fileName.contains("dir2")) {
+                String dir1 = params.get("dir1").toString();
+                String dir2 = params.get("dir2").toString();
+                fileName = fileName.replaceAll("dir1", dir1).replaceAll("dir2", dir2);
             }
             FileUtil.createFile(outTargetPath, fileName, content);
 
