@@ -133,6 +133,9 @@
                       <template v-else-if="column.dataIndex === 'dir2'">
                         <a-input v-model:value="record.dir2"/>
                       </template>
+                      <template v-else-if="column.dataIndex === 'remarkVal'">
+                        <a-input v-model:value="record.remarkVal"/>
+                      </template>
                     </template>
                   </a-table>
                 </a-col>
@@ -432,11 +435,13 @@ const selectTableColumns = ref([
   {title: '类名', dataIndex: 'className', width: '170px'},
   {title: '目录1', dataIndex: 'dir1', width: '100px'},
   {title: '目录2', dataIndex: 'dir2', width: '100px'},
+  {title: '注释', dataIndex: 'remarkVal', width: '100px'},
 ])
 const selectClick = function (row) {
   row.selected = true
   row.dir1 = 'aaa'
   row.dir2 = 'bbb'
+  row.remarkVal = 'xx'
   selectTable.value.push(row)
 }
 const selectTableDel = function (row) {
@@ -527,7 +532,8 @@ function getSubmitdata() {
       className: l.className,
       comment: l.comment,
       dir1: l.dir1,
-      dir2: l.dir2
+      dir2: l.dir2,
+      remarkVal: l.remarkVal,
     })
   }
   var exMap = {}

@@ -28,7 +28,12 @@ public class Generate {
             cfg.setDirectoryForTemplateLoading(new File(fk_path));
             cfg.setDefaultEncoding("UTF-8");
 
-            String fileName = className + arr[0] + "." + arr[1];
+            String fileName = null;
+            if (arr[1].equals("js") || arr[1].equals("vue")){
+                fileName = arr[0] + "." + arr[1];
+            } else{
+                fileName = className + arr[0] + "." + arr[1];
+            }
 
             Template temp = cfg.getTemplate(vo.getFileName());
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(temp, params);

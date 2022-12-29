@@ -26,6 +26,7 @@ public class Table implements Serializable {
 	private String ddl;
 	private String dir1;
 	private String dir2;
+	private String remarkVal;
 
 	public Table() {
 		super();
