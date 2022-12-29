@@ -213,6 +213,8 @@ public class DbController extends AbstractWebController {
             params.put("fk", TableUtil.getPrimary(list));// 表的主键
             params.put("fk_java", TableUtil.hump(params.get("fk").toString(), false));// 表的主键
             params.put("tableComment", t.getComment());// 表注释
+            params.put("dir1", t.getDir1());
+            params.put("dir2", t.getDir2());
 
             if (exMap != null) {
                 params.putAll(exMap);

@@ -115,8 +115,8 @@
             </a-form>
             <div style="margin-top: 20px">
               <a-row :gutter="20">
-                <a-col :span="2"></a-col>
-                <a-col :span="10">
+                <!--                <a-col :span="2"></a-col>-->
+                <a-col :span="12">
                   <a-table :data-source="selectTable" :columns="selectTableColumns"
                            :pagination="false" size="small"
                   >
@@ -126,6 +126,12 @@
                       </template>
                       <template v-else-if="column.dataIndex === 'className'">
                         <a-input v-model:value="record.className"/>
+                      </template>
+                      <template v-else-if="column.dataIndex === 'dir1'">
+                        <a-input v-model:value="record.dir1"/>
+                      </template>
+                      <template v-else-if="column.dataIndex === 'dir2'">
+                        <a-input v-model:value="record.dir2"/>
                       </template>
                     </template>
                   </a-table>
@@ -422,11 +428,15 @@ const getTheme = function () {
 // 选择
 const selectTableColumns = ref([
   {title: '操作', dataIndex: 'operation', width: '100px'},
-  {title: '表名', dataIndex: 'tableName', width: '200px'},
-  {title: '类名', dataIndex: 'className', width: '300px'},
+  {title: '表名', dataIndex: 'tableName', width: '170px'},
+  {title: '类名', dataIndex: 'className', width: '170px'},
+  {title: '目录1', dataIndex: 'dir1', width: '100px'},
+  {title: '目录2', dataIndex: 'dir2', width: '100px'},
 ])
 const selectClick = function (row) {
   row.selected = true
+  row.dir1 = 'aaa'
+  row.dir2 = 'bbb'
   selectTable.value.push(row)
 }
 const selectTableDel = function (row) {
@@ -515,7 +525,9 @@ function getSubmitdata() {
     tables.push({
       tableName: l.tableName,
       className: l.className,
-      comment: l.comment
+      comment: l.comment,
+      dir1: l.dir1,
+      dir2: l.dir2
     })
   }
   var exMap = {}

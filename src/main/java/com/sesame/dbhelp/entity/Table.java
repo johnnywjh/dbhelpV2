@@ -24,6 +24,8 @@ public class Table implements Serializable {
 	private List<Column> columns;
 
 	private String ddl;
+	private String dir1;
+	private String dir2;
 
 	public Table() {
 		super();

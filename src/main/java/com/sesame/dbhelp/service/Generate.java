@@ -8,7 +8,9 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class Generate {
@@ -34,10 +36,29 @@ public class Generate {
             String outTargetPath = tableNameGruop ?
                     path + "/" + tableName + vo.getDirPath()
                     : path + vo.getDirPath();
+            if (outTargetPath.contains("$")) {
+                outTargetPath = convertPath(params, outTargetPath);
+            }
             FileUtil.createFile(outTargetPath, fileName, content);
 
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
+
+    private static String convertPath(Map<String, Object> params, String path) {
+        Configuration cfg = new Configuration();
+        cfg.setTemplateLoader(new StringTemplateLoader(path));
+        cfg.setDefaultEncoding("UTF-8");
+        try {
+            Template template = cfg.getTemplate("");
+            StringWriter writer = new StringWriter();
+            template.process(params, writer);
+//            log.info("转换路径 : {}", writer.toString());
+            return writer.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
     }
 }
