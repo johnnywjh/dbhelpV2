@@ -191,11 +191,11 @@ import Http from '@/utils/Http'
 import LocalData from "@/utils/localData"
 import ApiUrls from '@/utils/ApiUrls'
 
-import TableDetail from '@/view/modal/tableDetail.vue'
-import CodePreview from '@/view/modal/codePreview.vue'
-import DiffDbTables from '@/view/modal/diffDbTables.vue'
-import FileStyle from '@/view/modal/fileStyle.vue'
-import QueryFieid from '@/view/modal/queryFieid.vue'
+import TableDetail from '@/view/modal/table-detail.vue'
+import CodePreview from '@/view/modal/code-preview.vue'
+import DiffDbTables from '@/view/modal/diffDb-tables.vue'
+import FileStyle from '@/view/modal/file-style.vue'
+import QueryFieid from '@/view/modal/query-fieid.vue'
 
 // 页面初始加载
 onMounted(() => {
