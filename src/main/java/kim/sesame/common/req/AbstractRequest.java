@@ -1,11 +1,11 @@
-package com.sesame.common.web;
+package kim.sesame.common.req;
 
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import com.sesame.common.exception.BizArgumentException;
-import com.sesame.common.utils.UUIDUtil;
+import kim.sesame.common.exception.BizArgumentException;
+import kim.sesame.common.utils.UUIDUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;

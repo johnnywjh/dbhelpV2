@@ -1,4 +1,4 @@
-package com.sesame.common.exception;
+package kim.sesame.common.exception;
 
 
 /**

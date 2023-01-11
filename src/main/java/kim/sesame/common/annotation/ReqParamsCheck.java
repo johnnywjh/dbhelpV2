@@ -1,4 +1,4 @@
-package com.sesame.common.annotation;
+package kim.sesame.common.annotation;
 
 import java.lang.annotation.*;
 

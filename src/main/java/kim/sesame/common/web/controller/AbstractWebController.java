@@ -1,4 +1,4 @@
-package com.sesame.common.controller;
+package kim.sesame.common.web.controller;
 
 
 import org.apache.commons.logging.Log;

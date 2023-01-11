@@ -1,7 +1,7 @@
 package com.sesame.dbhelp.entity;
 
 
-import com.sesame.common.web.PrintFriendliness;
+import kim.sesame.common.req.PrintFriendliness;
 import lombok.Getter;
 import lombok.Setter;
 

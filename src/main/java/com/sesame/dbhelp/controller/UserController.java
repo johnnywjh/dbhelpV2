@@ -2,9 +2,9 @@ package com.sesame.dbhelp.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sesame.common.controller.AbstractWebController;
-import com.sesame.common.exception.BizException;
-import com.sesame.common.response.Response;
+import kim.sesame.common.web.controller.AbstractWebController;
+import kim.sesame.common.exception.BizException;
+import kim.sesame.common.response.Response;
 import com.sesame.dbhelp.util.Theme;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

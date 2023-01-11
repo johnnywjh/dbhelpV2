@@ -1,7 +1,7 @@
-package com.sesame.common.response;
+package kim.sesame.common.response;
 
 
-import com.sesame.common.web.PrintFriendliness;
+import kim.sesame.common.req.PrintFriendliness;
 
 /**
  * 响应基类.

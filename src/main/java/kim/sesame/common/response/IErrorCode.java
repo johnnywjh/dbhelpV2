@@ -1,4 +1,4 @@
-package com.sesame.common.response;
+package kim.sesame.common.response;
 
 /**
  * 响应错误码的抽象解耦,  只能枚举继承

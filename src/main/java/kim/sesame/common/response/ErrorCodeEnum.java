@@ -1,4 +1,4 @@
-package com.sesame.common.response;
+package kim.sesame.common.response;
 
 /**
  * 响应状态枚举

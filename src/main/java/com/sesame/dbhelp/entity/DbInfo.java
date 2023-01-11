@@ -1,6 +1,6 @@
 package com.sesame.dbhelp.entity;
 
-import com.sesame.common.web.BaseRequest;
+import kim.sesame.common.req.BaseRequest;
 import lombok.Getter;
 import lombok.Setter;
 

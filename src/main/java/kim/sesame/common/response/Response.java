@@ -1,4 +1,4 @@
-package com.sesame.common.response;
+package kim.sesame.common.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,10 +1,10 @@
 package com.sesame.dbhelp.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sesame.common.annotation.ReqParamsCheck;
-import com.sesame.common.controller.AbstractWebController;
-import com.sesame.common.exception.BizException;
-import com.sesame.common.response.Response;
+import kim.sesame.common.annotation.ReqParamsCheck;
+import kim.sesame.common.web.controller.AbstractWebController;
+import kim.sesame.common.exception.BizException;
+import kim.sesame.common.response.Response;
 import com.sesame.dbhelp.config.BaseConfig;
 import com.sesame.dbhelp.entity.Column;
 import com.sesame.dbhelp.entity.DbInfo;

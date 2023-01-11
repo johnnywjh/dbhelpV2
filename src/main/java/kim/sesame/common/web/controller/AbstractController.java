@@ -1,14 +1,14 @@
-package com.sesame.common.controller;
+package kim.sesame.common.web.controller;
 
-import com.sesame.common.exception.BizArgumentException;
-import com.sesame.common.exception.IException;
-import com.sesame.common.response.ErrorCodeEnum;
-import com.sesame.common.response.Response;
-import com.sesame.common.response.ResponseBuild;
+import kim.sesame.common.exception.BizArgumentException;
+import kim.sesame.common.exception.IException;
+import kim.sesame.common.response.ErrorCodeEnum;
+import kim.sesame.common.response.Response;
+import kim.sesame.common.response.ResponseBuild;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.sesame.common.response.IErrorCode;
+import kim.sesame.common.response.IErrorCode;
 
 import java.util.List;
 
