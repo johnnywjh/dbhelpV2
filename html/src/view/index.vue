@@ -40,6 +40,7 @@
             <a-button type="primary" v-if="dbList.length>2" @click="showQueryFieid">搜索字段</a-button>
             <a-button type="primary" v-else disabled>搜索字段</a-button>
           </a-space>
+          <switch-theme style="margin-left: 20px;" />
 
         </a-col>
         <!--
@@ -200,6 +201,7 @@ import Http from '@/utils/Http'
 import LocalData from "@/utils/localData"
 import ApiUrls from '@/utils/ApiUrls'
 
+import SwitchTheme from "@/view/theme/switch-theme.vue"
 import TableDetail from '@/view/modal/table-detail.vue'
 import CodePreview from '@/view/modal/code-preview.vue'
 import DiffDbTables from '@/view/modal/diffDb-tables.vue'
