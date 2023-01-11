@@ -1,6 +1,7 @@
 package kim.sesame.common.exception;
 
-import kim.sesame.common.response.IErrorCode;
+
+import kim.sesame.common.entity.IErrorCode;
 
 /**
  * 异常接口

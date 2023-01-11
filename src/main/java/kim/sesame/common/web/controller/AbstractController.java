@@ -1,42 +1,43 @@
 package kim.sesame.common.web.controller;
 
+import kim.sesame.common.entity.IErrorCode;
 import kim.sesame.common.exception.BizArgumentException;
 import kim.sesame.common.exception.IException;
-import kim.sesame.common.response.ErrorCodeEnum;
-import kim.sesame.common.response.Response;
-import kim.sesame.common.response.ResponseBuild;
-import lombok.extern.apachecommons.CommonsLog;
+import kim.sesame.common.result.ApiResult;
+import kim.sesame.common.result.ApiResultBuild;
+import kim.sesame.common.result.ErrorCodeEnum;
+import kim.sesame.common.web.config.ProjectConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import kim.sesame.common.response.IErrorCode;
 
 import java.util.List;
 
 /**
  * Controlle 基础抽象类
  **/
-@CommonsLog
+@Slf4j
 public abstract class AbstractController {
 
 
-    public Response returnSuccess() {
-        return ResponseBuild.ContextSuccess.SUCCESS;
+    public ApiResult success() {
+        return ApiResultBuild.ContextSuccess.SUCCESS;
     }
 
-    public Response returnSuccess(Object result) {
-        return Response.create().setSuccess(true).setData(result);
+    public ApiResult success(Object result) {
+        return ApiResult.create().setSuccess(true).setData(result);
     }
 
-    public Response returnSuccess(Object result, String msg) {
-        return Response.create().setSuccess(true).setData(result).setMessage(msg);
+    public ApiResult success(Object result, String msg) {
+        return ApiResult.create().setSuccess(true).setData(result).setMessage(msg);
     }
 
-    public Response returnSuccess(List list) {
-        return Response.create().setSuccess(true).setData(list);
+    public ApiResult success(List list) {
+        return ApiResult.create().setSuccess(true).setData(list);
     }
 
-    public Response returnSuccess(List list, String msg) {
-        return Response.create().setSuccess(true).setData(list).setMessage(msg);
+    public ApiResult success(List list, String msg) {
+        return ApiResult.create().setSuccess(true).setData(list).setMessage(msg);
     }
 
 
@@ -48,10 +49,10 @@ public abstract class AbstractController {
 
     @ExceptionHandler(BizArgumentException.class)
     @ResponseBody
-    public Response handleException(BizArgumentException exception) {
+    public ApiResult handleException(BizArgumentException exception) {
         log.error(exception.getMessage(), exception);
         ErrorCodeEnum erroeEnum = ErrorCodeEnum.PARAMS_ERR;
-        return Response.create().setErrorType(erroeEnum.name()).setCode(erroeEnum.getCode()).setMessage(exception.getMessage());
+        return ApiResult.create().setErrorType(erroeEnum.name()).setCode(erroeEnum.getCode()).setMessage(exception.getMessage());
     }
 
     /**
@@ -62,18 +63,18 @@ public abstract class AbstractController {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Response handleException(Exception exception) {
+    public ApiResult handleException(Exception exception) {
 
         log.error(exception.getMessage(), exception);
 
         if (exception instanceof IException) {
             IErrorCode ece = ((IException) exception).getErrorCodeEnum();
-            return Response.create().setErrorType(ece.name()).setCode(ece.getCode()).setMessage(exception.getMessage());
+            return ApiResult.create().setErrorType(ece.name()).setCode(ece.getCode()).setMessage(exception.getMessage());
         }
         //系统异常
         else {
             IErrorCode ece = ErrorCodeEnum.SYSTEMERR;
-            return Response.create().setErrorType(ece.name()).setCode(ece.getCode()).setMessage(getExceptionMessage(exception));
+            return ApiResult.create().setErrorType(ece.name()).setCode(ece.getCode()).setMessage(getExceptionMessage(exception));
         }
     }
 
@@ -81,10 +82,10 @@ public abstract class AbstractController {
      * 判断是否是 debug 模式,如果是就返回异常的详细信息
      */
     public String getExceptionMessage(Exception e) {
-//        String message = ProjectConfig.getSystemExceptionMessage();
-//        if (ProjectConfig.isDebug()) {
-//            message = e.getMessage();
-//        }
-        return e.getMessage();
+        String message = ProjectConfig.getSystemExceptionMessage();
+        if (ProjectConfig.isDebug()) {
+            message = e.getMessage();
+        }
+        return message;
     }
 }

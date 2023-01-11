@@ -1,12 +1,12 @@
 package kim.sesame.common.exception;
 
-
-import kim.sesame.common.response.IErrorCode;
+import kim.sesame.common.entity.IErrorCode;
 
 public class AbstractBizException extends RuntimeException implements IException {
 
     private IErrorCode errorCodeEnum;
 
+    @Override
     public IErrorCode getErrorCodeEnum() {
         return errorCodeEnum;
     }
