@@ -6,7 +6,6 @@ import kim.sesame.common.exception.IException;
 import kim.sesame.common.result.ApiResult;
 import kim.sesame.common.result.ApiResultBuild;
 import kim.sesame.common.result.ErrorCodeEnum;
-import kim.sesame.common.web.config.ProjectConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -82,10 +81,10 @@ public abstract class AbstractController {
      * 判断是否是 debug 模式,如果是就返回异常的详细信息
      */
     public String getExceptionMessage(Exception e) {
-        String message = ProjectConfig.getSystemExceptionMessage();
-        if (ProjectConfig.isDebug()) {
-            message = e.getMessage();
-        }
-        return message;
+//        String message = ProjectConfig.getSystemExceptionMessage();
+//        if (ProjectConfig.isDebug()) {
+//            message = e.getMessage();
+//        }
+        return e.getMessage();
     }
 }

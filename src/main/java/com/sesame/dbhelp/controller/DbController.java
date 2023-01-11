@@ -2,9 +2,9 @@ package com.sesame.dbhelp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import kim.sesame.common.annotation.ReqParamsCheck;
+import kim.sesame.common.result.ApiResult;
 import kim.sesame.common.web.controller.AbstractWebController;
 import kim.sesame.common.exception.BizException;
-import kim.sesame.common.response.Response;
 import com.sesame.dbhelp.config.BaseConfig;
 import com.sesame.dbhelp.entity.Column;
 import com.sesame.dbhelp.entity.DbInfo;
@@ -36,7 +36,7 @@ public class DbController extends AbstractWebController {
 
     @ReqParamsCheck
     @PostMapping("/getTables")
-    public Response getTables(@RequestBody DbInfo bean) {
+    public ApiResult getTables(@RequestBody DbInfo bean) {
 
         bean.viferyDbType();
         Connection conn = DBService.getConn(bean);
@@ -49,27 +49,27 @@ public class DbController extends AbstractWebController {
 
             DBService.closeConn(conn);
 
-            return returnSuccess(list);
+            return success(list);
         }
 
     }
 
     @ReqParamsCheck
     @PostMapping("/searchTableDetail")
-    public Response searchTableDetail(@RequestBody DbInfo bean) {
+    public ApiResult searchTableDetail(@RequestBody DbInfo bean) {
         bean.viferyDbType();
         List<Column> list = new ArrayList<>();
 
         String tableName = bean.getTableName();
         if (bean == null || StringUtils.isEmpty(tableName)) {
-            return returnSuccess(list);
+            return success(list);
         }
         Connection conn = DBService.getConn(bean);
 
         Table table = DBServicePool.getDbService(bean.getDbDriver()).parseTable(tableName, conn);
 
         DBService.closeConn(conn);
-        return returnSuccess(table);
+        return success(table);
     }
 
     /**
@@ -79,7 +79,7 @@ public class DbController extends AbstractWebController {
      * @return
      */
     @RequestMapping("/queryDbTAbleInfo")
-    public Response queryDbTAbleInfo(@RequestBody DbInfo bean) {
+    public ApiResult queryDbTAbleInfo(@RequestBody DbInfo bean) {
         bean.viferyDbType();
         Connection conn = DBService.getConn(bean);
 
@@ -98,7 +98,7 @@ public class DbController extends AbstractWebController {
 
             DBService.closeConn(conn);
 
-            return returnSuccess(list);
+            return success(list);
         }
     }
 
@@ -145,7 +145,7 @@ public class DbController extends AbstractWebController {
 
     @RequestMapping("/preview")
     @ResponseBody
-    public Response preview(@RequestBody DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
+    public ApiResult preview(@RequestBody DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
         bean.viferyDbType();
         String basePath = getFileDir("preview");// preview
         String systime = DateUtil.formatString(new Date(), "yyyyMMddHHmmss");
@@ -164,7 +164,7 @@ public class DbController extends AbstractWebController {
         map.put("dirVo", new DirVo(outPath, fileDir));
         map.put("list", list);
 
-        return returnSuccess(map);
+        return success(map);
     }
 
     public String getFileDir(String name) {
@@ -232,7 +232,7 @@ public class DbController extends AbstractWebController {
 
     @RequestMapping("/getnode")
     @ResponseBody
-    public Response getnode(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public ApiResult getnode(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 
         String outPath = (String) request.getSession().getAttribute("outPath");
         String fileDir = (String) request.getSession().getAttribute("fileDir");
@@ -240,7 +240,7 @@ public class DbController extends AbstractWebController {
         File file = new File(outPath);
         List<Map> list = searchfile(file, null);
 
-        return returnSuccess(list);
+        return success(list);
     }
 
     public static List<Map> searchfile(File file, String parentId) {
@@ -273,7 +273,7 @@ public class DbController extends AbstractWebController {
      */
     @RequestMapping("/getfilecontent")
     @ResponseBody
-    public Response getfilecontent(String path) {
+    public ApiResult getfilecontent(String path) {
 
         List<String> list;
         try {
@@ -284,7 +284,7 @@ public class DbController extends AbstractWebController {
             e.printStackTrace();
         }
 
-        return returnSuccess(list);
+        return success(list);
     }
 
     /**

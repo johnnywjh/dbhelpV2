@@ -1,7 +1,7 @@
 package com.sesame.aspect;
 
 import kim.sesame.common.exception.BizArgumentException;
-import kim.sesame.common.response.AbstractResponse;
+import kim.sesame.common.result.AbstractResponse;
 import kim.sesame.common.req.AbstractRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import kim.sesame.common.web.controller.AbstractWebController;
 import kim.sesame.common.exception.BizException;
-import kim.sesame.common.response.Response;
+import kim.sesame.common.result.ApiResult;
 import com.sesame.dbhelp.util.Theme;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,18 +24,18 @@ public class UserController  extends AbstractWebController {
      * 读取数据库配置文件
      */
     @PostMapping("/readDbCofig")
-    public Response readDbCofig(HttpServletRequest request, HttpServletResponse response, MultipartFile file) throws Exception {
+    public ApiResult readDbCofig(HttpServletRequest request, HttpServletResponse response, MultipartFile file) throws Exception {
         if (file.getSize() > 0) {
             String str = new String(file.getBytes());
             JSONObject json = JSON.parseObject(str);
 
-            return returnSuccess(json);
+            return success(json);
         } else {
             throw new BizException("上传的文件为空");
         }
     }
     @PostMapping("/getThemes")
-    public Response getThemes(){
-        return  returnSuccess(Theme.themes);
+    public ApiResult getThemes(){
+        return  success(Theme.themes);
     }
 }
