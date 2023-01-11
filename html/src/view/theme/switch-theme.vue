@@ -3,8 +3,8 @@
   <span>
     开启暗黑模式
     <a-switch style="margin-left: 5px;"
-        v-model:checked="isDark"
-        @change="change"
+              v-model:checked="isDark"
+              @change="change"
     >
       <template #checkedChildren>
         <check-outlined/>
@@ -21,8 +21,8 @@
 import {ref, reactive, computed, onMounted} from "vue";
 import {CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
 import localData from "@/utils/localData";
-import dark from '@/style/dark.less'
-import light from '@/style/light.less'
+import dark from '@/style/dark.less?inline'
+import light from '@/style/light.less?inline'
 
 const isDark = ref(true)
 
@@ -58,7 +58,3 @@ const getDarkTheme = () => {
 }
 
 </script>
-
-<style>
-
-</style>
