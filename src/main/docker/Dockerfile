@@ -8,7 +8,7 @@ ENTRYPOINT ["java", "-jar", "/app.jar"]
 # docker save -o ~/jar/fileName.tar image:version
 # docker load < fileName.tar
 
-# docker tag johnnywjh/dbhelp:v.2.2 johnnywjh/dbhelp:v.2.2.m1
+# docker tag johnnywjh/dbhelp:v.2.3 johnnywjh/dbhelp:v.2.3.m1
 # docker save -o ~/fsdownload/dbhelp.arm64.tar johnnywjh/dbhelp:1.02.arm64
 # docker load < dbhelp.arm64.tar
 
