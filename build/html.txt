@@ -1,0 +1,18 @@
+## 安装基础模块
+npm install axios
+npm install dayjs
+
+## 代码高亮模块
+npm install --save highlight.js
+npm install --save @highlightjs/vue-plugin
+
+## 安装less编译模块
+npm i less -D
+npm i less-loader -D
+
+## 检查版本工具
+sudo npm i -g npm-check-updates
+ncu -u
+npm install
+
+sudo npm uninstall npm-check-updates
