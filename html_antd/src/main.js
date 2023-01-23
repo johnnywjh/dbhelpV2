@@ -1,7 +1,6 @@
 import {createApp} from 'vue';
-import App from './App.vue';
-
 import Antd from 'ant-design-vue';
+import App from './App.vue';
 import 'ant-design-vue/dist/antd.css';
 // import 'ant-design-vue/dist/antd.dark.css';
 // import 'ant-design-vue/dist/antd.dark.less';
