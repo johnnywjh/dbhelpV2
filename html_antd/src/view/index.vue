@@ -2,7 +2,7 @@
   <div id="container">
     <div class="topDiv">
       <a-row :gutter="16">
-        <a-col :span="4">
+        <a-col :span="3">
           <a-button @click="fileStyleShow">数据源格式</a-button>
         </a-col>
         <a-col :span="3">
@@ -16,7 +16,7 @@
             </a-button>
           </a-upload>
         </a-col>
-        <a-col :span="16">
+        <a-col :span="10">
           <!--          -->
           <a-space>
             <a-select :placeholder="dbSelectTitle"
@@ -40,6 +40,8 @@
             <a-button type="primary" v-if="dbList.length>2" @click="showQueryFieid">搜索字段</a-button>
             <a-button type="primary" v-else disabled>搜索字段</a-button>
           </a-space>
+        </a-col>
+        <a-col :span="8">
           <switch-theme style="margin-left: 20px;" />
           <a-tag style="margin-left: 20px">v.2.3</a-tag>
         </a-col>
