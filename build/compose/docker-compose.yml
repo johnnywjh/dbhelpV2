@@ -3,7 +3,7 @@ version: "3"
 services:
   dbhelp:
     container_name: dbhelp # 容器名称
-    image: johnnywjh/dbhelp:v.2.3
+    image: johnnywjh/dbhelp
     restart: always
     volumes:
       - ~/ars/dbhelp:/root/ars/dbhelp
