@@ -6,6 +6,9 @@ npm install dayjs
 npm install --save highlight.js
 npm install --save @highlightjs/vue-plugin
 
+## 安装 use
+npm i @vueuse/core
+
 ## 安装less编译模块
 npm i less -D
 npm i less-loader -D
