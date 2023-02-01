@@ -41,7 +41,7 @@
             <a-button type="primary" v-else disabled>搜索字段</a-button>
           </a-space>
           <switch-theme style="margin-left: 20px;" />
-          <a-typography-text style="margin-left: 20px">v.2.3</a-typography-text>
+          <a-tag style="margin-left: 20px">v.2.3</a-tag>
         </a-col>
         <!--
                         <a-col :span="4">
