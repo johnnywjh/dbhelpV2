@@ -53,28 +53,27 @@
               type="card"
           >
             <el-tab-pane label="普通" name="1">
-              <div v-for="item in detailDataSelectList">
-                <div>{{ item.javaName }} : {{ item.comment }}</div>
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_1_copy"/>
+                <div v-html="liInfo_doc_1"></div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="java1" name="2">
-              <div v-for="item in detailDataSelectList">
-                <div>private {{ item.javaType }} {{ item.javaName }}; // {{ item.comment }}</div>
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_2_copy"/>
+                <div v-html="liInfo_doc_2"></div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="java2" name="3">
-              <div v-for="item in detailDataSelectList">
-                <div>/** {{ item.comment }} */</div>
-                <div>private {{ item.javaType }} {{ item.javaName }};</div>
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_3_copy"/>
+                <div v-html="liInfo_doc_3"></div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="markdown" name="4">
-              <div>
-                <div>字段 | 类型 | 描述</div>
-                <div>:----|:----|:----</div>
-                <div v-for="item in detailDataSelectList">
-                  <div>{{ item.javaName }} | {{ item.javaType }} | {{ item.comment }}</div>
-                </div>
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_4_copy"/>
+                <div v-html="liInfo_doc_4"></div>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -179,5 +178,63 @@ const liInfo_div3 = computed(() => {
 // 文档上单选按钮
 const liInfo_doc_class = ref('1')
 
+const liInfo_doc_1 = computed(() => {
+ return doc1('<br/>')
+})
+const liInfo_doc_1_copy = computed(() => {
+  return doc1('\n')
+})
+function doc1(str){
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    arr.push(`${item.javaName} : ${item.comment}`)
+  }
+  return arr.join(str)
+}
+
+const liInfo_doc_2 = computed(() => {
+  return doc2('<br/>')
+})
+const liInfo_doc_2_copy = computed(() => {
+  return doc2('\n')
+})
+function doc2(str){
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    arr.push(`private ${item.javaType} ${item.javaName}; // ${item.comment }`)
+  }
+  return arr.join(str)
+}
+
+const liInfo_doc_3 = computed(() => {
+  return doc3('<br/>')
+})
+const liInfo_doc_3_copy = computed(() => {
+  return doc3('\n')
+})
+function doc3(str){
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    arr.push(`/** ${item.comment} */`)
+    arr.push(`private ${item.javaType} ${item.javaName };`)
+  }
+  return arr.join(str)
+}
+
+const liInfo_doc_4 = computed(() => {
+  return doc4('<br/>')
+})
+const liInfo_doc_4_copy = computed(() => {
+  return doc4('\n')
+})
+function doc4(str){
+  let arr = [];
+  arr.push('字段 | 类型 | 描述')
+  arr.push(':----|:----|:----')
+  for (let item of detailDataSelectList.value) {
+    arr.push(`${item.javaName} | ${item.javaType} | ${item.comment}`)
+  }
+  return arr.join(str)
+}
 
 </script>
