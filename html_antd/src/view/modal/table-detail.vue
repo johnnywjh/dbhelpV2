@@ -33,15 +33,15 @@
           </a-space>
           <!-- div1 -->
           <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
-            <highlightjs language="sql" :code="liInfo_div1" />
+            <highlightjs language="sql" :code="liInfo_div1"/>
           </a-typography-paragraph>
           <!-- div2 -->
           <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
-            <highlightjs language="sql" :code="liInfo_div2" />
+            <highlightjs language="sql" :code="liInfo_div2"/>
           </a-typography-paragraph>
           <!-- div3 -->
           <a-typography-paragraph :code="detailCodeShowSql" copyable class="liInfo_div">
-            <highlightjs language="sql" :code="liInfo_div3" />
+            <highlightjs language="sql" :code="liInfo_div3"/>
           </a-typography-paragraph>
         </a-tab-pane>
         <a-tab-pane key="doc" tab="文档">
@@ -65,14 +65,14 @@
                 {{ item.javaName }} : {{ item.comment }}
               </span>
               <span v-if="liInfo_doc_class==2">
-                private {{ item.javaType }} {{ item.javaName }}; // {{item.comment}}
+                private {{ item.javaType }} {{ item.javaName }}; // {{ item.comment }}
               </span>
               <span v-if="liInfo_doc_class==3">
-                /** {{item.comment}} */ <br/>
+                /** {{ item.comment }} */ <br/>
                 private {{ item.javaType }} {{ item.javaName }};
               </span>
               <span v-if="liInfo_doc_class==4">
-                  <span>{{ item.javaName }} | {{ item.javaType }} | {{item.comment}}</span>
+                  <span>{{ item.javaName }} | {{ item.javaType }} | {{ item.comment }}</span>
               </span>
 
               <br/>
@@ -85,7 +85,7 @@
           <!--          <a-switch v-model:checked="detailCodeShowDDL" checked-children="开" un-checked-children="关"/>-->
           <!--        </a-space>-->
           <a-typography-paragraph :code="detailCodeShowDDL" copyable class="liInfo_div">
-            <highlightjs language="sql" :code="detailData.ddl" />
+            <highlightjs language="sql" :code="detailData.ddl"/>
           </a-typography-paragraph>
         </a-tab-pane>
       </a-tabs>
@@ -116,6 +116,7 @@ const props = defineProps({
 // 子组件的弹出方法 ==> 父组件调用
 const show = () => {
   visible.value = true
+  as.value = ''
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -152,7 +153,7 @@ const liInfo_div1 = computed(() => {
   for (let l of detailDataSelectList.value) {
     arr.push(`${ass.value}${l.name}`)
   }
-  return 'select \n'+arr.join(' , ')+` \n from ${props.detailData.tableName} ` + as.value
+  return 'select \n' + arr.join(' , ') + ` \n from ${props.detailData.tableName} ` + as.value
 })
 const liInfo_div2 = computed(() => {
   let arr = [];
@@ -163,7 +164,7 @@ const liInfo_div2 = computed(() => {
       arr.push(`${ass.value}${l.name} '${l.javaName}'`)
     }
   }
-  return 'select \n'+arr.join(' , ')+` \n from ${props.detailData.tableName} ` + as.value
+  return 'select \n' + arr.join(' , ') + ` \n from ${props.detailData.tableName} ` + as.value
 })
 const liInfo_div3 = computed(() => {
   let arr = [];
@@ -171,12 +172,11 @@ const liInfo_div3 = computed(() => {
     let com = l.comment || l.name;
     arr.push(`${ass.value}${l.name} '${com}'`)
   }
-  return 'select \n'+arr.join(' , ')+` \n from ${props.detailData.tableName} ` + as.value
+  return 'select \n' + arr.join(' , ') + ` \n from ${props.detailData.tableName} ` + as.value
 })
 
 // 文档上单选按钮
 const liInfo_doc_class = ref('1')
-
 
 
 </script>

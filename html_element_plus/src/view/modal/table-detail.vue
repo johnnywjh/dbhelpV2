@@ -114,6 +114,7 @@ const props = defineProps({
 // 子组件的弹出方法 ==> 父组件调用
 const show = () => {
   visible.value = true
+  as.value = ''
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -179,12 +180,13 @@ const liInfo_div3 = computed(() => {
 const liInfo_doc_class = ref('1')
 
 const liInfo_doc_1 = computed(() => {
- return doc1('<br/>')
+  return doc1('<br/>')
 })
 const liInfo_doc_1_copy = computed(() => {
   return doc1('\n')
 })
-function doc1(str){
+
+function doc1(str) {
   let arr = [];
   for (let item of detailDataSelectList.value) {
     arr.push(`${item.javaName} : ${item.comment}`)
@@ -198,10 +200,11 @@ const liInfo_doc_2 = computed(() => {
 const liInfo_doc_2_copy = computed(() => {
   return doc2('\n')
 })
-function doc2(str){
+
+function doc2(str) {
   let arr = [];
   for (let item of detailDataSelectList.value) {
-    arr.push(`private ${item.javaType} ${item.javaName}; // ${item.comment }`)
+    arr.push(`private ${item.javaType} ${item.javaName}; // ${item.comment}`)
   }
   return arr.join(str)
 }
@@ -212,11 +215,12 @@ const liInfo_doc_3 = computed(() => {
 const liInfo_doc_3_copy = computed(() => {
   return doc3('\n')
 })
-function doc3(str){
+
+function doc3(str) {
   let arr = [];
   for (let item of detailDataSelectList.value) {
     arr.push(`/** ${item.comment} */`)
-    arr.push(`private ${item.javaType} ${item.javaName };`)
+    arr.push(`private ${item.javaType} ${item.javaName};`)
   }
   return arr.join(str)
 }
@@ -227,7 +231,8 @@ const liInfo_doc_4 = computed(() => {
 const liInfo_doc_4_copy = computed(() => {
   return doc4('\n')
 })
-function doc4(str){
+
+function doc4(str) {
   let arr = [];
   arr.push('字段 | 类型 | 描述')
   arr.push(':----|:----|:----')
