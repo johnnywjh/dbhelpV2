@@ -61,10 +61,33 @@
           @change="reLoadTables"
       >
         <template #append>
-          <el-button @click="reLoadTables" :icon="Search" />
+          <el-button @click="reLoadTables" :icon="Search"/>
         </template>
       </el-input>
+
+      <el-tabs v-model="activeKey" style="margin-top: 5px">
+        <el-tab-pane name="1">
+          <template #label>
+            <span>
+              <span>列表 <el-tag type="danger">{{ tableList ? tableList.length : -1 }}</el-tag></span>
+            </span>
+          </template>
+          User
+        </el-tab-pane>
+        <el-tab-pane label="代码" name="2">
+          <template #label>
+            <span>
+              <span>列表 <el-tag type="danger">{{ selectTable.length }}</el-tag></span>
+            </span>
+          </template>
+          code
+        </el-tab-pane>
+      </el-tabs>
+
     </div>
+
+    <!--    模块框=>数据源格式 -->
+    <file-style ref="fileStyleRef"/>
   </div>
 
 </template>
@@ -77,10 +100,14 @@ import ApiUrls from '@/utils/ApiUrls'
 import DbData from '@/utils/DbData'
 
 import {ElMessage} from 'element-plus'
-import { Search } from '@element-plus/icons-vue'
+import {Search} from '@element-plus/icons-vue'
 
 import SwitchTheme from "@/view/theme/switch-theme.vue"
-
+// import TableDetail from '@/view/modal/table-detail.vue'
+// import CodePreview from '@/view/modal/code-preview.vue'
+// import DiffDbTables from '@/view/modal/diffDb-tables.vue'
+import FileStyle from '@/view/modal/file-style.vue'
+// import QueryFieid from '@/view/modal/query-fieid.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -507,7 +534,7 @@ function showQueryFieid() {
 }
 
 .content {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .content .topSpan {
