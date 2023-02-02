@@ -73,7 +73,7 @@
             </span>
           </template>
           <el-table :data="tableList" stripe style="width: 100%">
-            <el-table-column prop="index" label="序号" width="100"/>
+            <el-table-column prop="index" align="right" label="序号" width="100"/>
             <el-table-column prop="operation" label="操作" width="200">
               <template #default="scope">
                 <el-space>
@@ -162,7 +162,7 @@ const tableList = ref([])
 const searchTableText = ref('')
 const userinfo = reactive({
   db: {
-    name: '', url: '', pwd: ''
+    name: '', url: '', pwd: '', key: ''
   },
   fkType: undefined,
   exList: []

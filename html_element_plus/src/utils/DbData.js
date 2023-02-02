@@ -8,7 +8,7 @@ let opLeyerMsgTime = 1000;
 
 let DbData = {
     setDb(db) {
-        useLocalStorage(datakey_db, db)
+        localStorage.setItem(datakey_db, JSON.stringify(db))
     },
     getDb() {
         let valueStr = localStorage.getItem(datakey_db)
@@ -19,7 +19,7 @@ let DbData = {
     },
     /** 保存用户信息 */
     setUser(user) {
-        useLocalStorage(datakey_user, user)
+        localStorage.setItem(datakey_user, JSON.stringify(user))
     },
     /** 获取用户信息 */
     getUser() {
@@ -27,13 +27,16 @@ let DbData = {
         return valueStr ? JSON.parse(valueStr) : null
     },
     /** 保存某一个数据库的表的集合 */
-    setTables(key, list) {
-        // LocalData.data(datakey_tables, {key: key, value: list});
+    setTables(tableName, tableList) {
+        var tableMap = getTablesMap();
+        tableMap = tableMap || {};
+        tableMap[tableName] = tableList;
+        localStorage.setItem(datakey_tables, JSON.stringify(tableMap))
     },
     /** 获取这个库的表的集合 */
-    getTables(key) {
-        // var obj = LocalData.data(datakey_tables);
-        // return obj[key];
+    getTables(tableName) {
+        var tableMap = getTablesMap();
+        return tableMap ? tableMap[tableName] : null
     },
     /** 获取表的详情 */
     getTableObj(key, tableName) {
@@ -64,6 +67,11 @@ let DbData = {
         // }
 
     }
+}
+
+function getTablesMap() {
+    let valueStr = localStorage.getItem(datakey_tables)
+    return valueStr ? JSON.parse(valueStr) : null
 }
 
 export default DbData
