@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="10">
           <el-space>
-            <el-select v-model="dbKey" :placeholder="dbSelectTitle">
+            <el-select v-model="dbKey" @change="selectDbValue" :placeholder="dbSelectTitle">
               <el-option
                   v-for="item in dbList"
                   :key="item.value"
@@ -72,7 +72,33 @@
               <span>列表 <el-tag type="danger">{{ tableList ? tableList.length : -1 }}</el-tag></span>
             </span>
           </template>
-          User
+          <el-table :data="tableList" stripe style="width: 100%">
+            <el-table-column prop="index" label="序号" width="100"/>
+            <el-table-column prop="operation" label="操作" width="200">
+              <template #default="scope">
+                <el-space>
+                  <el-tag class="but" color="green" @click="detailLayerClick(scope.row)">详情</el-tag>
+
+                  <el-tag v-if="scope.row.selected" color="purple">已选</el-tag>
+                  <el-tag v-else class="but" color="cyan" @click="selectClick(scope.row)">选择</el-tag>
+
+                  <el-tag class="but" v-if="scope.row.columns" @click="cleanCache(scope.row)" color="orange">清除缓存
+                  </el-tag>
+                  <el-tag v-else>清除缓存</el-tag>
+                </el-space>
+              </template>
+            </el-table-column>
+            <el-table-column prop="tableNameStr" label="表名">
+              <template #default="scope">
+                {{ scope.row.tableNameStr }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="commentStr" label="注释">
+              <template #default="scope">
+                {{ scope.row.commentStr }}
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
         <el-tab-pane label="代码" name="2">
           <template #label>
