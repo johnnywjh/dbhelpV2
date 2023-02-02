@@ -91,12 +91,12 @@
             </el-table-column>
             <el-table-column prop="tableNameStr" label="表名">
               <template #default="scope">
-                {{ scope.row.tableNameStr }}
+                <span v-html="scope.row.tableNameStr"></span>
               </template>
             </el-table-column>
             <el-table-column prop="commentStr" label="注释">
               <template #default="scope">
-                {{ scope.row.commentStr }}
+                <span v-html="scope.row.commentStr"></span>
               </template>
             </el-table-column>
           </el-table>
@@ -115,6 +115,14 @@
 
     <!--    模块框=>数据源格式 -->
     <file-style ref="fileStyleRef"/>
+
+    <!--    模块框=>表格详情 -->
+    <table-detail
+        ref="tableDetailRef"
+        :detail-data="detailData"
+        :title="tableDetailTitle"
+    />
+
   </div>
 
 </template>
@@ -130,7 +138,7 @@ import {ElMessage} from 'element-plus'
 import {Search} from '@element-plus/icons-vue'
 
 import SwitchTheme from "@/view/theme/switch-theme.vue"
-// import TableDetail from '@/view/modal/table-detail.vue'
+import TableDetail from '@/view/modal/table-detail.vue'
 // import CodePreview from '@/view/modal/code-preview.vue'
 // import DiffDbTables from '@/view/modal/diffDb-tables.vue'
 import FileStyle from '@/view/modal/file-style.vue'
@@ -579,7 +587,7 @@ function showQueryFieid() {
 .liInfo_div_ex {
   border: solid 1px #CCC;
   height: auto;
-  position: absolute;
+  position: relative;
 }
 
 .liInfo_div {
@@ -587,6 +595,7 @@ function showQueryFieid() {
   padding: 5px;
   margin-top: 5px;
   height: auto;
+  position: relative;
 }
 
 .add_div {
