@@ -33,17 +33,17 @@
           </el-space>
           <!-- div1 -->
           <div class="liInfo_div">
-            <copy :content="liInfo_div1" />
+            <copy :content="liInfo_div1"/>
             <highlightjs language="sql" :code="liInfo_div1"/>
           </div>
           <!-- div2 -->
           <div class="liInfo_div">
-            <copy :content="liInfo_div2" />
+            <copy :content="liInfo_div2"/>
             <highlightjs language="sql" :code="liInfo_div2"/>
           </div>
           <!-- div3 -->
           <div class="liInfo_div">
-            <copy :content="liInfo_div3" />
+            <copy :content="liInfo_div3"/>
             <highlightjs language="sql" :code="liInfo_div3"/>
           </div>
         </el-tab-pane>
@@ -53,33 +53,35 @@
               type="card"
           >
             <el-tab-pane label="普通" name="1">
-              <span v-for="item in detailDataSelectList">
-                {{ item.javaName }} : {{ item.comment }}
-              </span>
+              <div v-for="item in detailDataSelectList">
+                <div>{{ item.javaName }} : {{ item.comment }}</div>
+              </div>
             </el-tab-pane>
             <el-tab-pane label="java1" name="2">
-              <span v-for="item in detailDataSelectList">
-                private {{ item.javaType }} {{ item.javaName }}; // {{ item.comment }}
-              </span>
+              <div v-for="item in detailDataSelectList">
+                <div>private {{ item.javaType }} {{ item.javaName }}; // {{ item.comment }}</div>
+              </div>
             </el-tab-pane>
             <el-tab-pane label="java2" name="3">
-              <span v-for="item in detailDataSelectList">
-                /** {{ item.comment }} */ <br/>
-                private {{ item.javaType }} {{ item.javaName }};
-              </span>
+              <div v-for="item in detailDataSelectList">
+                <div>/** {{ item.comment }} */</div>
+                <div>private {{ item.javaType }} {{ item.javaName }};</div>
+              </div>
             </el-tab-pane>
             <el-tab-pane label="markdown" name="4">
-              <span>
-                <span>字段  |  类型  | 描述</span> <br/>
-                <span>:----|:----|:----</span><br/>
-                <span>{{ item.javaName }} | {{ item.javaType }} | {{ item.comment }}</span>
-            </span>
+              <div>
+                <div>字段 | 类型 | 描述</div>
+                <div>:----|:----|:----</div>
+                <div v-for="item in detailDataSelectList">
+                  <div>{{ item.javaName }} | {{ item.javaType }} | {{ item.comment }}</div>
+                </div>
+              </div>
             </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
         <el-tab-pane name="ddl" label="DDL">
           <div class="liInfo_div">
-            <copy :content="detailData.ddl" />
+            <copy :content="detailData.ddl"/>
             <highlightjs language="sql" :code="detailData.ddl"/>
           </div>
         </el-tab-pane>
