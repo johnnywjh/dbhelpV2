@@ -7,6 +7,7 @@
         :title="props.title"
     >
       <div class="liInfo_div_ex">
+        <copy :content="layerFileText" />
         <highlightjs language="json" :code="layerFileText"/>
       </div>
     </el-dialog>
@@ -15,6 +16,8 @@
 
 <script setup>
 import {ref, defineExpose} from 'vue'
+
+import Copy from '@/components/copy/index.vue'
 
 const visible = ref(false)
 const props = defineProps({

@@ -552,6 +552,7 @@ function showQueryFieid() {
 .liInfo_div_ex {
   border: solid 1px #CCC;
   height: auto;
+  position: absolute;
 }
 
 .liInfo_div {
