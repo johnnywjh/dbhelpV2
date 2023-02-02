@@ -1,5 +1,3 @@
-import {useLocalStorage} from '@vueuse/core'
-
 /* 数据库的key*/
 let datakey_db = "dbsource";
 let datakey_user = "user";
@@ -14,8 +12,13 @@ let DbData = {
         let valueStr = localStorage.getItem(datakey_db)
         return valueStr ? JSON.parse(valueStr) : null
     },
-    cleanDb(key) {
-        localStorage.removeItem(datakey_tables)
+    cleanDb(dbKey) {
+        // localStorage.removeItem(datakey_tables)
+        var dbMap = getDbMap()
+        if (dbMap) {
+            delete dbMap[dbKey]
+            localStorage.setItem(datakey_tables, JSON.stringify(dbMap))
+        }
     },
     /** 保存用户信息 */
     setUser(user) {
@@ -27,49 +30,49 @@ let DbData = {
         return valueStr ? JSON.parse(valueStr) : null
     },
     /** 保存某一个数据库的表的集合 */
-    setTables(tableName, tableList) {
-        var tableMap = getTablesMap();
-        tableMap = tableMap || {};
-        tableMap[tableName] = tableList;
-        localStorage.setItem(datakey_tables, JSON.stringify(tableMap))
+    setTables(dbKey, tableList) {
+        var dbMap = getDbMap()
+        dbMap = dbMap || {}
+        dbMap[dbKey] = tableList
+        localStorage.setItem(datakey_tables, JSON.stringify(dbMap))
     },
     /** 获取这个库的表的集合 */
-    getTables(tableName) {
-        var tableMap = getTablesMap();
-        return tableMap ? tableMap[tableName] : null
+    getTables(dbKey) {
+        var dbMap = getDbMap()
+        return dbMap ? dbMap[dbKey] : null
     },
     /** 获取表的详情 */
-    getTableObj(key, tableName) {
-        // var list = this.getTables(key);
-        // if (!list) {
-        //     return null;
-        // }
-        // var obj = null
-        // for (let l of list) {
-        //     if (l.tableName == tableName) {
-        //         obj = l
-        //         break;
-        //     }
-        // }
-        // return obj
+    getTableObj(dbKey, tableName) {
+        var list = this.getTables(dbKey)
+        if (!list) {
+            return null;
+        }
+        var obj = null
+        for (let l of list) {
+            if (l.tableName == tableName) {
+                obj = l
+                break;
+            }
+        }
+        return obj
     },
-    setTablesDetail(key, tableName, columns, ddl) {
-        // var list = this.getTables(key);
-        // if (list) {
-        //     for (let l of list) {
-        //         if (l.tableName == tableName) {
-        //             l.columns = columns;
-        //             l.ddl = ddl;
-        //             break;
-        //         }
-        //     }
-        //     this.setTables(key, list);
-        // }
+    setTablesDetail(dbKey, tableName, columns, ddl) {
+        var list = this.getTables(dbKey);
+        if (list) {
+            for (let l of list) {
+                if (l.tableName == tableName) {
+                    l.columns = columns;
+                    l.ddl = ddl;
+                    break;
+                }
+            }
+            this.setTables(dbKey, list);
+        }
 
     }
 }
 
-function getTablesMap() {
+function getDbMap() {
     let valueStr = localStorage.getItem(datakey_tables)
     return valueStr ? JSON.parse(valueStr) : null
 }

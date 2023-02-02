@@ -74,17 +74,18 @@
           </template>
           <el-table :data="tableList" stripe style="width: 100%">
             <el-table-column prop="index" align="right" label="序号" width="100"/>
-            <el-table-column prop="operation" label="操作" width="200">
+            <el-table-column prop="operation" label="操作" width="220">
               <template #default="scope">
                 <el-space>
-                  <el-tag class="but" color="green" @click="detailLayerClick(scope.row)">详情</el-tag>
+                  <el-tag class="but" type="success" @click="detailLayerClick(scope.row)">详情</el-tag>
 
-                  <el-tag v-if="scope.row.selected" color="purple">已选</el-tag>
-                  <el-tag v-else class="but" color="cyan" @click="selectClick(scope.row)">选择</el-tag>
+                  <el-tag v-if="scope.row.selected" type="info">已选</el-tag>
+                  <el-tag v-else class="but" @click="selectClick(scope.row)" type="danger">选择</el-tag>
 
-                  <el-tag class="but" v-if="scope.row.columns" @click="cleanCache(scope.row)" color="orange">清除缓存
+                  <el-tag class="but" type="warning" v-if="scope.row.columns"
+                          @click="cleanCache(scope.row)">清除缓存
                   </el-tag>
-                  <el-tag v-else>清除缓存</el-tag>
+                  <el-tag v-else type="info">无缓存</el-tag>
                 </el-space>
               </template>
             </el-table-column>
