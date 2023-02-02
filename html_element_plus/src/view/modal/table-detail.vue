@@ -47,7 +47,36 @@
             <highlightjs language="sql" :code="liInfo_div3"/>
           </div>
         </el-tab-pane>
-
+        <el-tab-pane name="doc" label="文档">
+          <el-tabs
+              v-model="liInfo_doc_class"
+              type="card"
+          >
+            <el-tab-pane label="普通" name="1">
+              <span v-for="item in detailDataSelectList">
+                {{ item.javaName }} : {{ item.comment }}
+              </span>
+            </el-tab-pane>
+            <el-tab-pane label="java1" name="2">
+              <span v-for="item in detailDataSelectList">
+                private {{ item.javaType }} {{ item.javaName }}; // {{ item.comment }}
+              </span>
+            </el-tab-pane>
+            <el-tab-pane label="java2" name="3">
+              <span v-for="item in detailDataSelectList">
+                /** {{ item.comment }} */ <br/>
+                private {{ item.javaType }} {{ item.javaName }};
+              </span>
+            </el-tab-pane>
+            <el-tab-pane label="markdown" name="4">
+              <span>
+                <span>字段  |  类型  | 描述</span> <br/>
+                <span>:----|:----|:----</span><br/>
+                <span>{{ item.javaName }} | {{ item.javaType }} | {{ item.comment }}</span>
+            </span>
+            </el-tab-pane>
+          </el-tabs>
+        </el-tab-pane>
         <el-tab-pane name="ddl" label="DDL">
           <div class="liInfo_div">
             <copy :content="detailData.ddl" />
