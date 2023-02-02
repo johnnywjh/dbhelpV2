@@ -4,7 +4,7 @@
 
       <el-row :gutter="16">
         <el-col :span="3">
-          <el-button plain>数据源格式</el-button>
+          <el-button plain @click="fileStyleShow">数据源格式</el-button>
         </el-col>
         <el-col :span="3">
           <el-upload
@@ -545,5 +545,29 @@ function showQueryFieid() {
   color: #fe7300;
 }
 
+.but {
+  cursor: pointer;
+}
+
+.liInfo_div_ex {
+  border: solid 1px #CCC;
+  height: auto;
+}
+
+.liInfo_div {
+  border: solid 1px #CCC;
+  padding: 5px;
+  margin-top: 5px;
+  height: auto;
+}
+
+.add_div {
+  margin: 30px;
+  width: 600px;
+}
+
+.add_input {
+  width: 200px;
+}
 
 </style>
