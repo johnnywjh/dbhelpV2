@@ -6,6 +6,7 @@
         :width="props.width"
         :title="props.title"
     >
+<!--      :close-on-click-modal="false"-->
       <el-row>
         <el-checkbox-group v-model="selectKeys">
           <el-checkbox v-for="item in dbList" :label="item" />

@@ -210,6 +210,9 @@
     <!--    模块框=>表对比 -->
     <diff-db-tables ref="diffDbTableRef"/>
 
+    <!--    模块框=>搜索字段 -->
+    <query-fieid ref="queryFieidRef" :db-list="dbList"/>
+
   </div>
 
 </template>
@@ -229,7 +232,7 @@ import TableDetail from '@/view/modal/table-detail.vue'
 import CodePreview from '@/view/modal/code-preview.vue'
 import DiffDbTables from '@/view/modal/diffDb-tables.vue'
 import FileStyle from '@/view/modal/file-style.vue'
-// import QueryFieid from '@/view/modal/query-fieid.vue'
+import QueryFieid from '@/view/modal/query-fieid.vue'
 
 // 页面初始加载
 onMounted(() => {

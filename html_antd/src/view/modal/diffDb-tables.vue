@@ -3,11 +3,11 @@
   <div>
     <a-modal
         v-model:visible="visible"
-        :footer="false" :maskClosable="false"
+        :footer="false"
         :width="props.width"
         :title="props.title"
     >
-
+<!--      :maskClosable="false"-->
       <a-row>
         <a-checkbox-group
             name="checkboxgroup"
