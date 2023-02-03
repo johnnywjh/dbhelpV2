@@ -1,42 +1,48 @@
-import LocalData from "@/utils/localData";
-
 /* 数据库的key*/
-var datakey_db = "dbsource";
-var datakey_user = "user";
-var datakey_tables = "tables";
-var opLeyerMsgTime = 1000;
+let datakey_db = "dbsource";
+let datakey_user = "user";
+let datakey_tables = "tables";
 
-const DbData = {
+let DbData = {
     setDb(db) {
-        LocalData.data(datakey_db, {key: "db", value: db});
+        localStorage.setItem(datakey_db, JSON.stringify(db))
     },
     getDb() {
-        return LocalData.data(datakey_db).db;
+        let valueStr = localStorage.getItem(datakey_db)
+        return valueStr ? JSON.parse(valueStr) : null
     },
-    cleanDb(key) {
-        // LocalData.data(datakey_tables, null)
-        LocalData.data(datakey_tables, {key: key, value: null});
+    cleanDb(dbKey) {
+        // localStorage.removeItem(datakey_tables)
+        var dbMap = getDbMap()
+        if (dbMap) {
+            delete dbMap[dbKey]
+            localStorage.setItem(datakey_tables, JSON.stringify(dbMap))
+        }
     },
     /** 保存用户信息 */
     setUser(user) {
-        LocalData.data(datakey_user, {key: "user", value: user});
+        localStorage.setItem(datakey_user, JSON.stringify(user))
     },
     /** 获取用户信息 */
     getUser() {
-        return LocalData.data(datakey_user).user;
+        let valueStr = localStorage.getItem(datakey_user)
+        return valueStr ? JSON.parse(valueStr) : null
     },
     /** 保存某一个数据库的表的集合 */
-    setTables(key, list) {
-        LocalData.data(datakey_tables, {key: key, value: list});
+    setTables(dbKey, tableList) {
+        var dbMap = getDbMap()
+        dbMap = dbMap || {}
+        dbMap[dbKey] = tableList
+        localStorage.setItem(datakey_tables, JSON.stringify(dbMap))
     },
     /** 获取这个库的表的集合 */
-    getTables(key) {
-        var obj = LocalData.data(datakey_tables);
-        return obj[key];
+    getTables(dbKey) {
+        var dbMap = getDbMap()
+        return dbMap ? dbMap[dbKey] : null
     },
     /** 获取表的详情 */
-    getTableObj(key, tableName) {
-        var list = this.getTables(key);
+    getTableObj(dbKey, tableName) {
+        var list = this.getTables(dbKey)
         if (!list) {
             return null;
         }
@@ -49,8 +55,8 @@ const DbData = {
         }
         return obj
     },
-    setTablesDetail(key, tableName, columns, ddl) {
-        var list = this.getTables(key);
+    setTablesDetail(dbKey, tableName, columns, ddl) {
+        var list = this.getTables(dbKey);
         if (list) {
             for (let l of list) {
                 if (l.tableName == tableName) {
@@ -59,10 +65,15 @@ const DbData = {
                     break;
                 }
             }
-            this.setTables(key, list);
+            this.setTables(dbKey, list);
         }
 
     }
+}
+
+function getDbMap() {
+    let valueStr = localStorage.getItem(datakey_tables)
+    return valueStr ? JSON.parse(valueStr) : null
 }
 
 export default DbData

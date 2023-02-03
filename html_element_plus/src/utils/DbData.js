@@ -2,7 +2,6 @@
 let datakey_db = "dbsource";
 let datakey_user = "user";
 let datakey_tables = "tables";
-let opLeyerMsgTime = 1000;
 
 let DbData = {
     setDb(db) {

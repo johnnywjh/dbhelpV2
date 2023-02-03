@@ -20,7 +20,6 @@
 <script setup>
 import {ref, reactive, computed, onMounted} from "vue";
 import {CheckOutlined, CloseOutlined} from '@ant-design/icons-vue';
-import localData from "@/utils/localData";
 import dark from '@/style/dark.less?inline'
 import light from '@/style/light.less?inline'
 
@@ -51,10 +50,11 @@ const changeTheme = (theme) => {
 
 let themeKey = 'theme_key'
 const setDarkTheme = (t) => {
-  localData.data(themeKey, {key: 'dark', value: t});
+  localStorage.setItem(themeKey, t)
 }
 const getDarkTheme = () => {
-  return localData.data(themeKey)['dark'];
+  let valueStr = localStorage.getItem(themeKey)
+  return valueStr ? JSON.parse(valueStr) : null
 }
 
 </script>
