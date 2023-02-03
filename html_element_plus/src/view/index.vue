@@ -162,7 +162,25 @@
                   </el-table>
                 </el-col>
                 <el-col :span="10">
+                  <el-space>
+                    扩展区域
+                    <el-button @click="exAddClick">添加字段</el-button>
+                    模板中要判断是否为空 如: ${key!'defaultVal'}
+                  </el-space>
+                  <div class="add_div">
+                    <el-form>
+                      <el-form-item v-for="item in userinfo.exList">
+                        <el-space>
+                          <el-input class="add_input" v-model:value="item.key" placeholder="模板中的 ${key}"/>
+                          <el-input class="add_input" v-model:value="item.value" placeholder="value"/>
 
+                          <el-icon class="but" @click="exDelClick(item.id)" style="font-size: 20px;color: red;">
+                            <Delete/>
+                          </el-icon>
+                        </el-space>
+                      </el-form-item>
+                    </el-form>
+                  </div>
                 </el-col>
               </el-row>
             </div>
@@ -194,7 +212,7 @@ import ApiUrls from '@/utils/ApiUrls'
 import DbData from '@/utils/DbData'
 
 import {ElMessage} from 'element-plus'
-import {Search} from '@element-plus/icons-vue'
+import {Search, Delete} from '@element-plus/icons-vue'
 
 import SwitchTheme from "@/view/theme/switch-theme.vue"
 import TableDetail from '@/view/modal/table-detail.vue'
