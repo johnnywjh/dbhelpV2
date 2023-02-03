@@ -20,7 +20,7 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: '../src/main/resources/public/el',
+        outDir: '../src/main/resources/public',
         // outDir: '../target/classes/public',
         emptyOutDir: true
     },

@@ -49,7 +49,7 @@
         <el-col :span="8">
           <switch-theme/>
           <el-tag style="margin-left: 20px" type="success">v.2.4</el-tag>
-          <a href="/index.html">antd</a>
+          <a href="/antd/index.html">antd</a>
         </el-col>
       </el-row>
 

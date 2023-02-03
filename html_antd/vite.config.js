@@ -19,7 +19,7 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: '../src/main/resources/public',
+        outDir: '../src/main/resources/public/antd',
         // outDir: '../target/classes/public',
         emptyOutDir: true
     },
