@@ -93,8 +93,6 @@
 <script setup>
 import {ref, defineExpose, computed} from 'vue'
 
-import Copy from '@/components/copy/index.vue'
-
 const visible = ref(false)
 const props = defineProps({
   title: {

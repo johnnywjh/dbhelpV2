@@ -165,7 +165,11 @@
                   <el-space>
                     扩展区域
                     <el-button @click="exAddClick">添加字段</el-button>
-                    模板中要判断是否为空 如: ${key!'defaultVal'}
+                    模板中要判断是否为空 如:
+                    <span>
+                      ${key!'defaultVal'}
+                      <copy content="${key!'defaultVal'}" :style-val="{}"/>
+                    </span>
                   </el-space>
                   <div class="add_div">
                     <el-form>

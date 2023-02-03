@@ -13,6 +13,10 @@ import './styles/index.scss'
 
 const app = createApp(App);
 
+// 全局注册复制标签
+import Copy from '@/components/copy/index.vue'
+app.component('copy', Copy)
+
 app.use(ElementPlus);
 app.use(hljsVuePlugin);
 app.mount('#app');

@@ -27,8 +27,6 @@ import Http from "@/utils/Http";
 import ApiUrls from "@/utils/ApiUrls";
 import {ElMessage} from 'element-plus'
 
-import Copy from '@/components/copy/index.vue'
-
 const visible = ref(false)
 const props = defineProps({
   title: {
