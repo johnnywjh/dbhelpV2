@@ -107,7 +107,29 @@
               <span>列表 <el-tag type="danger">{{ selectTable.length }}</el-tag></span>
             </span>
           </template>
-          code
+          <div>
+            <el-form :inline="true" style="margin-left: 50px">
+              <el-form-item label="代码模板">
+                <el-select v-model="userinfo.fkType" :placeholder="themeTitle" style="width: 200px">
+                  <el-option
+                      v-for="item in themeList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="按表名分组">
+                <el-switch v-model="tableNameGruop" />
+              </el-form-item>
+              <el-form-item>
+                <el-button v-if="subformShow" @click="showCodePreview">预览</el-button>
+                <el-button v-if="subformShow" @click="subform" type="primary">提交</el-button>
+
+                <el-button v-if="!subformShow">提交 and 预览</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
         </el-tab-pane>
       </el-tabs>
 
@@ -129,7 +151,7 @@
 
 <script setup>
 import {ref, reactive, computed, onMounted} from 'vue'
-import {useLocalStorage} from '@vueuse/core'
+
 import Http from '@/utils/Http'
 import ApiUrls from '@/utils/ApiUrls'
 import DbData from '@/utils/DbData'
@@ -353,7 +375,7 @@ const getTheme = function () {
   Http.post(ApiUrls.user.getThemes, null)
       .then(function (res) {
         let list = res.data.data
-        var arr = [{label: "空", value: null}]
+        var arr = [{label: "空", value: 0}]
         for (let l of list) {
           arr.push({label: l, value: l})
         }
