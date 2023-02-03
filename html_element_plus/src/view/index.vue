@@ -120,7 +120,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="按表名分组">
-                <el-switch v-model="tableNameGruop" />
+                <el-switch v-model="tableNameGruop"/>
               </el-form-item>
               <el-form-item>
                 <el-button v-if="subformShow" @click="showCodePreview">预览</el-button>
@@ -132,7 +132,34 @@
             <div style="margin-top: 20px">
               <el-row :gutter="16">
                 <el-col :span="14">
-
+                  <el-table :data="selectTable" border size="small">
+                    <el-table-column prop="operation" label="操作" width="100">
+                      <template #default="scope">
+                        <el-tag type="danger" class="but" @click="selectTableDel(scope.row)">删除</el-tag>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="tableName" label="表名" width="170"/>
+                    <el-table-column prop="className" label="类名" width="170">
+                      <template #default="scope">
+                        <el-input v-model="scope.row.className"/>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="dir1" label="目录1" width="100">
+                      <template #default="scope">
+                        <el-input v-model="scope.row.dir1"/>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="dir2" label="目录2" width="100">
+                      <template #default="scope">
+                        <el-input v-model="scope.row.dir2"/>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="remarkVal" label="注释" width="100">
+                      <template #default="scope">
+                        <el-input v-model="scope.row.remarkVal"/>
+                      </template>
+                    </el-table-column>
+                  </el-table>
                 </el-col>
                 <el-col :span="10">
 
