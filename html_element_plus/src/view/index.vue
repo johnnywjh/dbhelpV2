@@ -129,6 +129,16 @@
                 <el-button v-if="!subformShow">提交 and 预览</el-button>
               </el-form-item>
             </el-form>
+            <div style="margin-top: 20px">
+              <el-row :gutter="16">
+                <el-col :span="14">
+
+                </el-col>
+                <el-col :span="10">
+
+                </el-col>
+              </el-row>
+            </div>
           </div>
         </el-tab-pane>
       </el-tabs>

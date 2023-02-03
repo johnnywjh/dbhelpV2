@@ -119,7 +119,7 @@
             <div style="margin-top: 20px">
               <a-row :gutter="20">
                 <!--                <a-col :span="2"></a-col>-->
-                <a-col :span="12">
+                <a-col :span="14">
                   <a-table :data-source="selectTable" :columns="selectTableColumns"
                            :pagination="false" size="small"
                   >
