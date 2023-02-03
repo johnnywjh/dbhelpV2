@@ -207,6 +207,9 @@
     <!--    模块框=>代码预览 -->
     <code-preview ref="codePreviewRef"/>
 
+    <!--    模块框=>表对比 -->
+    <diff-db-tables ref="diffDbTableRef"/>
+
   </div>
 
 </template>
@@ -224,7 +227,7 @@ import {Search, Delete} from '@element-plus/icons-vue'
 import SwitchTheme from "@/view/theme/switch-theme.vue"
 import TableDetail from '@/view/modal/table-detail.vue'
 import CodePreview from '@/view/modal/code-preview.vue'
-// import DiffDbTables from '@/view/modal/diffDb-tables.vue'
+import DiffDbTables from '@/view/modal/diffDb-tables.vue'
 import FileStyle from '@/view/modal/file-style.vue'
 // import QueryFieid from '@/view/modal/query-fieid.vue'
 
