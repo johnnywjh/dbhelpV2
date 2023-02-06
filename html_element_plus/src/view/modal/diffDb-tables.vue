@@ -116,11 +116,11 @@ const tableTitle1 = ref('')
 const tableTitle2 = ref('')
 const diffList1 = ref([])
 const diffList2 = ref([])
-const diffColumns = ref([
-  {title: '序号', dataIndex: 'index'},
-  {title: '表名', dataIndex: 'tableName'},
-  {title: '注释', dataIndex: 'comment'},
-])
+// const diffColumns = ref([
+//   {title: '序号', dataIndex: 'index'},
+//   {title: '表名', dataIndex: 'tableName'},
+//   {title: '注释', dataIndex: 'comment'},
+// ])
 
 const startDiff = function () {
   let dbKey1 = selectKeys.value[0]

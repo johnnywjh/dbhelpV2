@@ -269,12 +269,12 @@ const userinfo = reactive({
 })
 // const exAddList = ref([])
 const activeKey = ref("1")
-const columns = ref([
-  {title: '序号', dataIndex: 'index', align: 'right', width: '100px'},
-  {title: '操作', dataIndex: 'operation', width: '200px'},
-  {title: '表名', dataIndex: 'tableNameStr',},
-  {title: '注释', dataIndex: 'commentStr'},
-])
+// const columns = ref([
+//   {title: '序号', dataIndex: 'index', align: 'right', width: '100px'},
+//   {title: '操作', dataIndex: 'operation', width: '200px'},
+//   {title: '表名', dataIndex: 'tableNameStr',},
+//   {title: '注释', dataIndex: 'commentStr'},
+// ])
 // 选择的数据
 const selectTable = ref([])
 
@@ -457,14 +457,14 @@ const getTheme = function () {
 }
 
 // 选择
-const selectTableColumns = ref([
-  {title: '操作', dataIndex: 'operation', width: '100px'},
-  {title: '表名', dataIndex: 'tableName', width: '170px'},
-  {title: '类名', dataIndex: 'className', width: '170px'},
-  {title: '目录1', dataIndex: 'dir1', width: '100px'},
-  {title: '目录2', dataIndex: 'dir2', width: '100px'},
-  {title: '注释', dataIndex: 'remarkVal', width: '100px'},
-])
+// const selectTableColumns = ref([
+//   {title: '操作', dataIndex: 'operation', width: '100px'},
+//   {title: '表名', dataIndex: 'tableName', width: '170px'},
+//   {title: '类名', dataIndex: 'className', width: '170px'},
+//   {title: '目录1', dataIndex: 'dir1', width: '100px'},
+//   {title: '目录2', dataIndex: 'dir2', width: '100px'},
+//   {title: '注释', dataIndex: 'remarkVal', width: '100px'},
+// ])
 const selectClick = function (row) {
   row.selected = true
   row.dir1 = 'aaa'

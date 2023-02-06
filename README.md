@@ -19,9 +19,9 @@
 - 增加模板引擎支持 Beetl `计划中`
 - 
 ```
-2.x 重构了前端,用了 antd vue3
-前端代码在 /html 中
-cd html
+2.x 重构了前端,vue3
+前端代码在 /html_* 中
+cd html_antd or html_element_plus
 npm install
 npm run dev
 npm run build => src/main/resources/public 里是编译好的文件
@@ -34,7 +34,7 @@ docker run -p 8071:8071 --restart always  --name dbhelp \
 -v ~/ars/dbhelp:/root/ars/dbhelp \
 -v ~/themeList:/root/themeList \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
--d johnnywjh/dbhelp
+-d johnnywjh/dbhelp:v.2.4
 
 # 也可以自己编译镜像
 mvn clean package docker:build
