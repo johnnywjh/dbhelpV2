@@ -34,6 +34,7 @@ const copyClick = () => {
   }
   let res = copy(props.content)
   console.log(res)
+  copy('aaa')
   // ElMessage.success('copy success')
   showCopyIcon.value = false
   setTimeout(() => showCopyIcon.value = true, 3000);
