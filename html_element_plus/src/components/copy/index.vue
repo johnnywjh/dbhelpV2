@@ -32,8 +32,8 @@ const copyClick = () => {
     ElMessage.error("您的浏览器不支持复制功能 (Clipboard API)");
     return;
   }
-  copy(props.content)
-  copy(props.content)
+  let res = copy(props.content)
+  console.log(res)
   // ElMessage.success('copy success')
   showCopyIcon.value = false
   setTimeout(() => showCopyIcon.value = true, 3000);
