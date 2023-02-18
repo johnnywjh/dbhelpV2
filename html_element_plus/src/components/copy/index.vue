@@ -14,7 +14,7 @@ import {ElMessage} from 'element-plus'
 
 import {useClipboard} from '@vueuse/core'
 
-const {copy, isSupported , toClipboard} = useClipboard()
+const {copy, isSupported} = useClipboard()
 
 const props = defineProps({
   content: {
@@ -33,8 +33,7 @@ const copyClick = () => {
     return;
   }
   copy(props.content)
-  toClipboard(props.content)
-  console.log(props.content)
+  copy(props.content)
   // ElMessage.success('copy success')
   showCopyIcon.value = false
   setTimeout(() => showCopyIcon.value = true, 3000);
