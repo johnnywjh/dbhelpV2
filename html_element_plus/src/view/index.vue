@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="10">
           <el-space>
-            <el-select v-model="dbKey" @change="selectDbValue" :placeholder="dbSelectTitle">
+            <el-select v-model="dbKey" filterable  @change="selectDbValue" :placeholder="dbSelectTitle">
               <el-option
                   v-for="item in dbList"
                   :key="item.value"

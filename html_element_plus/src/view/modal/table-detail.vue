@@ -84,6 +84,29 @@
             <highlightjs language="sql" :code="detailData.ddl"/>
           </div>
         </el-tab-pane>
+        <el-tab-pane name="tableData" label="表数据">
+          <el-form :inline="true" style="margin-left: 50px">
+            <el-form-item label="排序字段">
+              <el-select v-model="tableDbData.orderByName" filterable clearable placeholder="排序字段" style="width: 150px">
+                <el-option
+                    v-for="item in props.detailData.columns"
+                    :key="item.name"
+                    :label="item.name"
+                    :value="item.name"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="排序类型">
+              <el-switch v-model="tableDbData.orderByAsc"/>
+            </el-form-item>
+            <el-form-item label="limit">
+              <el-input-number v-model="tableDbData.limit" :min="1" :max="100" />
+            </el-form-item>
+            <el-form-item>
+              <el-button  @click="queryDbTable" type="primary">查询数据</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
 
     </el-dialog>
@@ -91,7 +114,7 @@
 </template>
 
 <script setup>
-import {ref, defineExpose, computed} from 'vue'
+import {ref,reactive, defineExpose, computed} from 'vue'
 
 const visible = ref(false)
 const props = defineProps({
@@ -101,7 +124,7 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: '800px'
+    default: '900px'
   },
   detailData: {
     type: Object,
@@ -239,5 +262,16 @@ function doc4(str) {
   }
   return arr.join(str)
 }
+
+//表数据预览
+const tableDbData = reactive({
+  orderByName:undefined,
+  orderByAsc:true,
+  limit:10
+})
+const queryDbTable = function (){
+  console.log(tableDbData)
+}
+
 
 </script>
