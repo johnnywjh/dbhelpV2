@@ -43,7 +43,7 @@
         </a-col>
         <a-col :span="8">
           <switch-theme style="margin-left: 20px;" />
-          <a-tag style="margin-left: 20px">v.2.5</a-tag>
+          <a-tag style="margin-left: 20px">v.2.6</a-tag>
           <a href="/index.html">el</a>
         </a-col>
         <!--
