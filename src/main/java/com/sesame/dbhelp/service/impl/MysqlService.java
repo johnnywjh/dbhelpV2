@@ -138,12 +138,15 @@ public class MysqlService extends DBService {
             ResultSetMetaData md = rs.getMetaData();
             int columnCount = md.getColumnCount();
 
+            int index = 1;
             while (rs.next()) {
                 Map rowData = new HashMap();
                 for (int i = 1; i <= columnCount; i++) {
                     rowData.put(md.getColumnName(i), rs.getObject(i));
                 }
+                rowData.put("index",index);
                 list.add(rowData);
+                index++;
             }
             return list;
         } catch (SQLException e) {

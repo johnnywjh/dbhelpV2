@@ -85,9 +85,10 @@
           </div>
         </el-tab-pane>
         <el-tab-pane name="tableData" label="表数据">
-          <el-form :inline="true" style="margin-left: 50px">
+          <el-form :inline="true">
             <el-form-item label="排序字段">
-              <el-select v-model="tableDbData.orderByName" filterable clearable placeholder="排序字段" style="width: 150px">
+              <el-select v-model="tableDbData.orderByName" filterable clearable placeholder="排序字段"
+                         style="width: 150px">
                 <el-option
                     v-for="item in props.detailData.columns"
                     :key="item.name"
@@ -100,12 +101,26 @@
               <el-switch v-model="tableDbData.orderByAsc"/>
             </el-form-item>
             <el-form-item label="limit">
-              <el-input-number v-model="tableDbData.limit" :min="1" :max="100" />
+              <el-input-number v-model="tableDbData.limit" :min="1" :max="100"/>
             </el-form-item>
             <el-form-item>
-              <el-button  @click="queryDbTable" type="primary">查询数据</el-button>
+              <el-button @click="queryDbTable" type="primary">查询数据</el-button>
             </el-form-item>
           </el-form>
+          <el-table border
+                    :data="queryTableResult"
+                    row-key="index"
+                    size="small"
+          >
+            <el-table-column type="index" width="50" label="序号" />
+            <el-table-column v-for="(item,key,index) in queryTableResult[0]"
+                             :key="index" :label="key">
+              <template #default="scope">
+                {{scope.row[key]}}
+              </template>
+            </el-table-column>
+
+          </el-table>
         </el-tab-pane>
       </el-tabs>
 
@@ -114,7 +129,7 @@
 </template>
 
 <script setup>
-import {ref,reactive, defineExpose, computed} from 'vue'
+import {ref, reactive, defineExpose, computed} from 'vue'
 import Http from '@/utils/Http'
 import ApiUrls from '@/utils/ApiUrls'
 import DbData from '@/utils/DbData'
@@ -144,6 +159,10 @@ const show = (dbinfo) => {
   tableDbData.name = dbinfo.db.name
   tableDbData.pwd = dbinfo.db.pwd
   tableDbData.tableName = dbinfo.tableName
+
+  queryTableResult.value = []
+
+  activeKey.value = 'field'
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -273,19 +292,31 @@ function doc4(str) {
 
 //表数据预览
 const tableDbData = reactive({
-  orderByName:undefined,
-  orderByAsc:true,
-  limit:10,
-  tableName:'',
-  url:'',
-  name:'',
-  pwd:''
+  orderByName: undefined,
+  orderByAsc: true,
+  limit: 10,
+  tableName: '',
+  url: '',
+  name: '',
+  pwd: ''
 })
-const queryDbTable = function (){
+const queryTableResult = ref([])
+const queryDbTable = function () {
+  let fieldArr = [];
+  let tableArr = [];
+  if (detailDataSelectList.value.length > 0) {
+    tableArr = detailDataSelectList.value;
+  } else {
+    tableArr = props.detailData.columns
+  }
+  for (let t of tableArr) {
+    fieldArr.push(t.name)
+  }
+  let columns = fieldArr.join(',')
+  tableDbData.columns = columns
   Http.post(ApiUrls.db.queryDbTable, tableDbData)
       .then(function (res) {
-        let list = res.data.data
-        console.log(list)
+        queryTableResult.value = res.data.data
       })
       .catch(function (error) {
         console.log(error);
