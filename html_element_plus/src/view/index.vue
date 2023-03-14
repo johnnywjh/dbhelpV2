@@ -427,7 +427,8 @@ const tableDetailRef = ref()
 const tableDetailTitle = ref('xxx:xxx')
 const detailData = ref({columns: [], ddl: ''})  // 选中的表的数据
 function showTableDetail(queryTable) {
-  tableDetailRef.value.show();// 调用子组件的弹出方法
+
+  tableDetailRef.value.show({db:DbData.getUser().db,tableName:queryTable.tableName});// 调用子组件的弹出方法
   tableDetailTitle.value = queryTable.comment + " : " + queryTable.tableName
   detailData.value = queryTable;
 }
@@ -441,7 +442,7 @@ const tableNameGruop = ref(false)
 const themeList = ref([])
 const themeTitle = ref()
 const getTheme = function () {
-  Http.post(ApiUrls.user.getThemes, null)
+  `Http.post(ApiUrls.user.getThemes, null)
       .then(function (res) {
         let list = res.data.data
         var arr = [{label: "空", value: 0}]
@@ -453,7 +454,7 @@ const getTheme = function () {
       })
       .catch(function (error) {
         console.log(error);
-      });
+      });`
 }
 
 // 选择

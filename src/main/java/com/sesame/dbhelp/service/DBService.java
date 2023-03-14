@@ -2,6 +2,7 @@ package com.sesame.dbhelp.service;
 
 import com.sesame.dbhelp.entity.Column;
 import com.sesame.dbhelp.entity.DbInfo;
+import com.sesame.dbhelp.entity.QueryDbTableReq;
 import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.util.StringUtil;
 import com.sesame.dbhelp.util.TableUtil;
@@ -40,6 +41,10 @@ public abstract class DBService {
      */
     public abstract String parseTableDDL(String tableName, Connection conn);
 
+    /**
+     * 查询表数据
+     */
+    public abstract List queryTableData(QueryDbTableReq req,Connection conn);
     /**
      * 匹配数据类型
      */

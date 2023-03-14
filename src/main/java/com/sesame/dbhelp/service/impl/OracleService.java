@@ -1,6 +1,7 @@
 package com.sesame.dbhelp.service.impl;
 
 import com.sesame.dbhelp.entity.Column;
+import com.sesame.dbhelp.entity.QueryDbTableReq;
 import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.service.DBService;
 
@@ -109,6 +110,11 @@ public class OracleService extends DBService {
 
     @Override
     public String parseTableDDL(String tableName, Connection conn) {
+        return null;
+    }
+
+    @Override
+    public List queryTableData(QueryDbTableReq req, Connection conn) {
         return null;
     }
 }

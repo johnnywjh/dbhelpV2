@@ -115,6 +115,9 @@
 
 <script setup>
 import {ref,reactive, defineExpose, computed} from 'vue'
+import Http from '@/utils/Http'
+import ApiUrls from '@/utils/ApiUrls'
+import DbData from '@/utils/DbData'
 
 const visible = ref(false)
 const props = defineProps({
@@ -133,9 +136,14 @@ const props = defineProps({
 })
 
 // 子组件的弹出方法 ==> 父组件调用
-const show = () => {
+const show = (dbinfo) => {
   visible.value = true
   as.value = ''
+
+  tableDbData.url = dbinfo.db.url
+  tableDbData.name = dbinfo.db.name
+  tableDbData.pwd = dbinfo.db.pwd
+  tableDbData.tableName = dbinfo.tableName
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -267,10 +275,21 @@ function doc4(str) {
 const tableDbData = reactive({
   orderByName:undefined,
   orderByAsc:true,
-  limit:10
+  limit:10,
+  tableName:'',
+  url:'',
+  name:'',
+  pwd:''
 })
 const queryDbTable = function (){
-  console.log(tableDbData)
+  Http.post(ApiUrls.db.queryDbTable, tableDbData)
+      .then(function (res) {
+        let list = res.data.data
+        console.log(list)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 }
 
 

@@ -1,15 +1,16 @@
 package com.sesame.dbhelp.service.impl;
 
 import com.sesame.dbhelp.entity.Column;
+import com.sesame.dbhelp.entity.QueryDbTableReq;
 import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.service.DBService;
+import org.apache.commons.lang3.StringUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MysqlService extends DBService {
@@ -79,8 +80,8 @@ public class MysqlService extends DBService {
                 comment = rs.getString("Comment"); // 列注释
                 comment = comment == null ? "null" : comment;
 
-                String id = tableName+name;
-                bean = new Column(id,index, name, type, primary, empty, comment);
+                String id = tableName + name;
+                bean = new Column(id, index, name, type, primary, empty, comment);
                 list.add(bean);
                 index++;
             }
@@ -115,6 +116,42 @@ public class MysqlService extends DBService {
             //closeConn(conn);
         }
         return ddlStr;
+    }
+
+    @Override
+    public List queryTableData(QueryDbTableReq req, Connection conn) {
+        String orderSql = "";
+        if (StringUtils.isNoneEmpty(req.getOrderByName())) {
+            orderSql = " order by " + req.getOrderByName();
+            if (req.isOrderByAsc()) {
+                orderSql = orderSql + " asc ";
+            } else {
+                orderSql = orderSql + " desc ";
+            }
+        }
+        String strsql = " select " + req.getColumns() + " from " + req.getTableName() + orderSql + " limit " + req.getLimit();
+        System.out.println(strsql);
+        try {
+            List list = new ArrayList();
+            PreparedStatement pstmt = conn.prepareStatement(strsql);
+            ResultSet rs = pstmt.executeQuery(strsql);
+            ResultSetMetaData md = rs.getMetaData();
+            int columnCount = md.getColumnCount();
+
+            while (rs.next()) {
+                Map rowData = new HashMap();
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData.put(md.getColumnName(i), rs.getObject(i));
+                }
+                list.add(rowData);
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            //closeConn(conn);
+        }
+        return null;
     }
 
 

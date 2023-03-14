@@ -1,15 +1,12 @@
 package com.sesame.dbhelp.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sesame.dbhelp.entity.*;
 import kim.sesame.common.annotation.ReqParamsCheck;
 import kim.sesame.common.result.ApiResult;
 import kim.sesame.common.web.controller.AbstractWebController;
 import kim.sesame.common.exception.BizException;
 import com.sesame.dbhelp.config.BaseConfig;
-import com.sesame.dbhelp.entity.Column;
-import com.sesame.dbhelp.entity.DbInfo;
-import com.sesame.dbhelp.entity.DirVo;
-import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.service.DBService;
 import com.sesame.dbhelp.service.DBServicePool;
 import com.sesame.dbhelp.service.Generate;
@@ -303,5 +300,29 @@ public class DbController extends AbstractWebController {
         FileUtil.clearFiles(new File(vo.getOutPath()));
 
         return 1;
+    }
+
+    @PostMapping("/queryDbTable")
+    public ApiResult queryDbTable(@RequestBody QueryDbTableReq req) {
+        DbInfo bean = new DbInfo();
+        bean.setUrl(req.getUrl());
+        bean.setName(req.getName());
+        bean.setPwd(req.getPwd());
+        bean.viferyDbType();
+        Connection conn = DBService.getConn(bean);
+
+        if (conn == null) {
+            throw new BizException("数据库连接失败");
+        } else {
+            List list = null;
+            try {
+               list = DBServicePool.getDbService(bean.getDbDriver()).queryTableData(req,conn);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                DBService.closeConn(conn);
+            }
+            return success(list);
+        }
     }
 }
