@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import {ref, defineExpose, computed} from 'vue'
+import {ref, computed} from 'vue'
 import Http from "@/utils/Http";
 import ApiUrls from "@/utils/ApiUrls";
 import {ElMessage} from 'element-plus'
