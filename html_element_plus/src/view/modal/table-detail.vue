@@ -76,6 +76,30 @@
                 <div v-html="liInfo_doc_4"></div>
               </div>
             </el-tab-pane>
+            <el-tab-pane label="字段" name="51">
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_51_copy"/>
+                <div v-html="liInfo_doc_51"></div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="注释" name="52">
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_52_copy"/>
+                <div v-html="liInfo_doc_52"></div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="类型" name="53">
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_53_copy"/>
+                <div v-html="liInfo_doc_53"></div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="类型All" name="54">
+              <div class="liInfo_div">
+                <copy :content="liInfo_doc_54_copy"/>
+                <div v-html="liInfo_doc_54"></div>
+              </div>
+            </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
         <el-tab-pane name="ddl" label="DDL">
@@ -286,6 +310,69 @@ function doc4(str) {
   arr.push(':----|:----|:----')
   for (let item of detailDataSelectList.value) {
     arr.push(`${item.javaName} | ${item.javaType} | ${item.comment}`)
+  }
+  return arr.join(str)
+}
+
+const liInfo_doc_51 = computed(() => {
+  return doc51('<br/>')
+})
+const liInfo_doc_51_copy = computed(() => {
+  return doc51('\n')
+})
+
+function doc51(str) {
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    arr.push(`${item.name}`)
+  }
+  return arr.join(str)
+}
+const liInfo_doc_52 = computed(() => {
+  return doc52('<br/>')
+})
+const liInfo_doc_52_copy = computed(() => {
+  return doc52('\n')
+})
+
+function doc52(str) {
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    arr.push(`${item.comment}`)
+  }
+  return arr.join(str)
+}
+
+const liInfo_doc_53 = computed(() => {
+  return doc53('<br/>')
+})
+const liInfo_doc_53_copy = computed(() => {
+  return doc53('\n')
+})
+
+function doc53(str) {
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    let type = item.type
+    let index = type.indexOf('(')
+    if(index > -1){
+      type = type.split('(')[0]
+    }
+    arr.push(type)
+  }
+  return arr.join(str)
+}
+const liInfo_doc_54 = computed(() => {
+  return doc54('<br/>')
+})
+const liInfo_doc_54_copy = computed(() => {
+  return doc54('\n')
+})
+
+function doc54(str) {
+  let arr = [];
+  for (let item of detailDataSelectList.value) {
+    arr.push(`${item.type}`)
   }
   return arr.join(str)
 }
