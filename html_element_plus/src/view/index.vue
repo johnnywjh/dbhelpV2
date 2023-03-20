@@ -93,11 +93,13 @@
             <el-table-column prop="tableNameStr" label="表名">
               <template #default="scope">
                 <span v-html="scope.row.tableNameStr"></span>
+                <copy :content="scope.row.tableName" :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
             <el-table-column prop="commentStr" label="注释">
               <template #default="scope">
                 <span v-html="scope.row.commentStr"></span>
+                <copy :content="scope.row.comment" :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
           </el-table>

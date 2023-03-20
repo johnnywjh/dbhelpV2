@@ -41,7 +41,7 @@ defineExpose({show})
 //=================
 const layerFileText = '    {\n' +
     '        "dbName":{\n' +
-    '            "url": "jdbc:mysql://",\n' +
+    '            "url": "jdbc:mysql://localhost:3306/xxx?useUnicode=true&characterEncoding=UTF-8&useSSL=false",\n' +
     '            "name": "root",\n' +
     '            "pwd": ""\n' +
     '        }\n' +

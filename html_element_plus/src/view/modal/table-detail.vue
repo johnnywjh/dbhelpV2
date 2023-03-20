@@ -16,13 +16,24 @@
                     @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"/>
-            <el-table-column prop="name" label="字段" width="200"/>
+            <el-table-column prop="name" label="字段" width="200">
+              <template #default="scope">
+                <span v-html="scope.row.name"></span>
+                <copy :content="scope.row.name" :style-val="{'margin-left':'5px'}"/>
+              </template>
+            </el-table-column>
             <el-table-column prop="type" label="类型" width="120"/>
-            <el-table-column prop="comment" label="注释" width="200"/>
+            <el-table-column prop="comment" label="注释" width="200">
+              <template #default="scope">
+                <span v-html="scope.row.comment"></span>
+                <copy :content="scope.row.comment" :style-val="{'margin-left':'5px'}"/>
+              </template>
+            </el-table-column>
             <el-table-column prop="javaName" label="驼峰">
               <template #default="scope">
                 <span v-if="scope.row.javaName!=scope.row.name">{{ scope.row.javaName }}</span>
                 <span v-else></span>
+                <copy v-if="scope.row.javaName!=scope.row.name" :content="scope.row.javaName" :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
           </el-table>
