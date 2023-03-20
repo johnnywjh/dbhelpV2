@@ -442,7 +442,7 @@ const tableNameGruop = ref(false)
 const themeList = ref([])
 const themeTitle = ref()
 const getTheme = function () {
-  `Http.post(ApiUrls.user.getThemes, null)
+  Http.post(ApiUrls.user.getThemes, null)
       .then(function (res) {
         let list = res.data.data
         var arr = [{label: "空", value: 0}]
@@ -454,7 +454,7 @@ const getTheme = function () {
       })
       .catch(function (error) {
         console.log(error);
-      });`
+      });
 }
 
 // 选择
