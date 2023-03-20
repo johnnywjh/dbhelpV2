@@ -165,9 +165,9 @@
 
 <script setup>
 import {ref, reactive, computed} from 'vue'
-import Http from '@/utils/Http'
-import ApiUrls from '@/utils/ApiUrls'
+
 import DbData from '@/utils/DbData'
+import {apiQueryDbTable} from "@/api/buss";
 
 const visible = ref(false)
 const props = defineProps({
@@ -412,13 +412,9 @@ const queryDbTable = function () {
   }
   let columns = fieldArr.join(',')
   tableDbData.columns = columns
-  Http.post(ApiUrls.db.queryDbTable, tableDbData)
-      .then(function (res) {
-        queryTableResult.value = res.data.data
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  apiQueryDbTable(tableDbData,(res)=>{
+    queryTableResult.value = res.data.data
+  })
 }
 
 

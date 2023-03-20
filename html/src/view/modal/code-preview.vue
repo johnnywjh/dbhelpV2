@@ -23,9 +23,9 @@
 
 <script setup>
 import {ref, computed} from 'vue'
-import Http from "@/utils/Http";
-import ApiUrls from "@/utils/ApiUrls";
+
 import {ElMessage} from 'element-plus'
+import {apiDeletedir, apiGetfilecontent, apiPreview} from "@/api/buss";
 
 const visible = ref(false)
 const props = defineProps({
@@ -61,43 +61,31 @@ const treeData = ref()
 const fileContent = ref('')
 // const previewCode = ref(false)
 const loadData = function (data) {
-  Http.post(ApiUrls.db.preview, data)
-      .then(function (res) {
-        dirVo.value = res.data.data.dirVo
-        treeData.value = res.data.data.list
-        // previewVisible.value = true
-        fileContent.value = ''
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  apiPreview(data,(res)=>{
+    dirVo.value = res.data.data.dirVo
+    treeData.value = res.data.data.list
+    // previewVisible.value = true
+    fileContent.value = ''
+  })
 }
 const previewClose = function () {
-  Http.post(ApiUrls.db.deletedir, dirVo.value)
-      .then(function (res) {
-        ElMessage.success('清除成功')
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  apiDeletedir(dirVo.value,(res)=>{
+    ElMessage.success('清除成功')
+  })
 }
 
 const selectTreeNode = function (node) {
   if (!node.dir) {
-    Http.get(ApiUrls.db.getfilecontent, {path: node.basicData})
-        .then(function (res) {
-          fileContent.value = ''
-          var html = ''
-          for (let c of res.data.data) {
-            // 全局替换
-            // c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
-            html += c + "\n"
-          }
-          fileContent.value = html;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    apiGetfilecontent({path: node.basicData},(res)=>{
+      fileContent.value = ''
+      var html = ''
+      for (let c of res.data.data) {
+        // 全局替换
+        // c = c.replace(new RegExp("&", 'gm'), "&amp;").replace(new RegExp("<", 'gm'), "&lt;").replace(new RegExp(">", 'gm'), "&gt;");
+        html += c + "\n"
+      }
+      fileContent.value = html;
+    })
   }
 }
 

@@ -222,10 +222,8 @@
 <script setup>
 import {ref, reactive, computed, onMounted} from 'vue'
 
-import Http from '@/utils/Http'
-import ApiUrls from '@/utils/ApiUrls'
 import DbData from '@/utils/DbData'
-
+import {apiGenerate, apiGetTables, apiGetThemes, apiSearchTableDetail} from '@/api/buss'
 import {ElMessage} from 'element-plus'
 import {Search, Delete} from '@element-plus/icons-vue'
 
@@ -368,15 +366,11 @@ const reLoadTables = function () {
   if (list) {
     filterList(list);
   } else {
-    Http.post(ApiUrls.db.getTables, userinfo.db)
-        .then(function (res) {
-          var list = res.data.data;
-          DbData.setTables(key, list);
-          filterList(list);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    apiGetTables(userinfo.db,(res)=>{
+      var list = res.data.data;
+      DbData.setTables(key, list);
+      filterList(list);
+    })
   }
 }
 
@@ -409,17 +403,13 @@ function detailLayerClick(row) {
   } else {
     var queryData = userinfo.db;
     queryData.tableName = row.tableName;
-    Http.post(ApiUrls.db.searchTableDetail, queryData)
-        .then(function (res) {
-          let table = res.data.data;
-          row.columns = table.columns
-          row.ddl = table.ddl
-          DbData.setTablesDetail(dbKey.value, row.tableName, row.columns, row.ddl);
-          showTableDetail(row);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    apiSearchTableDetail(queryData,(res)=>{
+      let table = res.data.data;
+      row.columns = table.columns
+      row.ddl = table.ddl
+      DbData.setTablesDetail(dbKey.value, row.tableName, row.columns, row.ddl);
+      showTableDetail(row);
+    })
   }
 }
 
@@ -443,19 +433,15 @@ const tableNameGruop = ref(false)
 const themeList = ref([])
 const themeTitle = ref()
 const getTheme = function () {
-  Http.post(ApiUrls.user.getThemes, null)
-      .then(function (res) {
-        let list = res.data.data
-        var arr = [{label: "空", value: 0}]
-        for (let l of list) {
-          arr.push({label: l, value: l})
-        }
-        themeList.value = arr
-        themeTitle.value = '选择模板--' + arr.length
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  apiGetThemes((res)=>{
+    let list = res.data.data
+    var arr = [{label: "空", value: 0}]
+    for (let l of list) {
+      arr.push({label: l, value: l})
+    }
+    themeList.value = arr
+    themeTitle.value = '选择模板--' + arr.length
+  })
 }
 
 // 选择
@@ -534,24 +520,22 @@ const subform = function () {
   //
   // document.body.appendChild(form);
   // form.submit();
-
-  Http.post(ApiUrls.db.generate, data, {responseType: 'blob'})
-      .then(res => {
-        const {data, headers} = res
-        const fileName = headers['content-disposition'].replace(/\w+;filename=(.*)/, '$1').split('=')[1]
-        // 此处当返回json文件时需要先对data进行JSON.stringify处理，其他类型文件不用做处理
-        //const blob = new Blob([JSON.stringify(data)], ...)
-        const blob = new Blob([data], {type: headers['content-type']})
-        let dom = document.createElement('a')
-        let url = window.URL.createObjectURL(blob)
-        dom.href = url
-        dom.download = decodeURI(fileName)
-        dom.style.display = 'none'
-        document.body.appendChild(dom)
-        dom.click()
-        dom.parentNode.removeChild(dom)
-        window.URL.revokeObjectURL(url)
-      })
+  apiGenerate(data,(res)=>{
+    const {data, headers} = res
+    const fileName = headers['content-disposition'].replace(/\w+;filename=(.*)/, '$1').split('=')[1]
+    // 此处当返回json文件时需要先对data进行JSON.stringify处理，其他类型文件不用做处理
+    //const blob = new Blob([JSON.stringify(data)], ...)
+    const blob = new Blob([data], {type: headers['content-type']})
+    let dom = document.createElement('a')
+    let url = window.URL.createObjectURL(blob)
+    dom.href = url
+    dom.download = decodeURI(fileName)
+    dom.style.display = 'none'
+    document.body.appendChild(dom)
+    dom.click()
+    dom.parentNode.removeChild(dom)
+    window.URL.revokeObjectURL(url)
+  })
 }
 
 function getSubmitdata() {

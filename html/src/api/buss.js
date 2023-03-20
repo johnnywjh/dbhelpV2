@@ -82,8 +82,8 @@ export function apiQueryDbTable(params,fun){
         });
 }
 
-export function apiGetThemes(params,fun){
-    Http.post(ApiUrls.db.getThemes, params)
+export function apiGetThemes(fun){
+    Http.post(ApiUrls.user.getThemes, null)
         .then(function (res) {
             fun(res)
         })

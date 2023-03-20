@@ -119,9 +119,8 @@ defineExpose({show})
 //=================
 // 界面的逻辑
 //=================
-import Http from '@/utils/Http'
-import ApiUrls from '@/utils/ApiUrls'
 import DbData from "@/utils/DbData";
+import {apiQueryDbTAbleInfo} from "@/api/buss";
 
 const loadData = function (data) {
   dbName.value = data.dbKey
@@ -169,17 +168,20 @@ function reloadTableInfo() {
   let dbMap = DbData.getDb();
   let db = dbMap[key];
   startTitle.value = '加载 ' + key + ' 的表结构 ...'
-  Http.post(ApiUrls.db.queryDbTAbleInfo, db)
-      .then(function (res) {
-        var list = res.data.data;
-        DbData.setTables(key, list);
-        startTitle.value = ''
-        query()
-      })
-      .catch(function (error) {
-        console.log(error);
-        startTitle.value = '加载 ' + key + ' 的表结构 ==> 失败'
-      });
+  apiQueryDbTAbleInfo(db,(res)=>{
+    var list = res.data.data;
+    DbData.setTables(key, list);
+    startTitle.value = ''
+    query()
+  })
+  // Http.post(ApiUrls.db.queryDbTAbleInfo, db)
+  //     .then(function (res) {
+  //
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //       startTitle.value = '加载 ' + key + ' 的表结构 ==> 失败'
+  //     });
 }
 
 const tableList1 = ref([])

@@ -99,10 +99,9 @@ const loadData = function (data) {
   dbList.value = data
 }
 
-import ApiUrls from '@/utils/ApiUrls'
 import {ElMessage} from 'element-plus'
 import DbData from "@/utils/DbData";
-import Http from "@/utils/Http";
+import {apiGetTables} from "@/api/buss";
 
 const startTitle = ref('')
 const selectKeys = ref([])
@@ -168,17 +167,12 @@ function getTable(key, db, list, fun) {
     fun(list)
   } else {
     startTitle.value = '加载 ' + key + ' 的表结构 ...'
-    Http.post(ApiUrls.db.getTables, db)
-        .then(function (res) {
-          var list = res.data.data;
-          DbData.setTables(key, list);
-          startTitle.value = ''
-          fun(list)
-        })
-        .catch(function (error) {
-          console.log(error);
-          startTitle.value = '加载 ' + key + ' 的表结构 ==> 失败'
-        });
+    apiGetTables(db,(res)=>{
+      var list = res.data.data;
+      DbData.setTables(key, list);
+      startTitle.value = ''
+      fun(list)
+    })
   }
 }
 
