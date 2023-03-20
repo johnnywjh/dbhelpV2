@@ -48,7 +48,7 @@
         </el-col>
         <el-col :span="8">
           <switch-theme/>
-          <el-tag style="margin-left: 20px" type="success">v.2.7</el-tag>
+          <el-tag style="margin-left: 20px" type="success">v.2.8</el-tag>
           <a href="/antd/index.html">antd</a>
         </el-col>
       </el-row>
