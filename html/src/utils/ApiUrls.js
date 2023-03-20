@@ -1,4 +1,6 @@
 const ApiUrls = {
+    //https://www.jianshu.com/p/8d862d1a5ebb
+    // https://blog.csdn.net/qq_37916164/article/details/127750597
     db: {
         getTables: '/api/db/getTables',
         searchTableDetail: '/api/db/searchTableDetail',
