@@ -48,8 +48,7 @@
         </el-col>
         <el-col :span="8">
           <switch-theme/>
-          <el-tag style="margin-left: 20px" type="success">v.2.8</el-tag>
-          <a href="/antd/index.html">antd</a>
+          <el-tag style="margin-left: 20px" type="success">v.2.9</el-tag>
         </el-col>
       </el-row>
 
@@ -321,8 +320,8 @@ const filterList = function (list) {
     var contentArr = searchTableText.value.split(",");
     var arr = [];
     for (let l of list) {
+      let includesFlag = false;
       for (let content of contentArr) {
-        let includesFlag = false;
         if (l.tableName.includes(content)) {
           l.tableNameStr = l.tableName.replace(new RegExp(content, 'g'), `<b class="searchText">${content}</b>`);
           includesFlag = true;
@@ -333,9 +332,9 @@ const filterList = function (list) {
             includesFlag = true;
           }
         }
-        if (includesFlag) {
-          arr.push(l)
-        }
+      }
+      if (includesFlag) {
+        arr.push(l)
       }
     }
     list = arr;
