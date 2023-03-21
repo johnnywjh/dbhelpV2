@@ -1,5 +1,6 @@
 package com.sesame.dbhelp.entity;
 
+import com.sesame.dbhelp.util.AESHelp;
 import kim.sesame.common.req.BaseRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,9 @@ public class DbInfo extends BaseRequest {
      * @默认mysql
      */
     public void viferyDbType() {
+        this.url = AESHelp.deciphering(this.url);
+        this.name = AESHelp.deciphering(this.name);
+        this.pwd = AESHelp.deciphering(this.pwd);
         if (this.url.toLowerCase().contains("mysql")) {
             this.dbDriver = "com.mysql.cj.jdbc.Driver";
         } else if (this.url.toLowerCase().contains("oracle")) {

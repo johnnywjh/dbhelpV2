@@ -2,6 +2,7 @@ package com.sesame.dbhelp.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sesame.dbhelp.util.AESHelp;
 import kim.sesame.common.web.controller.AbstractWebController;
 import kim.sesame.common.exception.BizException;
 import kim.sesame.common.result.ApiResult;
@@ -28,7 +29,13 @@ public class UserController  extends AbstractWebController {
         if (file.getSize() > 0) {
             String str = new String(file.getBytes());
             JSONObject json = JSON.parseObject(str);
-
+            for(String key : json.keySet()){
+                JSONObject obj = json.getJSONObject(key);
+                // 加密
+                obj.put("name", AESHelp.encryption(obj.getString("name")));
+                obj.put("url", AESHelp.encryption(obj.getString("url")));
+                obj.put("pwd", AESHelp.encryption(obj.getString("pwd")));
+            }
             return success(json);
         } else {
             throw new BizException("上传的文件为空");
