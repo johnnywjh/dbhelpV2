@@ -24,6 +24,7 @@ public class BaseConfig {
     private String gitUrl = "https://gitee.com/resources1/themeList.git";
     private String gitUser;
     private String gitPwd;
+    private String branch;
 
 
 }

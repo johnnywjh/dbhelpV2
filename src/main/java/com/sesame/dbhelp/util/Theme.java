@@ -27,12 +27,12 @@ public class Theme {
         resourcePath = config.getBasePath() + "/" + config.getThemeDicName();
         themes = new ArrayList<>();
 
-        List<String> excludeList = new ArrayList<>();
-        try {
-            excludeList = FileUtils.readLines(new File(resourcePath + "/exclude.config.txt"), "UTF-8");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        List<String> excludeList = new ArrayList<>();
+//        try {
+//            excludeList = FileUtils.readLines(new File(resourcePath + "/exclude.config.txt"), "UTF-8");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         File[] array = new File(resourcePath).listFiles();
@@ -40,9 +40,9 @@ public class Theme {
             if (array[i].isDirectory()) {
                 String name = array[i].getName();
                 if (name.startsWith("theme")) {
-                    if (!excludeList.contains(name)) {
+//                    if (!excludeList.contains(name)) {
                         themes.add(name);
-                    }
+//                    }
                 }
             }
         }

@@ -58,9 +58,12 @@ public class LoadTheme implements ApplicationRunner {
         if (StringUtils.isNotEmpty(baseConfig.getGitUser())) {
             cloneCommand.setCredentialsProvider(
                     new UsernamePasswordCredentialsProvider(
-                            baseConfig.getGitUser(), baseConfig.getGitUser()
+                            baseConfig.getGitUser(), baseConfig.getGitPwd()
                     )
             );
+        }
+        if (StringUtils.isNotEmpty(baseConfig.getBranch())) {
+            cloneCommand.setBranch(baseConfig.getBranch());
         }
         cloneCommand.call();
         log.info("git clone 成功: {}", path);
