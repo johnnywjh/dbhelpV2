@@ -35,7 +35,7 @@ docker run -p 8071:8071 --restart always  --name dbhelp \
 -v ~/ars/dbhelp:/root/ars/dbhelp \
 -v ~/themeList:/root/themeList \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
--d johnnywjh/dbhelp:v.2.12
+-d johnnywjh/dbhelp:v.2.13
 
 # 也可以自己编译镜像
 mvn clean package docker:build

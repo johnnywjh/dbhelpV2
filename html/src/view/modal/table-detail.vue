@@ -133,7 +133,11 @@
               </el-select>
             </el-form-item>
             <el-form-item label="排序类型">
-              <el-switch v-model="tableDbData.orderByAsc"/>
+              <el-switch v-model="tableDbData.orderByAsc"
+                         inline-prompt
+                         :active-icon="Top"   :inactive-icon="Bottom"
+              />
+<!--              active-text="升"   inactive-text="降"-->
             </el-form-item>
             <el-form-item label="limit">
               <el-input-number v-model="tableDbData.limit" :min="1" :max="100"/>
@@ -165,6 +169,7 @@
 
 <script setup>
 import {ref, reactive, computed} from 'vue'
+import {Top, Bottom} from '@element-plus/icons-vue'
 
 import DbData from '@/utils/DbData'
 import {apiQueryDbTable} from "@/api/buss";
