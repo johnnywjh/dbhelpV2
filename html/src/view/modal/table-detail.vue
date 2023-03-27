@@ -9,10 +9,10 @@
     >
       <el-tabs v-model="activeKey">
         <el-tab-pane name="field" label="字段">
+<!--          size="small"-->
           <el-table border
                     :data="props.detailData.columns"
                     row-key="id"
-                    size="small"
                     @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"/>

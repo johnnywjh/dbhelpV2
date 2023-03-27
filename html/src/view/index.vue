@@ -2,7 +2,7 @@
   <div id="container">
     <div class="topDiv">
 
-      <el-row :gutter="16">
+      <el-row :gutter="10">
         <el-col :span="3">
           <el-button plain @click="fileStyleShow">数据源格式</el-button>
         </el-col>
@@ -17,7 +17,7 @@
             <el-button>解析数据源</el-button>
           </el-upload>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="15">
           <el-space>
             <el-select v-model="dbKey" filterable  @change="selectDbValue" :placeholder="dbSelectTitle">
               <el-option
@@ -38,6 +38,15 @@
             </el-popconfirm>
             <el-button v-else disabled>选择数据库</el-button>
 
+            <el-popconfirm
+                :title="'确定要清除全部数据库的缓存?'"
+                @confirm="cleanDbCacheAll"
+            >
+              <template #reference>
+                <el-button>清除全部DB缓存</el-button>
+              </template>
+            </el-popconfirm>
+
             <el-button type="primary" v-if="dbList.length>2" @click="showDiffDb" plain>对比数据库</el-button>
             <el-button type="primary" v-else disabled plain>对比数据库</el-button>
 
@@ -46,7 +55,7 @@
 
           </el-space>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="3">
           <switch-theme/>
           <el-tag style="margin-left: 20px" type="success">v.2.11</el-tag>
         </el-col>
@@ -284,6 +293,7 @@ const handleFileChange = (response, uploadFile) => {
   if (response.success) {
     let data = response.data
     DbData.setDb(data)
+    cleanDbCacheAll()
     reloadDbSelect()
   }
 }
@@ -388,6 +398,18 @@ const cleanDbCache = function () {
     }
   })
 }
+const cleanDbCacheAll = function (){
+  DbData.cleanDbAll()
+  ElMessage({
+    message: '全部清除成功',
+    type: 'success',
+    duration: 1000,
+    onClose: function () {
+      location.reload()
+    }
+  })
+}
+
 const cleanCache = function (row) {
   row.columns = null;
   DbData.setTablesDetail(userinfo.db.key, row.tableName, null, null);

@@ -19,6 +19,9 @@ let DbData = {
             localStorage.setItem(datakey_tables, JSON.stringify(dbMap))
         }
     },
+    cleanDbAll() {
+        localStorage.removeItem(datakey_tables)
+    },
     /** 保存用户信息 */
     setUser(user) {
         localStorage.setItem(datakey_user, JSON.stringify(user))

@@ -2,6 +2,7 @@ package com.sesame.dbhelp.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.sesame.dbhelp.util.AESHelp;
 import kim.sesame.common.web.controller.AbstractWebController;
 import kim.sesame.common.exception.BizException;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
 
 @Slf4j
 @RestController
@@ -28,7 +30,13 @@ public class UserController  extends AbstractWebController {
     public ApiResult readDbCofig(HttpServletRequest request, HttpServletResponse response, MultipartFile file) throws Exception {
         if (file.getSize() > 0) {
             String str = new String(file.getBytes());
-            JSONObject json = JSON.parseObject(str);
+//            JSONObject json = JSON.parseObject(str);
+
+            // 保持key的有序
+            LinkedHashMap<String, Object> linkedHashMap = JSON.parseObject(str,LinkedHashMap.class, Feature.OrderedField);
+            JSONObject json=new JSONObject(true);
+            json.putAll(linkedHashMap);
+
             for(String key : json.keySet()){
                 JSONObject obj = json.getJSONObject(key);
                 // 加密
@@ -37,6 +45,8 @@ public class UserController  extends AbstractWebController {
                 obj.put("pwd", AESHelp.encryption(obj.getString("pwd")));
             }
             return success(json);
+
+
         } else {
             throw new BizException("上传的文件为空");
         }
