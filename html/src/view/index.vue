@@ -57,7 +57,7 @@
         </el-col>
         <el-col :span="3">
           <switch-theme/>
-          <el-tag style="margin-left: 20px" type="success">v.2.11</el-tag>
+          <el-tag style="margin-left: 20px" type="success">v.2.12</el-tag>
         </el-col>
       </el-row>
 

@@ -10,13 +10,13 @@
 
     <groupId>com.sesame</groupId>
     <artifactId>dbhelp</artifactId>
-    <version>v.2.11</version> <!-- self -->
+    <version>v.2.12</version> <!-- self -->
     <packaging>jar</packaging>
 
 
     <properties>
         <spring-boot.version>2.6.11</spring-boot.version>
-        <self.version>v.2.11</self.version>
+        <self.version>v.2.12</self.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -24,7 +24,7 @@
 
         <!--docker config -->
         <docker.image.name>johnnywjh/dbhelp</docker.image.name>
-        <docker.image.tag>v.2.11</docker.image.tag>
+        <docker.image.tag>v.2.12</docker.image.tag>
 
         <easyexcel.version>3.2.1</easyexcel.version>
         <fastjson.version>1.2.79</fastjson.version>
