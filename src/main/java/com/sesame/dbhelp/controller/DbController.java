@@ -1,6 +1,8 @@
 package com.sesame.dbhelp.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.sesame.dbhelp.entity.*;
 import kim.sesame.common.annotation.ReqParamsCheck;
 import kim.sesame.common.result.ApiResult;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Connection;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -184,31 +187,54 @@ public class DbController extends AbstractWebController {
         if (exMap != null) {
             log.info("扩展参数 : {}", JSONObject.toJSONString(exMap));
         }
-        HashMap<String, Object> params = null; // 封装参数
+        LinkedHashMap<String, Object> params = null; // 封装参数
 
         for (Table t : bean.getTables()) {
 
-            params = new HashMap<>();
+            params = new LinkedHashMap<>();
             if (t.getClassName() == null || t.getClassName().equals("")) {
                 t.setClassName(TableUtil.hump(t.getClassName(), true));
             }
             Table table = DBServicePool.getDbService(bean.getDbDriver()).parseTable(t.getTableName(), conn);
             List<Column> list = table.getColumns();
             if (list == null || list.size() == 0) {
-                System.out.println("**********  " + t.getTableName() + " 表不存在,注意表名区分大小写    *******************************");
+                log.info("**********  " + t.getTableName() + " 表不存在,注意表名区分大小写    *******************************");
                 continue;
             }
-            String fileAll = TableUtil.fileAll(list);
-            params.put("fileAll", fileAll);
-            String fileAllSelect = TableUtil.fileAllSelect(list);
-            params.put("fileAllSelect", fileAllSelect);
+            String fieldAll = list.stream().map(Column::getName).collect(Collectors.joining(","));
+            String fieldAllSelect = list.stream().map(l -> l.getName() + " " + l.getJavaName()).collect(Collectors.joining(","));
+//            List<String> fieldNameList = list.stream().map(Column::getName).collect(Collectors.toList());
+            List<String> fieldJavaNameList = list.stream().map(Column::getJavaName).collect(Collectors.toList());
+
+            //判断字段时候存在
+            params.put("fieldAll", fieldAll);
+            params.put("fieldAllSelect", fieldAllSelect);
+            List<String> commonFieldList = Arrays.asList("deleted", "createTime", "createUserId", "createUserName", "modifyTime", "modifyUserId", "modifyUserName");
+            for (String javaName : commonFieldList) {
+                params.put("is_" + javaName, fieldJavaNameList.contains(javaName));
+            }
+
+            // 主键
+            String fk = TableUtil.getPrimary(list);
+            String fkJava = TableUtil.hump(fk, false);
+
+            // 区分字段类型,为了模板里好使用
+            for (Column c : list) {
+                if (fk.equals(c.getName())) {
+                    c.setFieldType(1);
+                } else if (!commonFieldList.contains(c.getJavaName())) {
+                    c.setFieldType(2);
+                } else {
+                    c.setFieldType(3);
+                }
+            }
 
             params.put("tableName", t.getTableName());//
             params.put("className", t.getClassName());//
-            params.put("systime", DateUtil.formatString(new Date()));// 注释上的时间
+            params.put("systime", cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));// 注释上的时间
             params.put("list", list);// 表结构
-            params.put("fk", TableUtil.getPrimary(list));// 表的主键
-            params.put("fk_java", TableUtil.hump(params.get("fk").toString(), false));// 表的主键
+            params.put("fk", fk);// 表的主键
+            params.put("fkJava", fkJava);// 表的主键
             params.put("tableComment", t.getComment());// 表注释
             params.put("dir1", t.getDir1().toLowerCase());
             params.put("dir2", t.getDir2().toLowerCase());
@@ -217,6 +243,16 @@ public class DbController extends AbstractWebController {
             if (exMap != null) {
                 params.putAll(exMap);
             }
+
+            // 把全部的参数按顺序整理一下,重新放入参数里去
+            JSONObject paramsJson = new JSONObject(true);
+            paramsJson.putAll(params);
+            String paramsAll = JSON.toJSONString(paramsJson,
+                    SerializerFeature.PrettyFormat,
+                    SerializerFeature.WriteMapNullValue,
+                    SerializerFeature.WriteDateUseDateFormat
+            );
+            params.put("paramsAll", paramsAll);
 
             for (ThemeVo vo : fileList) {
                 Generate.file(params, vo, path, bean.isTableNameGruop());
@@ -316,7 +352,7 @@ public class DbController extends AbstractWebController {
         } else {
             List list = null;
             try {
-               list = DBServicePool.getDbService(bean.getDbDriver()).queryTableData(req,conn);
+                list = DBServicePool.getDbService(bean.getDbDriver()).queryTableData(req, conn);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

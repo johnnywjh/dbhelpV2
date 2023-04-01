@@ -60,26 +60,5 @@ public class TableUtil {
 		}
 		return str;
 	}
-	/**
-	 * 拼接所有的列名
-	 */
-	public static String fileAll(List<Column> list){
-		StringBuffer sb = new StringBuffer();
-		for (Column c : list) {
-			sb.append(c.getName()+",");
-		}
-		String str = sb.toString();
-		return str.substring(0,str.length()-1);
-	}
-	/**
-	 * 拼接所有的列名
-	 */
-	public static String fileAllSelect(List<Column> list){
-		StringBuffer sb = new StringBuffer();
-		for (Column c : list) {
-			sb.append(c.getName()+" "+c.getJavaName()+",");
-		}
-		String str = sb.toString();
-		return str.substring(0,str.length()-1);
-	}
+
 }

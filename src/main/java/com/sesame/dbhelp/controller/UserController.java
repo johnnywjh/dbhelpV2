@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
-public class UserController  extends AbstractWebController {
+public class UserController extends AbstractWebController {
 
     @Autowired
     private AES aes;
@@ -38,11 +38,11 @@ public class UserController  extends AbstractWebController {
 //            JSONObject json = JSON.parseObject(str);
 
             // 保持key的有序
-            LinkedHashMap<String, Object> linkedHashMap = JSON.parseObject(str,LinkedHashMap.class, Feature.OrderedField);
-            JSONObject json=new JSONObject(true);
+            LinkedHashMap<String, Object> linkedHashMap = JSON.parseObject(str, LinkedHashMap.class, Feature.OrderedField);
+            JSONObject json = new JSONObject(true);
             json.putAll(linkedHashMap);
 
-            for(String key : json.keySet()){
+            for (String key : json.keySet()) {
                 JSONObject obj = json.getJSONObject(key);
                 // 加密
                 obj.put("name", aes.encryptHex(obj.getString("name")));
@@ -56,8 +56,9 @@ public class UserController  extends AbstractWebController {
             throw new BizException("上传的文件为空");
         }
     }
+
     @PostMapping("/getThemes")
-    public ApiResult getThemes(){
-        return  success(Theme.themes);
+    public ApiResult getThemes() {
+        return success(Theme.themes);
     }
 }

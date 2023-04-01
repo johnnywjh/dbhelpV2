@@ -27,6 +27,8 @@ public class Column implements Serializable {
 	private String javaType;//对应的java类型
 	private String jdbcType;//对应的jdbc类型
 	private String javaName;//java属性名
+
+	private Integer fieldType;
 	
 	public Column() {
 

@@ -28,7 +28,6 @@
 
         <fastjson.version>1.2.79</fastjson.version>
         <commons-io.version>2.4</commons-io.version>
-        <freemarker.version>2.3.30</freemarker.version>
         <mysql.version>8.0.26</mysql.version>
         <jgit.version>5.12.0.202106070339-r</jgit.version>
     </properties>
@@ -52,11 +51,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

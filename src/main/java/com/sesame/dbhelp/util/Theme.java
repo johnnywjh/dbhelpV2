@@ -39,11 +39,9 @@ public class Theme {
         for (int i = 0; i < array.length; i++) {
             if (array[i].isDirectory()) {
                 String name = array[i].getName();
-                if (name.startsWith("theme")) {
 //                    if (!excludeList.contains(name)) {
                         themes.add(name);
 //                    }
-                }
             }
         }
     }
