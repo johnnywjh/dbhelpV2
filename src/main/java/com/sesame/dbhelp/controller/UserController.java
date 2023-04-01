@@ -40,9 +40,9 @@ public class UserController  extends AbstractWebController {
             for(String key : json.keySet()){
                 JSONObject obj = json.getJSONObject(key);
                 // 加密
-                obj.put("name", AESHelp.encryption(obj.getString("name")));
-                obj.put("url", AESHelp.encryption(obj.getString("url")));
-                obj.put("pwd", AESHelp.encryption(obj.getString("pwd")));
+                obj.put("name", AESHelp.aes.encryptHex(obj.getString("name")));
+                obj.put("url", AESHelp.aes.encryptHex(obj.getString("url")));
+                obj.put("pwd", AESHelp.aes.encryptHex(obj.getString("pwd")));
             }
             return success(json);
 

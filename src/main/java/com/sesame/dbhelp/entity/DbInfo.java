@@ -1,5 +1,6 @@
 package com.sesame.dbhelp.entity;
 
+import cn.hutool.core.util.CharsetUtil;
 import com.sesame.dbhelp.util.AESHelp;
 import kim.sesame.common.req.BaseRequest;
 import lombok.Getter;
@@ -33,9 +34,9 @@ public class DbInfo extends BaseRequest {
      * @默认mysql
      */
     public void viferyDbType() {
-        this.url = AESHelp.deciphering(this.url);
-        this.name = AESHelp.deciphering(this.name);
-        this.pwd = AESHelp.deciphering(this.pwd);
+        this.url = AESHelp.aes.decryptStr(this.url, CharsetUtil.CHARSET_UTF_8);
+        this.name = AESHelp.aes.decryptStr(this.name, CharsetUtil.CHARSET_UTF_8);
+        this.pwd = AESHelp.aes.decryptStr(this.pwd, CharsetUtil.CHARSET_UTF_8);
         if (this.url.toLowerCase().contains("mysql")) {
             this.dbDriver = "com.mysql.cj.jdbc.Driver";
         } else if (this.url.toLowerCase().contains("oracle")) {

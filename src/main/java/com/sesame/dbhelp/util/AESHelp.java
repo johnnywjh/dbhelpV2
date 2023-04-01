@@ -1,45 +1,28 @@
 package com.sesame.dbhelp.util;
 
-import kim.sesame.common.encryption.AESUtil;
-import kim.sesame.common.encryption.Base64Util;
-import kim.sesame.common.encryption.MD5;
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
+import cn.hutool.crypto.symmetric.AES;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AESHelp {
-    static String appsecret = "";
+
+
+    public static AES aes = null;
 
     static {
         try {
-            appsecret = MD5.md5("dbhelp.database.user.pwd");
+            aes = new AES(Mode.CTS, Padding.PKCS5Padding,
+                    // 密钥，可以自定义
+                    "T9HOF7pgqKkkFDHc".getBytes(),
+                    // iv加盐，按照实际需求添加
+                    "FbrRHExNNbhmvVgh".getBytes()
+            );
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("AES 加载失败 {}", e.getMessage());
         }
     }
 
-    /**
-     * 加密
-     */
-    public static String encryption(String txt) {
-        try {
-            byte[] bytes = AESUtil.encryptAndDecrypt(txt.getBytes("UTF-8"), appsecret, 1);
-            return Base64Util.encode(bytes);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
-    }
 
-    /**
-     * 解密
-     */
-    public static String deciphering(String txt) {
-        try {
-            byte[] decode = AESUtil.encryptAndDecrypt(Base64Util.decode(txt), appsecret, 2);
-            return new String(decode, "UTF-8");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
-    }
 }
