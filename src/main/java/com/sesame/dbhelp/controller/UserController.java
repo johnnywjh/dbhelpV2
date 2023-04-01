@@ -1,5 +1,6 @@
 package com.sesame.dbhelp.controller;
 
+import cn.hutool.crypto.symmetric.AES;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
@@ -9,6 +10,7 @@ import kim.sesame.common.exception.BizException;
 import kim.sesame.common.result.ApiResult;
 import com.sesame.dbhelp.util.Theme;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,9 @@ import java.util.LinkedHashMap;
 @RestController
 @RequestMapping("/api/user")
 public class UserController  extends AbstractWebController {
+
+    @Autowired
+    private AES aes;
 
     /**
      * 读取数据库配置文件
@@ -40,9 +45,9 @@ public class UserController  extends AbstractWebController {
             for(String key : json.keySet()){
                 JSONObject obj = json.getJSONObject(key);
                 // 加密
-                obj.put("name", AESHelp.aes.encryptHex(obj.getString("name")));
-                obj.put("url", AESHelp.aes.encryptHex(obj.getString("url")));
-                obj.put("pwd", AESHelp.aes.encryptHex(obj.getString("pwd")));
+                obj.put("name", aes.encryptHex(obj.getString("name")));
+                obj.put("url", aes.encryptHex(obj.getString("url")));
+                obj.put("pwd", aes.encryptHex(obj.getString("pwd")));
             }
             return success(json);
 
