@@ -57,11 +57,11 @@ code.data.branch=master
 
 - 模板的位置会存放在 ~/themeList
 - 项目每次启动的时候会删除这个文件, 从新从git上pull
-```
 
 ### 模板编写
 
 - [Beetl3官方文档](https://www.kancloud.cn/xiandafu/beetl3_guide/2138944)
+
 - 模板采用 freemarker
 - 模板命名格式 Controller.java.txt
 - 生成的文件   ClassName**Controller.java**
