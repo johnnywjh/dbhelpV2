@@ -62,7 +62,6 @@ code.data.branch=master
 
 - [Beetl3官方文档](https://www.kancloud.cn/xiandafu/beetl3_guide/2138944)
 
-- 模板采用 freemarker
 - 模板命名格式 Controller.java.txt
 - 生成的文件   ClassName**Controller.java**
 -  生成后的文件目录保持和模板的目录结构一样

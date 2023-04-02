@@ -35,8 +35,10 @@ public class Generate {
         String outTargetPath = tableNameGruop ?
                 path + "/" + tableName + vo.getDirPath()
                 : path + vo.getDirPath();
-        if (outTargetPath.contains("$")) {
-                outTargetPath = convertPath(params, outTargetPath);
+//        if (outTargetPath.contains("$")) {
+        if (outTargetPath.indexOf("$") > -1) {
+            outTargetPath = convertPath(params, outTargetPath);
+//            System.out.println(outTargetPath);
         }
         if (fileName.contains("dir1") || fileName.contains("dir2")) {
             String dir1 = params.get("dir1").toString();
