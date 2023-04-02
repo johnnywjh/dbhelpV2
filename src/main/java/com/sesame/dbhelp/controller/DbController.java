@@ -240,6 +240,7 @@ public class DbController extends AbstractWebController {
             params.put("dir2", t.getDir2().toLowerCase());
             params.put("remarkVal", t.getRemarkVal());
 
+            params.put("strUtil",new BeetlStringUtil());
             if (exMap != null) {
                 params.putAll(exMap);
             }
