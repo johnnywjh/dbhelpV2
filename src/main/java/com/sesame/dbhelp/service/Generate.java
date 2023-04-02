@@ -7,11 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
-import org.beetl.core.exception.BeetlException;
-import org.beetl.core.exception.ErrorInfo;
 import org.beetl.core.resource.StringTemplateResourceLoader;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class Generate {
@@ -27,7 +26,7 @@ public class Generate {
         String fk_path = vo.getPath().replaceAll(vo.getFileName(), "");
 
         String fileName = null;
-        if (arr[1].equals("js") || arr[1].equals("vue")) {
+        if (arr[1].equals("ts") || arr[1].equals("js") || arr[1].equals("vue")) {
             fileName = arr[0] + "." + arr[1];
         } else {
             fileName = className + arr[0] + "." + arr[1];
@@ -37,7 +36,7 @@ public class Generate {
                 path + "/" + tableName + vo.getDirPath()
                 : path + vo.getDirPath();
         if (outTargetPath.contains("$")) {
-//                outTargetPath = convertPath(params, outTargetPath);
+                outTargetPath = convertPath(params, outTargetPath);
         }
         if (fileName.contains("dir1") || fileName.contains("dir2")) {
             String dir1 = params.get("dir1").toString();
@@ -65,19 +64,18 @@ public class Generate {
         }
     }
 
-//    private static String convertPath(Map<String, Object> params, String path) {
-//        Configuration cfg = new Configuration();
-//        cfg.setTemplateLoader(new StringTemplateLoader(path));
-//        cfg.setDefaultEncoding("UTF-8");
-//        try {
-//            Template template = cfg.getTemplate("");
-//            StringWriter writer = new StringWriter();
-//            template.process(params, writer);
-////            log.info("转换路径 : {}", writer.toString());
-//            return writer.toString();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return path;
-//    }
+    private static String convertPath(Map<String, Object> params, String path) {
+        try {
+            StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
+            Configuration cfg = Configuration.defaultConfiguration();
+            GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
+            //获取模板
+            Template t = gt.getTemplate(path);
+            t.binding(params);
+            return t.render();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return path;
+    }
 }
