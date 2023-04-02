@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class BeetlStringUtil {
 
-    private String info = "uncapFirst:首字母小写 , capFirst:首字母大写";
+    private String info = "${@strUtil.uncapFirst(fkJava)}:首字母小写 , ${@strUtil.capFirst(fkJava)}:首字母大写";
 
     /**
      * 首字母小写

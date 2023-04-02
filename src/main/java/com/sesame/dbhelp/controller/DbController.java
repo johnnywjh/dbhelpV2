@@ -222,6 +222,7 @@ public class DbController extends AbstractWebController {
             for (Column c : list) {
                 if (fk.equals(c.getName())) {
                     c.setFieldType(1);
+                    params.put("fkJavaType", c.getJavaType());// 主键的java类型
                 } else if (!commonFieldList.contains(c.getJavaName())) {
                     c.setFieldType(2);
                 } else {
@@ -230,6 +231,11 @@ public class DbController extends AbstractWebController {
             }
 
             params.put("packagePath", bean.getPackagePath());//
+            if (StringUtils.isNotEmpty(bean.getModelName())) {
+                params.put("modelName", "." + bean.getModelName());//
+            } else {
+                params.put("modelName", "");//
+            }
             params.put("tableName", t.getTableName());//
             params.put("className", t.getClassName());//
             params.put("systime", cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));// 注释上的时间
@@ -242,7 +248,7 @@ public class DbController extends AbstractWebController {
             params.put("dir2", t.getDir2().toLowerCase());
             params.put("remarkVal", t.getRemarkVal());
 
-            params.put("strUtil",new BeetlStringUtil());
+            params.put("strUtil", new BeetlStringUtil());
             if (exMap != null) {
                 params.putAll(exMap);
             }

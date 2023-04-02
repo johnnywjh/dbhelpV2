@@ -8,7 +8,13 @@
         @cancel="previewClose">
       <el-row :gutter="16">
         <el-col :span="6">
-          <el-tree :data="treeData" :props="defaultProps" @node-click="selectTreeNode" />
+          <el-tree
+              node-key="key"
+              :data="treeData"
+              :default-expanded-keys="defaultExpandedKeys"
+              :props="defaultProps"
+              @node-click="selectTreeNode"
+          />
         </el-col>
         <el-col :span="18">
           <div class="liInfo_div">
@@ -59,24 +65,45 @@ const dirVo = ref()
 const treeData = ref()
 // const previewVisible = ref(false)
 const fileContent = ref('')
-// const previewCode = ref(false)
+const defaultExpandedKeys = ref()
 const loadData = function (data) {
-  apiPreview(data,(res)=>{
+  apiPreview(data, (res) => {
     dirVo.value = res.data.data.dirVo
     treeData.value = res.data.data.list
+    var expandedKeys2 = []  // 计算出要展开的节点
+    var expandedKeys3 = []  // 计算出要展开的节点
+    var level = 3;// 找第三层的
+    for (let t1 of res.data.data.list) {
+      if (t1.children) {
+        for (let t2 of t1.children) {
+          expandedKeys2.push(t2.key)
+          if (t2.children) {
+            for (let t3 of t2.children) {
+              expandedKeys3.push(t3.key)
+            }
+          }
+        }
+      }
+    }
+    if (expandedKeys3.length > 0) {
+      defaultExpandedKeys.value = expandedKeys3
+    } else {
+      defaultExpandedKeys.value = expandedKeys2
+    }
+
     // previewVisible.value = true
     fileContent.value = ''
   })
 }
 const previewClose = function () {
-  apiDeletedir(dirVo.value,(res)=>{
+  apiDeletedir(dirVo.value, (res) => {
     ElMessage.success('清除成功')
   })
 }
 
 const selectTreeNode = function (node) {
   if (!node.dir) {
-    apiGetfilecontent({path: node.basicData},(res)=>{
+    apiGetfilecontent({path: node.basicData}, (res) => {
       fileContent.value = ''
       var html = ''
       for (let c of res.data.data) {

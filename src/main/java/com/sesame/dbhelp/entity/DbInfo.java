@@ -29,6 +29,7 @@ public class DbInfo extends BaseRequest {
     private List<Table> tables; // 表的集合
     private boolean tableNameGruop;// 是否按表名分组
     private String packagePath;// 总包地址
+    private String modelName;// 模块名称
 
     /**
      * 根据数据库连接自动判断数据库类型

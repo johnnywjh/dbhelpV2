@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="15">
           <el-space>
-            <el-select v-model="dbKey" filterable  @change="selectDbValue" :placeholder="dbSelectTitle">
+            <el-select v-model="dbKey" filterable @change="selectDbValue" :placeholder="dbSelectTitle">
               <el-option
                   v-for="item in dbList"
                   :key="item.value"
@@ -120,28 +120,35 @@
           </template>
           <div>
             <el-form :inline="true" style="margin-left: 50px">
-              <el-form-item label="packagePath">
-                <el-input v-model="userinfo.packagePath"/>
-              </el-form-item>
-              <el-form-item label="代码模板">
-                <el-select v-model="userinfo.fkType" :placeholder="themeTitle" style="width: 200px">
-                  <el-option
-                      v-for="item in themeList"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="按表名分组">
-                <el-switch v-model="tableNameGruop"/>
-              </el-form-item>
-              <el-form-item>
-                <el-button v-if="subformShow" @click="showCodePreview">预览</el-button>
-                <el-button v-if="subformShow" @click="subform" type="primary">提交</el-button>
+              <el-row>
+                <el-form-item label="packagePath">
+                  <el-input v-model="userinfo.packagePath"/>
+                </el-form-item>
+                <el-form-item label="modelName">
+                  <el-input v-model="userinfo.modelName"/>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item label="代码模板">
+                  <el-select v-model="userinfo.fkType" :placeholder="themeTitle" style="width: 200px">
+                    <el-option
+                        v-for="item in themeList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="按表名分组">
+                  <el-switch v-model="tableNameGruop"/>
+                </el-form-item>
+                <el-form-item>
+                  <el-button v-if="subformShow" @click="showCodePreview">预览</el-button>
+                  <el-button v-if="subformShow" @click="subform" type="primary">提交</el-button>
 
-                <el-button v-if="!subformShow">提交 and 预览</el-button>
-              </el-form-item>
+                  <el-button v-if="!subformShow">提交 and 预览</el-button>
+                </el-form-item>
+              </el-row>
             </el-form>
             <div style="margin-top: 20px">
               <el-row :gutter="16">
@@ -256,6 +263,7 @@ onMounted(() => {
     userinfo.fkType = userVo.fkType ? userVo.fkType : undefined
     userinfo.exList = userVo.exList ? userVo.exList : [{id: guid(), key: '', value: ''}]
     userinfo.packagePath = userVo.packagePath ? userVo.packagePath : 'com.deme'
+    userinfo.modelName = userVo.modelName ? userVo.modelName : ''
   } else {
     userinfo.exList = [{id: guid(), key: '', value: ''}]
   }
@@ -278,7 +286,8 @@ const userinfo = reactive({
   },
   fkType: undefined,
   exList: [],
-  packagePath:'com.demo.xx.yy'
+  packagePath: 'com.demo.xx.yy',
+  modelName: ''
 })
 // const exAddList = ref([])
 const activeKey = ref("1")
@@ -381,7 +390,7 @@ const reLoadTables = function () {
   if (list) {
     filterList(list);
   } else {
-    apiGetTables(userinfo.db,(res)=>{
+    apiGetTables(userinfo.db, (res) => {
       var list = res.data.data;
       DbData.setTables(key, list);
       filterList(list);
@@ -403,7 +412,7 @@ const cleanDbCache = function () {
     }
   })
 }
-const cleanDbCacheAll = function (){
+const cleanDbCacheAll = function () {
   DbData.cleanDbAll()
   ElMessage({
     message: '全部清除成功',
@@ -430,7 +439,7 @@ function detailLayerClick(row) {
   } else {
     var queryData = userinfo.db;
     queryData.tableName = row.tableName;
-    apiSearchTableDetail(queryData,(res)=>{
+    apiSearchTableDetail(queryData, (res) => {
       let table = res.data.data;
       row.columns = table.columns
       row.ddl = table.ddl
@@ -446,7 +455,7 @@ const tableDetailTitle = ref('xxx:xxx')
 const detailData = ref({columns: [], ddl: ''})  // 选中的表的数据
 function showTableDetail(queryTable) {
 
-  tableDetailRef.value.show({db:DbData.getUser().db,tableName:queryTable.tableName});// 调用子组件的弹出方法
+  tableDetailRef.value.show({db: DbData.getUser().db, tableName: queryTable.tableName});// 调用子组件的弹出方法
   tableDetailTitle.value = queryTable.comment + " : " + queryTable.tableName
   detailData.value = queryTable;
 }
@@ -460,7 +469,7 @@ const tableNameGruop = ref(false)
 const themeList = ref([])
 const themeTitle = ref()
 const getTheme = function () {
-  apiGetThemes((res)=>{
+  apiGetThemes((res) => {
     let list = res.data.data
     var arr = [{label: "空", value: 0}]
     for (let l of list) {
@@ -547,7 +556,7 @@ const subform = function () {
   //
   // document.body.appendChild(form);
   // form.submit();
-  apiGenerate(data,(res)=>{
+  apiGenerate(data, (res) => {
     const {data, headers} = res
     const fileName = headers['content-disposition'].replace(/\w+;filename=(.*)/, '$1').split('=')[1]
     // 此处当返回json文件时需要先对data进行JSON.stringify处理，其他类型文件不用做处理
@@ -592,6 +601,7 @@ function getSubmitdata() {
     pwd: userinfo.db.pwd,
     fkType: userinfo.fkType,
     packagePath: userinfo.packagePath,
+    modelName: userinfo.modelName,
     tables: tables,
     tableNameGruop: tableNameGruop.value,
     exMap: exMap
