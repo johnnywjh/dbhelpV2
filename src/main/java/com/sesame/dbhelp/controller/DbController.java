@@ -180,7 +180,7 @@ public class DbController extends AbstractWebController {
 
         String path = basePath + "/" + fileDir;
         List<ThemeVo> fileList = Theme.getTheme(bean.getFkType());
-
+        String fkType = bean.getFkType();
         Connection conn = DBService.getConn(bean);
 
         Map<String, String> exMap = bean.getExMap();
@@ -204,14 +204,14 @@ public class DbController extends AbstractWebController {
             String fieldAll = list.stream().map(Column::getName).collect(Collectors.joining(","));
             String fieldAllSelect = list.stream().map(l -> l.getName() + " " + l.getJavaName()).collect(Collectors.joining(","));
 //            List<String> fieldNameList = list.stream().map(Column::getName).collect(Collectors.toList());
-            List<String> fieldJavaNameList = list.stream().map(Column::getJavaName).collect(Collectors.toList());
+            List<String> javaNameList = list.stream().map(Column::getJavaName).collect(Collectors.toList());
 
             //判断字段时候存在
             params.put("fieldAll", fieldAll);
             params.put("fieldAllSelect", fieldAllSelect);
-            List<String> commonFieldList = Arrays.asList("deleted", "createTime", "createUserId", "createUserName", "modifyTime", "modifyUserId", "modifyUserName");
+            List<String> commonFieldList = Arrays.asList(Theme.themeMap.get(fkType).split(","));
             for (String javaName : commonFieldList) {
-                params.put("is_" + javaName, fieldJavaNameList.contains(javaName));
+                params.put("is_" + javaName, javaNameList.contains(javaName));
             }
 
             // 主键
@@ -229,9 +229,11 @@ public class DbController extends AbstractWebController {
                 }
             }
 
+            params.put("packagePath", bean.getPackagePath());//
             params.put("tableName", t.getTableName());//
             params.put("className", t.getClassName());//
             params.put("systime", cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));// 注释上的时间
+            params.put("javaNameList", javaNameList);// 表结构
             params.put("list", list);// 表结构
             params.put("fk", fk);// 表的主键
             params.put("fkJava", fkJava);// 表的主键

@@ -59,11 +59,6 @@ code.data.branch=master
 
 - 模板的位置会存放在 ~/themeList
 - 项目每次启动的时候会删除这个文件, 从新从git上pull
-- 模板一级目录名规则  必须以 theme开头
-```java
-if (name.startsWith("theme")) {
-  list.add(name);
-}
 ```
 
 ### 模板编写

@@ -120,6 +120,9 @@
           </template>
           <div>
             <el-form :inline="true" style="margin-left: 50px">
+              <el-form-item label="packagePath">
+                <el-input v-model="userinfo.packagePath"/>
+              </el-form-item>
               <el-form-item label="代码模板">
                 <el-select v-model="userinfo.fkType" :placeholder="themeTitle" style="width: 200px">
                   <el-option
@@ -252,6 +255,7 @@ onMounted(() => {
     userinfo.db = userVo.db ? userVo.db : {}
     userinfo.fkType = userVo.fkType ? userVo.fkType : undefined
     userinfo.exList = userVo.exList ? userVo.exList : [{id: guid(), key: '', value: ''}]
+    userinfo.packagePath = userVo.packagePath ? userVo.packagePath : 'com.deme'
   } else {
     userinfo.exList = [{id: guid(), key: '', value: ''}]
   }
@@ -273,7 +277,8 @@ const userinfo = reactive({
     name: '', url: '', pwd: '', key: ''
   },
   fkType: undefined,
-  exList: []
+  exList: [],
+  packagePath:'com.demo.xx.yy'
 })
 // const exAddList = ref([])
 const activeKey = ref("1")
@@ -586,6 +591,7 @@ function getSubmitdata() {
     name: userinfo.db.name,
     pwd: userinfo.db.pwd,
     fkType: userinfo.fkType,
+    packagePath: userinfo.packagePath,
     tables: tables,
     tableNameGruop: tableNameGruop.value,
     exMap: exMap

@@ -3,7 +3,6 @@ package com.sesame.dbhelp.entity;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.symmetric.AES;
 import com.sesame.dbhelp.config.SpringContextUtil;
-import com.sesame.dbhelp.util.AESHelp;
 import kim.sesame.common.req.BaseRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +28,7 @@ public class DbInfo extends BaseRequest {
 
     private List<Table> tables; // 表的集合
     private boolean tableNameGruop;// 是否按表名分组
+    private String packagePath;// 总包地址
 
     /**
      * 根据数据库连接自动判断数据库类型
