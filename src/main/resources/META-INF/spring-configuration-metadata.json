@@ -1,0 +1,72 @@
+{
+  "groups": [
+    {
+      "name": "aes",
+      "type": "kim.sesame.common.config.AesConfig",
+      "sourceType": "kim.sesame.common.config.AesConfig"
+    },
+    {
+      "name": "code.data",
+      "type": "com.sesame.dbhelp.config.BaseConfig",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "aes.iv",
+      "type": "java.lang.String",
+      "description": "iv加盐，按照实际需求添加",
+      "sourceType": "kim.sesame.common.config.AesConfig",
+      "defaultValue": "FbrRHExNNbhmvVgh"
+    },
+    {
+      "name": "aes.key",
+      "type": "java.lang.String",
+      "description": "密钥",
+      "sourceType": "kim.sesame.common.config.AesConfig",
+      "defaultValue": "T9HOF7pgqKkkFDHc"
+    },
+    {
+      "name": "code.data.base-path",
+      "type": "java.lang.String",
+      "description": "基本目录 code.data.base-path=${user.home}",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig",
+      "defaultValue": "user.home"
+    },
+    {
+      "name": "code.data.branch",
+      "type": "java.lang.String",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig"
+    },
+    {
+      "name": "code.data.git-enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "code.data.git-pwd",
+      "type": "java.lang.String",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig"
+    },
+    {
+      "name": "code.data.git-url",
+      "type": "java.lang.String",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig",
+      "defaultValue": "https:\/\/gitee.com\/resources1\/themeList.git"
+    },
+    {
+      "name": "code.data.git-user",
+      "type": "java.lang.String",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig"
+    },
+    {
+      "name": "code.data.theme-dic-name",
+      "type": "java.lang.String",
+      "description": "主题目录名称",
+      "sourceType": "com.sesame.dbhelp.config.BaseConfig",
+      "defaultValue": "themeList"
+    }
+  ],
+  "hints": []
+}
