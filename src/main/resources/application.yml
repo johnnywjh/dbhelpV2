@@ -6,9 +6,9 @@ server:
 
 code:
   data:
-    base-path: ${user.home}/workspace/dbspace
+    base-path: ${user.home}
     theme-dic-name: themeList
-    git-enable: false
+    git-enable: true
     git-url: https://gitee.com/resources1/themeList.git
 #    git-user:
 #    git-pwd:

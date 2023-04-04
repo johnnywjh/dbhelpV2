@@ -30,8 +30,7 @@ import java.util.stream.Collectors;
 @Component
 public class Theme {
 
-    public static String resourcePath = null;
-
+    private static String resourcePath = null;
     private static List<String> themes = null;//所有的主题
     public static Map<String, String> themeMap = null;
 
@@ -39,6 +38,20 @@ public class Theme {
 
     @Autowired
     private BaseConfig config;
+
+    public Map<String, String> getThemeMap() {
+        if (themeMap == null) {
+            reloadTheme();
+        }
+        return themeMap;
+    }
+
+    public String getResourcePath() {
+        if (resourcePath == null) {
+            reloadTheme();
+        }
+        return resourcePath;
+    }
 
     public List<String> getThemes() {
         if (themes == null) {
@@ -104,7 +117,9 @@ public class Theme {
         List<ThemeVo> listAll = new ArrayList<>();
         searchfile(file, listAll);
         listAll.stream().forEach(vo -> {
-            vo.setDirPath(vo.getPath().replaceAll(path, "").replaceAll(vo.getFileName(), ""));
+            String difPath = vo.getPath().replaceAll(path, "");
+            difPath = StringUtil.substringReplaceLast(difPath, "/", 1);
+            vo.setDirPath(difPath);
         });
         return listAll;
     }

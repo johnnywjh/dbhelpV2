@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 public class DbController extends AbstractWebController {
 
     @Autowired
+    private Theme theme;
+    @Autowired
     private BaseConfig baseConfig;
 
     @ReqParamsCheck
@@ -179,6 +181,7 @@ public class DbController extends AbstractWebController {
     private void generateCode(DbInfo bean, String basePath, String fileDir) {
 
         String path = basePath + "/" + fileDir;
+        String resourcePath = theme.getResourcePath();
         List<ThemeVo> fileList = Theme.getTheme(bean.getFkType());
         String fkType = bean.getFkType();
         Connection conn = DBService.getConn(bean);
@@ -209,7 +212,7 @@ public class DbController extends AbstractWebController {
             //判断字段时候存在
             params.put("fieldAll", fieldAll);
             params.put("fieldAllSelect", fieldAllSelect);
-            List<String> commonFieldList = Arrays.asList(Theme.themeMap.get(fkType).split(","));
+            List<String> commonFieldList = Arrays.asList(theme.getThemeMap().get(fkType).split(","));
             for (String javaName : commonFieldList) {
                 params.put("is_" + javaName, javaNameList.contains(javaName));
             }

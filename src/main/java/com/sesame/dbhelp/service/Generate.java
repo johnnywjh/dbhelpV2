@@ -2,6 +2,7 @@ package com.sesame.dbhelp.service;
 
 import com.sesame.dbhelp.util.FileContentCache;
 import com.sesame.dbhelp.util.FileUtil;
+import com.sesame.dbhelp.util.StringUtil;
 import com.sesame.dbhelp.util.ThemeVo;
 import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.Configuration;
@@ -15,35 +16,20 @@ import java.util.Map;
 @Slf4j
 public class Generate {
 
+    static StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
 
     public static void file(HashMap<String, Object> params, ThemeVo vo, String path, boolean tableNameGruop) {
 
         String tableName = params.get("tableName").toString();
-        String className = params.get("className").toString();
-        // Controller.java.txt
-        String[] arr = vo.getFileName().split("\\.");
+        String fileName = StringUtil.substringReplaceLast(vo.getFileName(), ".", 0);
 
-        String fk_path = vo.getPath().replaceAll(vo.getFileName(), "");
+        String outTargetPath = tableNameGruop ? path + "/" + tableName + vo.getDirPath() : path + vo.getDirPath();
 
-        String fileName = null;
-        if (arr[1].equals("ts") || arr[1].equals("js") || arr[1].equals("vue")) {
-            fileName = arr[0] + "." + arr[1];
-        } else {
-            fileName = className + arr[0] + "." + arr[1];
-        }
-
-        String outTargetPath = tableNameGruop ?
-                path + "/" + tableName + vo.getDirPath()
-                : path + vo.getDirPath();
-//        if (outTargetPath.contains("$")) {
         if (outTargetPath.indexOf("$") > -1) {
             outTargetPath = convertPath(params, outTargetPath);
-//            System.out.println(outTargetPath);
         }
-        if (fileName.contains("dir1") || fileName.contains("dir2")) {
-            String dir1 = params.get("dir1").toString();
-            String dir2 = params.get("dir2").toString();
-            fileName = fileName.replaceAll("dir1", dir1).replaceAll("dir2", dir2);
+        if (fileName.indexOf("$") > -1) {
+            fileName = convertPath(params, fileName);
         }
 
         try {
@@ -51,7 +37,6 @@ public class Generate {
             // 模板内容
             String templateStr = FileContentCache.getFileContent(vo.getPath());
 
-            StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
             Configuration cfg = Configuration.defaultConfiguration();
             GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
             //获取模板
@@ -68,7 +53,7 @@ public class Generate {
 
     private static String convertPath(Map<String, Object> params, String path) {
         try {
-            StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
+//            StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
             Configuration cfg = Configuration.defaultConfiguration();
             GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
             //获取模板

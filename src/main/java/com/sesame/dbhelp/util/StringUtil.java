@@ -13,9 +13,10 @@ public class StringUtil {
 
     /**
      * 两个字符串之间的比较
-     * @param str str
+     *
+     * @param str  str
      * @param str2 str2
-     * @return  true/false
+     * @return true/false
      */
     public static boolean equals(String str, String str2) {
 
@@ -49,6 +50,7 @@ public class StringUtil {
 
     /**
      * 去掉前后引号
+     *
      * @param str str
      * @return string
      */
@@ -129,18 +131,20 @@ public class StringUtil {
     }
 
     /**
-     * 字符串分割成 list
+     * 按分隔符, 去掉最后一个
      *
-     * @param strs     待分割的字符串
-     * @param splitstr 分隔符
+     * @param str
+     * @param index
      * @return
      */
-//    @Deprecated
-//    public static List<String> split(String strs, String splitstr) {
-//        return Stream.of(strs.split(splitstr))
-//                .map(String::trim).distinct()
-//                .filter(StringUtil::isNotEmpty)
-//                .collect(Collectors.toList());
-//    }
+    public static String substringReplaceLast(String str, String index,int i) {
+        return str.substring(0, str.lastIndexOf(index) + i);
+//        String[] arr = str.split(index);
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < arr.length - 2; i++) {
+//            sb.append(arr[i]).append(index);
+//        }
+//        return sb.toString();
+    }
 
 }
