@@ -2,7 +2,7 @@
   <div id="container">
     <div class="topDiv">
 
-      <el-row :gutter="10">
+      <el-row :gutter="2">
         <el-col :span="3">
           <el-button plain @click="fileStyleShow">数据源格式</el-button>
         </el-col>
@@ -17,7 +17,7 @@
             <el-button>解析数据源</el-button>
           </el-upload>
         </el-col>
-        <el-col :span="15">
+        <el-col :span="14">
           <el-space>
             <el-select v-model="dbKey" filterable @change="selectDbValue" :placeholder="dbSelectTitle">
               <el-option
@@ -55,9 +55,12 @@
 
           </el-space>
         </el-col>
-        <el-col :span="3">
-          <switch-theme/>
-          <el-tag style="margin-left: 20px" type="success">v.2.14</el-tag>
+        <el-col :span="4">
+          <el-space>
+            <switch-theme/>
+            <el-tag type="success">v.2.15</el-tag>
+            <el-button size="small" plain @click="reloadTheme">重现加载模板</el-button>
+          </el-space>
         </el-col>
       </el-row>
 
@@ -242,7 +245,7 @@
 import {ref, reactive, computed, onMounted} from 'vue'
 
 import DbData from '@/utils/DbData'
-import {apiGenerate, apiGetTables, apiGetThemes, apiSearchTableDetail} from '@/api/buss'
+import {apiGenerate, apiGetTables, apiGetThemes, apiRelaodThemes, apiSearchTableDetail} from '@/api/buss'
 import {ElMessage} from 'element-plus'
 import {Search, Delete} from '@element-plus/icons-vue'
 
@@ -291,12 +294,7 @@ const userinfo = reactive({
 })
 // const exAddList = ref([])
 const activeKey = ref("1")
-// const columns = ref([
-//   {title: '序号', dataIndex: 'index', align: 'right', width: '100px'},
-//   {title: '操作', dataIndex: 'operation', width: '200px'},
-//   {title: '表名', dataIndex: 'tableNameStr',},
-//   {title: '注释', dataIndex: 'commentStr'},
-// ])
+
 // 选择的数据
 const selectTable = ref([])
 
@@ -481,14 +479,6 @@ const getTheme = function () {
 }
 
 // 选择
-// const selectTableColumns = ref([
-//   {title: '操作', dataIndex: 'operation', width: '100px'},
-//   {title: '表名', dataIndex: 'tableName', width: '170px'},
-//   {title: '类名', dataIndex: 'className', width: '170px'},
-//   {title: '目录1', dataIndex: 'dir1', width: '100px'},
-//   {title: '目录2', dataIndex: 'dir2', width: '100px'},
-//   {title: '注释', dataIndex: 'remarkVal', width: '100px'},
-// ])
 const selectClick = function (row) {
   row.selected = true
   row.dir1 = 'aaa'
@@ -673,6 +663,31 @@ function showQueryFieid() {
 }
 
 // 子组件:搜索字段 -- end
+
+import { ElLoading } from 'element-plus'
+// 重新加载
+const reloadTheme = function () {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  // setTimeout(() => {
+  //   loading.close()
+  // }, 2000)
+  apiRelaodThemes(() => {
+    ElMessage({
+      message: '加载成功',
+      type: 'success',
+      duration: 800,
+      onClose: function () {
+        loading.close()
+        getTheme()
+      }
+    })
+  })
+}
+
 </script>
 <style>
 #container {

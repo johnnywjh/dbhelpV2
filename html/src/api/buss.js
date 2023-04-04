@@ -91,3 +91,13 @@ export function apiGetThemes(fun){
             console.log(error);
         });
 }
+
+export function apiRelaodThemes(fun){
+    Http.post(ApiUrls.user.reloadThemes, null)
+        .then(function (res) {
+            fun(res)
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}

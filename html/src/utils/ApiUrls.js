@@ -12,7 +12,8 @@ const ApiUrls = {
         queryDbTable: '/api/db/queryDbTable',
     },
     user: {
-        getThemes: '/api/user/getThemes'
+        getThemes: '/api/user/getThemes',
+        reloadThemes: '/api/user/reloadThemes'
     }
 }
 

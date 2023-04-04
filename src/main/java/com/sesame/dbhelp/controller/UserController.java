@@ -26,6 +26,8 @@ import java.util.LinkedHashMap;
 public class UserController extends AbstractWebController {
 
     @Autowired
+    private Theme theme;
+    @Autowired
     private AES aes;
 
     /**
@@ -59,6 +61,12 @@ public class UserController extends AbstractWebController {
 
     @PostMapping("/getThemes")
     public ApiResult getThemes() {
-        return success(Theme.themes);
+        return success(theme.getThemes());
+    }
+
+    @PostMapping("/reloadThemes")
+    public ApiResult reloadThemes() {
+        theme.reloadTheme();
+        return success();
     }
 }

@@ -1,14 +1,15 @@
 server:
-  port: 8011
+  port: 8071
   servlet:
     session:
       timeout: 0
 
 code:
   data:
-    base-path: ${user.home}
+    base-path: ${user.home}/workspace/dbspace
     theme-dic-name: themeList
-    git-enable: true
+    git-enable: false
     git-url: https://gitee.com/resources1/themeList.git
-    git-user:
-    git-pwd:
+#    git-user:
+#    git-pwd:
+#    branch:
