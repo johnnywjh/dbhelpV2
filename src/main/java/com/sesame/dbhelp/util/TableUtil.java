@@ -15,6 +15,13 @@ import java.util.List;
  */
 public class TableUtil {
 
+//	public static void main(String[] args) {
+//		String resultStr = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, "UserName");
+//		System.out.println("转换后结果是："+resultStr);
+//	}
+
+
+
 	/**
 	 * 驼峰名称  sys_user==>SysUser
 	 */

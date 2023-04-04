@@ -91,7 +91,7 @@ public class Theme {
                 searchfile(f, listAll);
             } else {
                 if(!f.getName().equals("common-field.txt")){
-                    listAll.add(new ThemeVo(f.getName(), f.getAbsolutePath()));
+                    listAll.add(new ThemeVo(f.getName(), f.getAbsolutePath().replaceAll("\\\\","/")));
                 }
             }
         }
