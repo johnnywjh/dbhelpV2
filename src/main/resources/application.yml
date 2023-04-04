@@ -1,0 +1,14 @@
+server:
+  port: 8011
+  servlet:
+    session:
+      timeout: 0
+
+code:
+  data:
+    base-path: ${user.home}
+    theme-dic-name: themeList
+    git-enable: true
+    git-url: https://gitee.com/resources1/themeList.git
+    git-user:
+    git-pwd:
