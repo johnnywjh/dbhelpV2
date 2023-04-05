@@ -125,7 +125,7 @@
             <el-form :inline="true" style="margin-left: 50px">
               <el-row>
                 <el-form-item label="packagePath">
-                  <el-input v-model="userinfo.packagePath"/>
+                  <el-input style="width: 300px" v-model="userinfo.packagePath"/>
                 </el-form-item>
                 <el-form-item label="modelName">
                   <el-input v-model="userinfo.modelName"/>
