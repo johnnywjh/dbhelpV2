@@ -241,7 +241,8 @@ public class DbController extends AbstractWebController {
             }
             params.put("tableName", t.getTableName());//
             params.put("className", t.getClassName());//
-            params.put("systime", cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));// 注释上的时间
+            params.put("sysdatetime", cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));// 注释上的时间
+            params.put("sysdate", cn.hutool.core.date.DateUtil.format(new Date(), "yyyy-MM-dd"));// 注释上的时间
             params.put("javaNameList", javaNameList);// 表结构
             params.put("list", list);// 表结构
             params.put("fk", fk);// 表的主键

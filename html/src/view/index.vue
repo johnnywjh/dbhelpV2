@@ -197,10 +197,10 @@
                   </el-space>
                   <div class="add_div">
                     <el-form>
-                      <el-form-item v-for="item in userinfo.exList">
+                      <el-form-item v-for="item in exAddList">
                         <el-space>
-                          <el-input class="add_input" v-model:value="item.key" placeholder="模板中的 ${key}"/>
-                          <el-input class="add_input" v-model:value="item.value" placeholder="value"/>
+                          <el-input class="add_input" v-model="item.key" placeholder="模板中的 ${key}"/>
+                          <el-input class="add_input" v-model="item.value" placeholder="value"/>
 
                           <el-icon class="but" @click="exDelClick(item.id)" style="font-size: 20px;color: red;">
                             <Delete/>
@@ -264,11 +264,11 @@ onMounted(() => {
   if (userVo) {
     userinfo.db = userVo.db ? userVo.db : {}
     userinfo.fkType = userVo.fkType ? userVo.fkType : undefined
-    userinfo.exList = userVo.exList ? userVo.exList : [{id: guid(), key: '', value: ''}]
+    exAddList.value = userVo.exList ? userVo.exList : [{id: guid(), key: '', value: ''}]
     userinfo.packagePath = userVo.packagePath ? userVo.packagePath : 'com.deme'
     userinfo.modelName = userVo.modelName ? userVo.modelName : ''
   } else {
-    userinfo.exList = [{id: guid(), key: '', value: ''}]
+    exAddList.value = [{id: guid(), key: '', value: ''}]
   }
 });
 
@@ -292,7 +292,7 @@ const userinfo = reactive({
   packagePath: 'com.demo.xx.yy',
   modelName: ''
 })
-// const exAddList = ref([])
+const exAddList = ref([])
 const activeKey = ref("1")
 
 // 选择的数据
@@ -577,8 +577,8 @@ function getSubmitdata() {
     })
   }
   var exMap = {}
-  if (userinfo.exList) {
-    for (let ex of userinfo.exList) {
+  if (exAddList.value) {
+    for (let ex of exAddList.value) {
       if (ex.key) {
         exMap[ex.key] = ex.value
       }
@@ -596,7 +596,7 @@ function getSubmitdata() {
     tableNameGruop: tableNameGruop.value,
     exMap: exMap
   }
-  // userinfo.exList = exAddList.value
+  userinfo.exList = exAddList.value
   DbData.setUser(userinfo)
   return data;
 }
@@ -616,16 +616,16 @@ function showCodePreview() {
 // 扩展区域
 // ==============================
 const exAddClick = function () {
-  userinfo.exList.push({id: guid(), key: '', value: ''})
+  exAddList.value.push({id: guid(), key: '', value: ''})
 }
 const exDelClick = function (id) {
   var arr = []
-  for (let item of userinfo.exList) {
+  for (let item of exAddList.value) {
     if (id != item.id) {
       arr.push(item)
     }
   }
-  userinfo.exList = arr
+  exAddList.value = arr
 }
 
 
