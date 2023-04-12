@@ -1,20 +1,21 @@
 package com.sesame.dbhelp.config;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
 import java.util.Map;
 
+@Slf4j
 @Component
-@CommonsLog
 public class SpringContextUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
-    private static String currentPath; // 当前项目资源路径,
 
 
     /**
@@ -88,10 +89,29 @@ public class SpringContextUtil implements ApplicationContextAware {
         try {
             return applicationContext.getEnvironment().getProperty(key);
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
+    }
 
+    public static void printStartInfo(){
+        printStartInfo(null);
+    }
+    public static void printStartInfo(String ip){
+        try {
+            if(StringUtils.isBlank(ip)){
+                ip = InetAddress.getLocalHost().getHostAddress();
+            }
+        } catch (Exception e) {
+        }
+        String port = getAttributeValue("server.port");
+        String path = getAttributeValue("server.servlet.context-path");
+        path = StringUtils.isNotBlank(path) ? path : "";
+        log.info("\n----------------------------------------------------------\n\t" +
+                "Application is running! Access URLs:\n\t" +
+                "Local: \t\thttp://localhost:" + port + path + "/\n\t" +
+                "External: \thttp://" + ip + ":" + port + path + "/\n\t" +
+                "Swagger文档: \thttp://" + ip + ":" + port + path + "/doc.html\n" +
+                "----------------------------------------------------------");
     }
 
 
