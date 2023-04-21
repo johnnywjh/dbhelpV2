@@ -156,7 +156,7 @@
               <el-button @click="whereClick">where</el-button>
             </el-form-item>
             <el-row v-show="whereShow">
-              <el-input style="width: 700px" placeholder="aa=1 and bb=2" v-model="whereText"/>
+              <el-input style="width: 700px" placeholder="aa=1 and bb='val'" v-model="whereText"/>
             </el-row>
           </el-form>
           <br/>
@@ -218,6 +218,7 @@ const show = (dbinfo) => {
   queryTableResult.value = []
 
   activeKey.value = 'field'
+  whereText.value=''
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -441,9 +442,9 @@ const queryDbTable = function () {
     if(res.data.success){
       queryTableResult.value = res.data.data
     }else{
-      ElMessage.error(res.data.msg);
+      console.log(res.data.message)
+      ElMessage.error(res.data.message);
     }
-
   })
 }
 
