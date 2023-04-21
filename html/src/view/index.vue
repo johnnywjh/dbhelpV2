@@ -454,7 +454,8 @@ const detailData = ref({columns: [], ddl: ''})  // 选中的表的数据
 function showTableDetail(queryTable) {
 
   tableDetailRef.value.show({db: DbData.getUser().db, tableName: queryTable.tableName});// 调用子组件的弹出方法
-  tableDetailTitle.value = queryTable.comment + " : " + queryTable.tableName
+  // tableDetailTitle.value = queryTable.comment + " : " + queryTable.tableName
+  tableDetailTitle.value = '表详情'
   detailData.value = queryTable;
 }
 

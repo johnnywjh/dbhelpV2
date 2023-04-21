@@ -6,7 +6,13 @@
         draggable
         :width="props.width"
         :title="props.title"
+        he
     >
+      <h3>
+        <span>{{props.detailData.tableName}}<copy :content="props.detailData.tableName" :style-val="{'margin-left':'5px'}"/></span>
+        <span style="margin-left: 20px;margin-right: 20px;">:</span>
+        <span>{{props.detailData.comment}}<copy :content="props.detailData.comment" :style-val="{'margin-left':'5px'}"/></span>
+      </h3>
       <el-tabs v-model="activeKey">
         <el-tab-pane name="field" label="字段">
 <!--          size="small"-->
@@ -419,3 +425,8 @@ const queryDbTable = function () {
 
 
 </script>
+<style>
+.el-dialog__body{
+ padding-top: 0px !important;
+}
+</style>
