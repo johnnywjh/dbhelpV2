@@ -8,17 +8,32 @@
 
       <el-form :inline="true" style="margin-left: 50px">
         <el-row>
-          <el-checkbox-group v-model="selectKeys">
-            <el-checkbox v-for="item in props.dbList" :label="item" />
-          </el-checkbox-group>
-        </el-row>
-        <el-row>
           <el-form-item label="表名称">
             <el-input v-model="tableName"/>
           </el-form-item>
-
+          <el-form-item label="选择数据库">
+            <el-select v-model="selectKeys" multiple filterable style="width: 400px">
+              <el-option
+                  v-for="item in dbArr"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
         </el-row>
-
+        <el-row>
+          <el-form-item label="数据源方式">
+            <el-select v-model="diffTypeVal" style="width: 200px">
+              <el-option
+                  v-for="item in diffTypeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-row>
       </el-form>
       <el-row style="margin-top: 10px">
 
@@ -34,12 +49,16 @@ const visible = ref(false)
 const props = defineProps({
   title: {
     type: String,
-    default: '搜索字段'
+    default: '搜索表名'
   },
   width: {
     type: String,
     default: '900px'
   },
+  dbList: {
+    type: Array,
+    default: []
+  }
 })
 
 // 子组件的弹出方法 ==> 父组件调用
@@ -56,12 +75,23 @@ defineExpose({show})
 import DbData from "@/utils/DbData";
 import {apiQueryDbTAbleInfo} from "@/api/buss";
 const tableName = ref('')
-const dbList = ref([])
+const dbArr = ref([])
 const selectKeys = ref([])
 const loadData = function (data) {
-  dbList.value = data
+  dbArr.value = []
+  for(let l of props.dbList){
+    if(l.value!=0){
+      dbArr.value.push(l)
+    }
+  }
 }
 
+
+const diffTypeList = ref([
+  {label: "直接用缓存对比--cache", value: 1},
+  {label: "重新加载数据", value: 2}
+])
+const diffTypeVal = ref(1)
 
 
 </script>

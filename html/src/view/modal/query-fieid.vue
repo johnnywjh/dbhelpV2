@@ -14,7 +14,7 @@
           <el-form-item label="选择数据库">
             <el-select v-model="dbName" filterable style="width: 200px">
               <el-option
-                  v-for="item in props.dbList"
+                  v-for="item in dbArr"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -122,8 +122,15 @@ defineExpose({show})
 import DbData from "@/utils/DbData";
 import {apiQueryDbTAbleInfo} from "@/api/buss";
 
+const dbArr = ref([])
 const loadData = function (data) {
   dbName.value = data.dbKey
+  dbArr.value = []
+  for(let l of props.dbList){
+    if(l.value!=0){
+      dbArr.value.push(l)
+    }
+  }
 }
 const diffTypeList = ref([
   {label: "直接用缓存对比--cache", value: 1},

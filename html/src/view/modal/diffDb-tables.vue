@@ -11,7 +11,7 @@
         <el-form-item label="选择数据库">
           <el-select v-model="selectKeys" multiple filterable style="width: 200px">
             <el-option
-                v-for="item in props.dbList"
+                v-for="item in dbArr"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -113,9 +113,14 @@ defineExpose({show})
 //=================
 // 界面的逻辑
 //=================
-const dbList = ref([])
+const dbArr = ref([])
 const loadData = function (data) {
-
+  dbArr.value = []
+  for(let l of props.dbList){
+    if(l.value!=0){
+      dbArr.value.push(l)
+    }
+  }
 }
 
 import {ElMessage} from 'element-plus'

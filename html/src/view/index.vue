@@ -649,14 +649,8 @@ function S4() {
 
 // 子组件:对比数据库 -- start
 const diffDbTableRef = ref()
-
 function showDiffDb() {
-  let data = []
-  for (let db of dbList.value) {
-    if (db.value) {
-      data.push(db.value)
-    }
-  }
+  let data = {}
   diffDbTableRef.value.show(data);// 调用子组件的弹出方法
 }
 
@@ -664,7 +658,6 @@ function showDiffDb() {
 
 // 子组件:搜索字段 -- start
 const queryFieidRef = ref()
-
 function showQueryFieid() {
   let data = {dbKey: dbKey.value}
   queryFieidRef.value.show(data);// 调用子组件的弹出方法
