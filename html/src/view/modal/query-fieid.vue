@@ -229,10 +229,5 @@ function query() {
 }
 
 const activeKey = ref('1')
-// const columns = ref([
-//   {title: '序号', dataIndex: 'index'},
-//   {title: '表名', dataIndex: 'tableName'},
-//   {title: '注释', dataIndex: 'comment'},
-//   {title: '个数', dataIndex: 'count'},
-// ])
+
 </script>

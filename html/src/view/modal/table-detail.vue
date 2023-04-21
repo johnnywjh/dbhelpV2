@@ -211,12 +211,7 @@ defineExpose({show})
 // 界面的逻辑
 //=================
 const activeKey = ref('field')
-// const columns = ref([
-//   {title: '字段', dataIndex: 'name', width: '200px'},
-//   {title: '类型', dataIndex: 'type', width: '120px'},
-//   {title: '注释', dataIndex: 'comment', ellipsis: true, width: '200px'},
-//   {title: '驼峰', dataIndex: 'javaName'},
-// ])
+
 // 选中的表格数据
 const detailDataSelectList = ref([])
 // const rowSelect = {
