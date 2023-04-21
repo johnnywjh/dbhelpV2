@@ -50,8 +50,11 @@
             <el-button type="primary" v-if="dbList.length>2" @click="showDiffDb" plain>对比数据库</el-button>
             <el-button type="primary" v-else disabled plain>对比数据库</el-button>
 
-            <el-button type="success" v-if="dbList.length>2" @click="showQueryFieid" plain>搜索字段</el-button>
+            <el-button type="success" v-if="dbList.length>1" @click="showQueryFieid" plain>搜索字段</el-button>
             <el-button type="success" v-else disabled plain>搜索字段</el-button>
+
+            <el-button type="success" v-if="dbList.length>1" @click="showQueryTable" plain>搜索表名</el-button>
+            <el-button type="success" v-else disabled plain>搜索表名</el-button>
 
           </el-space>
         </el-col>
@@ -237,6 +240,9 @@
     <!--    模块框=>搜索字段 -->
     <query-fieid ref="queryFieidRef" :db-list="dbList"/>
 
+    <!--    模块框=>搜索表名 -->
+    <query-table ref="queryTableRef" :db-list="dbList"/>
+
   </div>
 
 </template>
@@ -255,6 +261,7 @@ import CodePreview from '@/view/modal/code-preview.vue'
 import DiffDbTables from '@/view/modal/diffDb-tables.vue'
 import FileStyle from '@/view/modal/file-style.vue'
 import QueryFieid from '@/view/modal/query-fieid.vue'
+import QueryTable from '@/view/modal/query-table.vue'
 
 // 页面初始加载
 onMounted(() => {
@@ -661,6 +668,16 @@ const queryFieidRef = ref()
 function showQueryFieid() {
   let data = {dbKey: dbKey.value}
   queryFieidRef.value.show(data);// 调用子组件的弹出方法
+}
+
+// 子组件:搜索字段 -- end
+
+// 子组件:搜索表名 -- start
+const queryTableRef = ref()
+
+function showQueryTable() {
+  let data = {dbKey: dbKey.value}
+  queryTableRef.value.show(data);// 调用子组件的弹出方法
 }
 
 // 子组件:搜索字段 -- end
