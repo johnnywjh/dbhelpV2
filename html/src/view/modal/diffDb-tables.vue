@@ -7,13 +7,18 @@
         :title="props.title"
     >
 <!--      :close-on-click-modal="false"-->
-      <el-row>
-        <el-checkbox-group v-model="selectKeys">
-          <el-checkbox v-for="item in dbList" :label="item" />
-        </el-checkbox-group>
-      </el-row>
-      <el-row style="margin-top: 10px">
-        <el-space>
+      <el-form :inline="true" >
+        <el-form-item label="选择数据库">
+          <el-select v-model="selectKeys" multiple filterable style="width: 200px">
+            <el-option
+                v-for="item in props.dbList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数据源方式">
           <el-select v-model="diffTypeVal" style="width: 200px">
             <el-option
                 v-for="item in diffTypeList"
@@ -22,12 +27,15 @@
                 :value="item.value"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item>
           <el-button v-if="selectKeys.length==2" @click="startDiff">开始对比</el-button>
           <el-button v-else-if="selectKeys.length>2" disabled>只能选择两个</el-button>
           <el-button v-else disabled>开始对比</el-button>
           <span v-html="startTitle"></span>
-        </el-space>
-      </el-row>
+        </el-form-item>
+      </el-form>
+
       <el-row :gutter="20" style="margin-top: 50px">
         <el-col :span="12">
           <span>{{ tableTitle1 }}</span>
@@ -80,6 +88,10 @@ const props = defineProps({
   width: {
     type: String,
     default: '800px'
+  },
+  dbList: {
+    type: Array,
+    default: []
   }
 })
 
@@ -87,6 +99,13 @@ const props = defineProps({
 const show = (data) => {
   visible.value = true
   loadData(data)
+  selectKeys.value = []
+  startTitle.value = ''
+  tableTitle1.value = ''
+  tableTitle2.value = ''
+  diffList1.value = []
+  diffList2.value = []
+
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -96,7 +115,7 @@ defineExpose({show})
 //=================
 const dbList = ref([])
 const loadData = function (data) {
-  dbList.value = data
+
 }
 
 import {ElMessage} from 'element-plus'

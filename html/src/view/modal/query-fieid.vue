@@ -12,7 +12,7 @@
             <el-input v-model="fieldName"/>
           </el-form-item>
           <el-form-item label="选择数据库">
-            <el-select v-model="dbName" style="width: 200px">
+            <el-select v-model="dbName" filterable style="width: 200px">
               <el-option
                   v-for="item in props.dbList"
                   :key="item.value"
@@ -23,7 +23,7 @@
           </el-form-item>
         </el-row>
         <el-row style="margin-top: 10px">
-          <el-form-item label="选择数据库">
+          <el-form-item label="数据源方式">
             <el-select v-model="diffTypeVal" style="width: 200px">
               <el-option
                   v-for="item in diffTypeList"

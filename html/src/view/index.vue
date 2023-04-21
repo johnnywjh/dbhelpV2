@@ -235,7 +235,7 @@
     <code-preview ref="codePreviewRef"/>
 
     <!--    模块框=>表对比 -->
-    <diff-db-tables ref="diffDbTableRef"/>
+    <diff-db-tables ref="diffDbTableRef" :db-list="dbList"/>
 
     <!--    模块框=>搜索字段 -->
     <query-fieid ref="queryFieidRef" :db-list="dbList"/>
@@ -674,13 +674,12 @@ function showQueryFieid() {
 
 // 子组件:搜索表名 -- start
 const queryTableRef = ref()
-
 function showQueryTable() {
-  let data = {dbKey: dbKey.value}
+  let data = {}
   queryTableRef.value.show(data);// 调用子组件的弹出方法
 }
 
-// 子组件:搜索字段 -- end
+// 子组件:搜索表名 -- end
 
 import { ElLoading } from 'element-plus'
 // 重新加载
