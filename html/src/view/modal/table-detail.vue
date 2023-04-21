@@ -9,13 +9,15 @@
         he
     >
       <h3>
-        <span>{{props.detailData.tableName}}<copy :content="props.detailData.tableName" :style-val="{'margin-left':'5px'}"/></span>
+        <span>{{ props.detailData.tableName }}<copy :content="props.detailData.tableName"
+                                                    :style-val="{'margin-left':'5px'}"/></span>
         <span style="margin-left: 20px;margin-right: 20px;">:</span>
-        <span>{{props.detailData.comment}}<copy :content="props.detailData.comment" :style-val="{'margin-left':'5px'}"/></span>
+        <span>{{ props.detailData.comment }}<copy :content="props.detailData.comment"
+                                                  :style-val="{'margin-left':'5px'}"/></span>
       </h3>
       <el-tabs v-model="activeKey">
         <el-tab-pane name="field" label="字段">
-<!--          size="small"-->
+          <!--          size="small"-->
           <el-table border
                     :data="props.detailData.columns"
                     row-key="id"
@@ -39,7 +41,8 @@
               <template #default="scope">
                 <span v-if="scope.row.javaName!=scope.row.name">{{ scope.row.javaName }}</span>
                 <span v-else></span>
-                <copy v-if="scope.row.javaName!=scope.row.name" :content="scope.row.javaName" :style-val="{'margin-left':'5px'}"/>
+                <copy v-if="scope.row.javaName!=scope.row.name" :content="scope.row.javaName"
+                      :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
           </el-table>
@@ -141,27 +144,32 @@
             <el-form-item label="排序类型">
               <el-switch v-model="tableDbData.orderByAsc"
                          inline-prompt
-                         :active-icon="Top"   :inactive-icon="Bottom"
+                         :active-icon="Top" :inactive-icon="Bottom"
               />
-<!--              active-text="升"   inactive-text="降"-->
+              <!--              active-text="升"   inactive-text="降"-->
             </el-form-item>
             <el-form-item label="limit">
               <el-input-number v-model="tableDbData.limit" :min="1" :max="100"/>
             </el-form-item>
             <el-form-item>
               <el-button @click="queryDbTable" type="primary">查询数据</el-button>
+              <el-button @click="whereClick">where</el-button>
             </el-form-item>
+            <el-row v-show="whereShow">
+              <el-input style="width: 700px" placeholder="aa=1 and bb=2" v-model="whereText"/>
+            </el-row>
           </el-form>
+          <br/>
           <el-table border
                     :data="queryTableResult"
                     row-key="index"
                     size="small"
           >
-            <el-table-column type="index" width="50" label="序号" />
+            <el-table-column type="index" width="50" label="序号"/>
             <el-table-column v-for="(item,key,index) in queryTableResult[0]"
                              :key="index" :label="key">
               <template #default="scope">
-                {{scope.row[key]}}
+                {{ scope.row[key] }}
               </template>
             </el-table-column>
 
@@ -179,6 +187,7 @@ import {Top, Bottom} from '@element-plus/icons-vue'
 
 import DbData from '@/utils/DbData'
 import {apiQueryDbTable} from "@/api/buss";
+import {ElMessage} from "element-plus";
 
 const visible = ref(false)
 const props = defineProps({
@@ -345,6 +354,7 @@ function doc51(str) {
   }
   return arr.join(str)
 }
+
 const liInfo_doc_52 = computed(() => {
   return doc52('<br/>')
 })
@@ -372,13 +382,14 @@ function doc53(str) {
   for (let item of detailDataSelectList.value) {
     let type = item.type
     let index = type.indexOf('(')
-    if(index > -1){
+    if (index > -1) {
       type = type.split('(')[0]
     }
     arr.push(type)
   }
   return arr.join(str)
 }
+
 const liInfo_doc_54 = computed(() => {
   return doc54('<br/>')
 })
@@ -404,6 +415,13 @@ const tableDbData = reactive({
   name: '',
   pwd: ''
 })
+const whereShow = ref(false)
+const whereText = ref('');
+const whereClick = function () {
+  whereShow.value = ! whereShow.value
+  whereText.value = ''
+}
+
 const queryTableResult = ref([])
 const queryDbTable = function () {
   let fieldArr = [];
@@ -418,15 +436,21 @@ const queryDbTable = function () {
   }
   let columns = fieldArr.join(',')
   tableDbData.columns = columns
-  apiQueryDbTable(tableDbData,(res)=>{
-    queryTableResult.value = res.data.data
+  tableDbData.whereText = whereText
+  apiQueryDbTable(tableDbData, (res) => {
+    if(res.data.success){
+      queryTableResult.value = res.data.data
+    }else{
+      ElMessage.error(res.data.msg);
+    }
+
   })
 }
 
 
 </script>
 <style>
-.el-dialog__body{
- padding-top: 0px !important;
+.el-dialog__body {
+  padding-top: 0px !important;
 }
 </style>

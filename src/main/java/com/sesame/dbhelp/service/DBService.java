@@ -44,7 +44,7 @@ public abstract class DBService {
     /**
      * 查询表数据
      */
-    public abstract List queryTableData(QueryDbTableReq req,Connection conn);
+    public abstract List queryTableData (QueryDbTableReq req,Connection conn)  throws Exception ;
     /**
      * 匹配数据类型
      */

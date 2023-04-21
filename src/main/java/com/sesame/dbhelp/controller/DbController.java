@@ -367,8 +367,9 @@ public class DbController extends AbstractWebController {
             try {
                 list = DBServicePool.getDbService(bean.getDbDriver()).queryTableData(req, conn);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new BizException(e.getMessage());
             } finally {
+                log.info("关闭了数据库连接");
                 DBService.closeConn(conn);
             }
             return success(list);

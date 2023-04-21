@@ -4,6 +4,7 @@ import com.sesame.dbhelp.entity.Column;
 import com.sesame.dbhelp.entity.QueryDbTableReq;
 import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.service.DBService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.*;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 public class MysqlService extends DBService {
 
     /**
@@ -119,7 +120,7 @@ public class MysqlService extends DBService {
     }
 
     @Override
-    public List queryTableData(QueryDbTableReq req, Connection conn) {
+    public List queryTableData(QueryDbTableReq req, Connection conn) throws Exception {
         String orderSql = "";
         if (StringUtils.isNoneEmpty(req.getOrderByName())) {
             orderSql = " order by " + req.getOrderByName();
@@ -129,32 +130,29 @@ public class MysqlService extends DBService {
                 orderSql = orderSql + " desc ";
             }
         }
-        String strsql = " select " + req.getColumns() + " from " + req.getTableName() + orderSql + " limit " + req.getLimit();
-        System.out.println(strsql);
-        try {
-            List list = new ArrayList();
-            PreparedStatement pstmt = conn.prepareStatement(strsql);
-            ResultSet rs = pstmt.executeQuery(strsql);
-            ResultSetMetaData md = rs.getMetaData();
-            int columnCount = md.getColumnCount();
+        String whereText = StringUtils.isEmpty(req.getWhereText()) ? "" : " where " + req.getWhereText() + " ";
+//        String strsql = " select " + req.getColumns() + " from " + req.getTableName() + orderSql + " limit " + req.getLimit();
+        String strsql = String.format("select %s from %s %s %s  limit %s", req.getColumns(), req.getTableName(), whereText, orderSql, req.getLimit());
+        log.info("当前执行sql查询 : {}", strsql);
+
+        List list = new ArrayList();
+        PreparedStatement pstmt = conn.prepareStatement(strsql);
+        ResultSet rs = pstmt.executeQuery(strsql);
+        ResultSetMetaData md = rs.getMetaData();
+        int columnCount = md.getColumnCount();
 
 //            int index = 1;
-            while (rs.next()) {
-                Map rowData = new HashMap();
-                for (int i = 1; i <= columnCount; i++) {
-                    rowData.put(md.getColumnName(i), rs.getObject(i));
-                }
-//                rowData.put("index",index);
-                list.add(rowData);
-//                index++;
+        while (rs.next()) {
+            Map rowData = new HashMap();
+            for (int i = 1; i <= columnCount; i++) {
+                rowData.put(md.getColumnName(i), rs.getObject(i));
             }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            //closeConn(conn);
+//                rowData.put("index",index);
+            list.add(rowData);
+//                index++;
         }
-        return null;
+        return list;
+
     }
 
 

@@ -114,7 +114,7 @@ public class OracleService extends DBService {
     }
 
     @Override
-    public List queryTableData(QueryDbTableReq req, Connection conn) {
+    public List queryTableData(QueryDbTableReq req, Connection conn)  throws Exception {
         return null;
     }
 }
