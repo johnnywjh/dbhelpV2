@@ -170,7 +170,7 @@ public class DbController extends AbstractWebController {
     }
 
     public String getFileDir(String name) {
-        String basePath = baseConfig.getBasePath() + "/dbhelp/" + name;
+        String basePath = baseConfig.getBasePath() + "/data/" + name;
         File f = new File(basePath);
         if (!f.exists()) {
             f.mkdirs();

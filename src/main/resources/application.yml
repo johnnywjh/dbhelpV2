@@ -6,7 +6,7 @@ server:
 
 code:
   data:
-#    base-path: ${user.home}
+#    base-path: ${user.home}/ars/dbhelp
 #    theme-dic-name: themeList
     git-enable: true
     git-url: https://gitee.com/resources1/themeList.git

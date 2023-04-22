@@ -13,7 +13,7 @@ public class BaseConfig {
      * 基本目录
      * code.data.base-path=${user.home}
      */
-    private String basePath = System.getProperty("user.home");
+    private String basePath = System.getProperty("user.home")+"/ars/dbhelp";
 
     /**
      * 主题目录名称
