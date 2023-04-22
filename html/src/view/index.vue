@@ -241,7 +241,7 @@
     <query-fieid ref="queryFieidRef" :db-list="dbList"/>
 
     <!--    模块框=>搜索表名 -->
-    <query-table ref="queryTableRef" :db-list="dbList"/>
+    <query-table ref="queryTableRef" :db-list="dbList" @done="catTableDetail"/>
 
   </div>
 
@@ -649,6 +649,7 @@ function S4() {
 
 // 子组件:对比数据库 -- start
 const diffDbTableRef = ref()
+
 function showDiffDb() {
   let data = {}
   diffDbTableRef.value.show(data);// 调用子组件的弹出方法
@@ -658,6 +659,7 @@ function showDiffDb() {
 
 // 子组件:搜索字段 -- start
 const queryFieidRef = ref()
+
 function showQueryFieid() {
   let data = {dbKey: dbKey.value}
   queryFieidRef.value.show(data);// 调用子组件的弹出方法
@@ -667,6 +669,7 @@ function showQueryFieid() {
 
 // 子组件:搜索表名 -- start
 const queryTableRef = ref()
+
 function showQueryTable() {
   let data = {}
   queryTableRef.value.show(data);// 调用子组件的弹出方法
@@ -674,7 +677,7 @@ function showQueryTable() {
 
 // 子组件:搜索表名 -- end
 
-import { ElLoading } from 'element-plus'
+import {ElLoading} from 'element-plus'
 // 重新加载
 const reloadTheme = function () {
   const loading = ElLoading.service({
@@ -696,6 +699,19 @@ const reloadTheme = function () {
       }
     })
   })
+}
+
+const catTableDetail = (tableName, dbName) => {
+  searchTableText.value = tableName
+  dbKey.value = dbName
+
+  let val = dbKey.value
+  var db = DbData.getDb()[val];
+  db.key = val;
+
+  userinfo.db = db
+  DbData.setUser(userinfo)
+  reLoadTables();
 }
 
 </script>

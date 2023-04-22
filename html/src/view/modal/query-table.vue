@@ -59,6 +59,11 @@
                 <copy :content="scope.row.dbName" :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
+            <el-table-column label="操作">
+              <template #default="scope">
+                <el-tag class="but" type="success" @click="catTableDetail1(scope.row.dbName)">详情</el-tag>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
         <el-col :span="12">
@@ -72,6 +77,11 @@
               <template #default="scope">
                 <span>{{ scope.row.dbName }}</span>
                 <copy :content="scope.row.dbName" :style-val="{'margin-left':'5px'}"/>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template #default="scope">
+                <el-tag class="but" type="success" @click="catTableDetail2(scope.row.dbName)">详情</el-tag>
               </template>
             </el-table-column>
           </el-table>
@@ -107,6 +117,8 @@ const show = (data) => {
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
+
+const emit = defineEmits(['done']);
 
 //=================
 // 界面的逻辑
@@ -184,5 +196,18 @@ function query(dbName) {
   }
 }
 
+const catTableDetail1 = (dbName) => {
+  visible.value = false
+  emit('done', tableName.value, dbName)
+}
+const catTableDetail2 = (dbName) => {
+  visible.value = false
+  emit('done', '', dbName)
+}
 
 </script>
+<style>
+.but {
+  cursor: pointer;
+}
+</style>
