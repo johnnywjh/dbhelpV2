@@ -218,7 +218,7 @@ const show = (dbinfo) => {
   queryTableResult.value = []
 
   activeKey.value = 'field'
-  whereText.value=''
+  whereText.value = ''
 }
 // **重点！！这里需要使用defineExpose暴露出去**
 defineExpose({show})
@@ -419,7 +419,7 @@ const tableDbData = reactive({
 const whereShow = ref(false)
 const whereText = ref('');
 const whereClick = function () {
-  whereShow.value = ! whereShow.value
+  whereShow.value = !whereShow.value
   whereText.value = ''
 }
 
@@ -439,12 +439,12 @@ const queryDbTable = function () {
   tableDbData.columns = columns
   tableDbData.whereText = whereText
   apiQueryDbTable(tableDbData, (res) => {
-    if(res.data.success){
+    // if (res.data.success) {
       queryTableResult.value = res.data.data
-    }else{
-      console.log(res.data.message)
-      ElMessage.error(res.data.message);
-    }
+    // } else {
+    //   console.log(res.data.message)
+    //   ElMessage.error(res.data.message);
+    // }
   })
 }
 

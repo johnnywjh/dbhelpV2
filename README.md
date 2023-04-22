@@ -31,9 +31,8 @@ npm run build => src/main/resources/public 里是编译好的文件
 # 目录映射按需, 可以直接更换git的配置
 docker run -p 8071:8071 --restart always  --name dbhelp \
 -v ~/ars/dbhelp:/root/ars/dbhelp \
--v ~/themeList:/root/themeList \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
--d johnnywjh/dbhelp:v.2.17
+-d johnnywjh/dbhelp:v.2.18
 
 # 也可以自己编译镜像
 mvn clean package docker:build
@@ -43,14 +42,16 @@ mvn clean package docker:build
 - [docker tag list](https://hub.docker.com/repository/docker/johnnywjh/dbhelp)
 
 ### 默认配置
-```text
-code.data.base-path=${user.home}
-code.data.theme-dic-name=themeList
-code.data.git-enable=false
-code.data.git-url=https://gitee.com/resources1/themeList.git
-code.data.git-user=
-code.data.git-pwd=
-code.data.branch=master
+```yaml
+code:
+  data:
+    base-path: ${user.home}/ars/dbhelp
+    theme-dic-name: themeList
+    git-enable: false
+    git-url: https://gitee.com/resources1/themeList.git
+    git-user:
+    git-pwd:
+    branch:
 ```
 
 ### 模板位置

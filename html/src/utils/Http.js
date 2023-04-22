@@ -2,6 +2,7 @@
  * axios 实例
  */
 import axios from 'axios';
+import {ElMessage} from "element-plus";
 
 const service = axios.create({
     timeout: 5000,
@@ -27,44 +28,27 @@ const service = axios.create({
 /**
  * 添加响应拦截器
  */
-// service.interceptors.response.use(
-//   (res) => {
-//     // 登录过期处理
-//     if (res.data?.code === 401) {
-//       const currentPath = unref(router.currentRoute).path;
-//       if (currentPath == LAYOUT_PATH) {
-//         logout(true);
-//       } else {
-//         Modal.destroyAll();
-//         Modal.info({
-//           title: '系统提示',
-//           content: '登录状态已过期, 请退出重新登录!',
-//           okText: '重新登录',
-//           onOk: () => {
-//             logout(false, currentPath);
-//           }
-//         });
-//       }
-//       return Promise.reject(new Error(res.data.message));
-//     }
-//     // token 自动续期
-//     const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()];
-//     if (token) {
-//       setToken(token);
-//     }
-//     return res;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+service.interceptors.response.use(
+    (res) => {
+        if (res.data.success) {
+            return res;
+        } else {
+            console.log(res.data.message)
+            ElMessage.error(res.data.message);
+            return Promise.reject(new Error(res.data.message));
+        }
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 const Http = {
-    get(url, params, _object = {}){
+    get(url, params, _object = {}) {
         return service.get(url, {params, ..._object})
     },
-    post(url, params, _object = {}){
-        return service.post(url, params,_object)
+    post(url, params, _object = {}) {
+        return service.post(url, params, _object)
     }
 }
 
