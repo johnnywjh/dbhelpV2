@@ -37,7 +37,7 @@
           <el-form-item>
             <el-button v-if="fieldName && dbName" @click="search">搜索</el-button>
             <el-button v-else disabled>搜索</el-button>
-            <span v-html="startTitle"></span>
+            <span style="margin-left: 10px;" v-html="startTitle"></span>
           </el-form-item>
         </el-row>
       </el-form>

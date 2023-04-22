@@ -32,10 +32,11 @@
           <el-button v-if="selectKeys.length==2" @click="startDiff">开始对比</el-button>
           <el-button v-else-if="selectKeys.length>2" disabled>只能选择两个</el-button>
           <el-button v-else disabled>开始对比</el-button>
-          <span v-html="startTitle"></span>
         </el-form-item>
       </el-form>
-
+      <div>
+        <span v-html="startTitle"></span>
+      </div>
       <el-row :gutter="20" style="margin-top: 50px">
         <el-col :span="12">
           <span>{{ tableTitle1 }}</span>
