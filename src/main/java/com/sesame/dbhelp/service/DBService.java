@@ -73,9 +73,11 @@ public abstract class DBService {
             } else if (StringUtil.equals(str, new String[]{"varchar", "varchar2", "char", "nvarchar", "nchar", "text"})) {
                 c.setJavaType("String");
             } else if (StringUtil.equals(str, new String[]{"datetime", "date", "timestamp"})) {
-                c.setJavaType("Date");
+//                c.setJavaType("Date");
+                c.setJavaType("LocalDateTime");
             } else if (StringUtil.equals(str, new String[]{"tinyint"})) {
-                c.setJavaType("Boolean");
+//                c.setJavaType("Boolean");
+                c.setJavaType("Integer");
             } else {
                 c.setJavaType("String");
                 log.info("<<>>没有匹配到这个类型javatype:" + str);
