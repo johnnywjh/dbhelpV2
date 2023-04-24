@@ -30,12 +30,16 @@ const service = axios.create({
  */
 service.interceptors.response.use(
     (res) => {
-        if (res.data.success) {
+        if(res.request.responseURL.indexOf("db/generate")){
             return res;
-        } else {
-            console.log(res.data.message)
-            ElMessage.error(res.data.message);
-            return Promise.reject(new Error(res.data.message));
+        }else{
+            if (res.data.success) {
+                return res;
+            } else {
+                console.log(res.data.message)
+                ElMessage.error(res.data.message);
+                return Promise.reject(new Error(res.data.message));
+            }
         }
     },
     (error) => {
