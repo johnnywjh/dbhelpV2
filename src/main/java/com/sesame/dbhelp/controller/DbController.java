@@ -233,11 +233,13 @@ public class DbController extends AbstractWebController {
                 }
             }
 
-            params.put("packagePath", bean.getPackagePath());//
+            params.put("packagePath", bean.getPackagePath());
             if (StringUtils.isNotEmpty(bean.getModelName())) {
-                params.put("modelName", "." + bean.getModelName());//
+                params.put("modelName", "." + bean.getModelName());
+                params.put("modelNameDir", bean.getModelName());
             } else {
-                params.put("modelName", "");//
+                params.put("modelName", "");
+                params.put("modelNameDir", "modelNameDir");
             }
             params.put("tableName", t.getTableName());//
             params.put("className", t.getClassName());//
