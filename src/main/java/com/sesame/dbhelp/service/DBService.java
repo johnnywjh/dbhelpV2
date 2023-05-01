@@ -44,7 +44,8 @@ public abstract class DBService {
     /**
      * 查询表数据
      */
-    public abstract List queryTableData (QueryDbTableReq req,Connection conn)  throws Exception ;
+    public abstract List queryTableData(QueryDbTableReq req, Connection conn) throws Exception;
+
     /**
      * 匹配数据类型
      */
@@ -76,8 +77,12 @@ public abstract class DBService {
 //                c.setJavaType("Date");
                 c.setJavaType("LocalDateTime");
             } else if (StringUtil.equals(str, new String[]{"tinyint"})) {
-//                c.setJavaType("Boolean");
-                c.setJavaType("Integer");
+                if ("tinyint(1)".equals(c.getType())) {
+                    c.setJavaType("Boolean");
+                } else {
+                    c.setJavaType("Integer");
+                }
+
             } else {
                 c.setJavaType("String");
                 log.info("<<>>没有匹配到这个类型javatype:" + str);

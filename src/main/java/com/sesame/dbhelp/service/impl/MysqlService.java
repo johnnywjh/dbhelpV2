@@ -90,7 +90,7 @@ public class MysqlService extends DBService {
             pstmt.close();
 
             String ddl = this.parseTableDDL(tableName, conn);
-            table.setDdl(ddl);
+            table.setDdl(ddl + ";");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
