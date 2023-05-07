@@ -30,9 +30,9 @@ const service = axios.create({
  */
 service.interceptors.response.use(
     (res) => {
-        if(res.request.responseURL.indexOf("db/generate")){
+        if (res.request.responseURL.indexOf("db/generate") != -1) {
             return res;
-        }else{
+        } else {
             if (res.data.success) {
                 return res;
             } else {
