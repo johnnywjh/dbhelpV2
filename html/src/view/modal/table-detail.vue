@@ -174,7 +174,8 @@
             <el-table-column v-for="(item,key,index) in queryTableResult[0]"
                              :key="index" :label="key">
               <template #default="scope">
-                {{ scope.row[key] }}
+                <span>{{ scope.row[key] }}</span>
+                <copy :content="scope.row[key]" :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
 
