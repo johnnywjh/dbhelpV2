@@ -30,7 +30,12 @@
                 <copy :content="scope.row.name" :style-val="{'margin-left':'5px'}"/>
               </template>
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="120"/>
+            <el-table-column prop="type" label="类型" width="120">
+              <template #default="scope">
+                <span v-html="scope.row.type"></span>
+                <copy :content="scope.row.type" :style-val="{'margin-left':'5px'}"/>
+              </template>
+            </el-table-column>
             <el-table-column prop="comment" label="注释" width="200">
               <template #default="scope">
                 <span v-html="scope.row.comment"></span>

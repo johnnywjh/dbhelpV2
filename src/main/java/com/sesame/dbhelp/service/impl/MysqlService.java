@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class MysqlService extends DBService {
@@ -141,6 +138,7 @@ public class MysqlService extends DBService {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
 
+        String[] split = req.getColumns().split(",");
 //            int index = 1;
         while (rs.next()) {
             Map rowData = new HashMap();
@@ -148,7 +146,11 @@ public class MysqlService extends DBService {
                 rowData.put(md.getColumnName(i), rs.getObject(i));
             }
 //                rowData.put("index",index);
-            list.add(rowData);
+            LinkedHashMap linkedHashMap = new LinkedHashMap();
+            for(String c : split){
+                linkedHashMap.put(c,rowData.get(c));
+            }
+            list.add(linkedHashMap);
 //                index++;
         }
         return list;
