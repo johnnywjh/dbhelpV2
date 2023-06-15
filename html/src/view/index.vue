@@ -70,7 +70,7 @@
         <el-col :span="4">
           <el-space>
             <switch-theme/>
-            <el-tag type="success">v.2.25</el-tag>
+            <el-tag type="success">v.2.26</el-tag>
             <el-button size="small" plain @click="reloadTheme">重现加载模板</el-button>
           </el-space>
         </el-col>
