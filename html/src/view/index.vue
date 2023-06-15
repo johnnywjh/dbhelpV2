@@ -27,13 +27,22 @@
                   :value="item.value"
               />
             </el-select>
+<!--            <el-popconfirm-->
+<!--                v-if="dbKey"-->
+<!--                :title="'确定要清除 ' + dbKey + ' 的所有缓存?'"-->
+<!--                @confirm="cleanDbCache"-->
+<!--            >-->
+<!--              <template #reference>-->
+<!--                <el-button>清除当前DB缓存</el-button>-->
+<!--              </template>-->
+<!--            </el-popconfirm>-->
             <el-popconfirm
                 v-if="dbKey"
-                :title="'确定要清除 ' + dbKey + ' 的所有缓存?'"
-                @confirm="cleanDbCache"
+                :title="'确定重新加载 ' + dbKey + ' 的缓存?'"
+                @confirm="reLoadDbCache"
             >
               <template #reference>
-                <el-button>清除当前DB缓存</el-button>
+                <el-button>重载当前DB缓存</el-button>
               </template>
             </el-popconfirm>
             <el-button v-else disabled>选择数据库</el-button>
@@ -401,6 +410,23 @@ const reLoadTables = function () {
       filterList(list);
     })
   }
+}
+
+// 重载当前数据源的表
+const reLoadDbCache = function () {
+  DbData.cleanDb(dbKey.value)
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  apiGetTables(userinfo.db, (res) => {
+    ElMessage.success('重载成功')
+    var list = res.data.data;
+    DbData.setTables(dbKey.value, list);
+    filterList(list);
+    loading.close()
+  })
 }
 
 // 清除数据库缓存
