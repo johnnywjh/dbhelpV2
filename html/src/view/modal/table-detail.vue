@@ -16,7 +16,12 @@
                                                   :style-val="{'margin-left':'5px'}"/></span>
       </h3>
       <el-tabs v-model="activeKey">
-        <el-tab-pane name="field" label="字段">
+        <el-tab-pane name="field">
+          <template #label>
+            <span>
+              <span>字段 <el-tag type="danger">{{ props.detailData.columns ? props.detailData.columns.length : -1 }}</el-tag></span>
+            </span>
+          </template>
           <!--          size="small"-->
           <el-table border
                     :data="props.detailData.columns"
