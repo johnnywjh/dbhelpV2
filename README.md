@@ -1,4 +1,7 @@
 ### 代码生成工具V2 
+- github: https://github.com/johnnywjh/dbhelpV2.git
+- gitee:  https://gitee.com/sesamekim/dbhelpV2.git
+
 #### 主要功能
 > 所有数据前端都会本地缓存
 - ========= 已有功能
@@ -33,6 +36,10 @@ docker run -p 8071:8071 --restart always  --name dbhelp \
 -v ~/ars/dbhelp:/root/ars/dbhelp \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
 -d johnnywjh/dbhelp:v.2.27
+
+或者 (hub.docker推送有限制了)
+registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.27
+registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.27.arm
 
 # 也可以自己编译镜像
 mvn clean package docker:build
