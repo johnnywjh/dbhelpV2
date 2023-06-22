@@ -2,7 +2,7 @@
 - github: https://github.com/johnnywjh/dbhelpV2.git
 - gitee:  https://gitee.com/sesamekim/dbhelpV2.git
 
-#### 主要功能
+#### 主要功能.
 > 所有数据前端都会本地缓存
 - ========= 已有功能
 - 1 选择数据库 查询表结构
