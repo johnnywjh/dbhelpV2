@@ -108,12 +108,38 @@ public class MysqlService extends DBService {
                 ddlStr = rs.getString("Create Table");
             }
             pstmt.close();
+
+            // 查询数据库
+            String dbName = queryDbName(conn);
+            if(StringUtils.isNotBlank(dbName)){
+                ddlStr = ddlStr.replace("CREATE TABLE ","CREATE TABLE `"+dbName+"`.");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             //closeConn(conn);
         }
         return ddlStr;
+    }
+
+    @Override
+    public String queryDbName(Connection conn) {
+        String strsql = " SELECT DATABASE() as dbName ";
+        String dbName = null;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(strsql);
+            ResultSet rs = pstmt.executeQuery(strsql);
+            while (rs.next()) {
+                dbName = rs.getString("dbName");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            //closeConn(conn);
+        }
+        return dbName;
     }
 
     @Override

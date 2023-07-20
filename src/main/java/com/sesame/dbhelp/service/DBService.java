@@ -40,6 +40,7 @@ public abstract class DBService {
      * 表结构
      */
     public abstract String parseTableDDL(String tableName, Connection conn);
+    public abstract String queryDbName(Connection conn);
 
     /**
      * 查询表数据
