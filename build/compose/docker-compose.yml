@@ -10,6 +10,8 @@ services:
     ports:
       - 8071:8071
     environment:
-      code.data.git-url: https://gitee.com/resources1/themeList.git
+      CODE_DATA_GIT_URL: https://gitee.com/resources1/themeList.git
+      CODE_DATA_GIT_USER:
+      CODE_DATA_GIT_PWD:
 
 
