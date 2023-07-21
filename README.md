@@ -42,7 +42,8 @@ registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.30
 registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.30.arm
 
 # 也可以自己编译镜像
-mvn clean package docker:build
+# mvn clean package docker:build
+# docker build -t johnnywjh/dbhelp:v.2.30 .
 ```
 - [Dockerfile](./src/main/docker/Dockerfile)
 - [docker-compose.yml](build/compose/docker-compose.yml)
