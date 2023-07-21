@@ -10,13 +10,13 @@
 
     <groupId>com.sesame</groupId>
     <artifactId>dbhelp</artifactId>
-    <version>v.2.30</version> <!-- self -->
+    <version>v.2.31</version> <!-- self -->
     <packaging>jar</packaging>
 
 
     <properties>
         <spring-boot.version>2.6.11</spring-boot.version>
-        <self.version>v.2.30</self.version>
+        <self.version>v.2.31</self.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -24,7 +24,7 @@
 
         <!--docker config -->
         <docker.image.name>johnnywjh/dbhelp</docker.image.name>
-        <docker.image.tag>v.2.30</docker.image.tag>
+        <docker.image.tag>v.2.31</docker.image.tag>
 
         <fastjson.version>1.2.79</fastjson.version>
         <commons-io.version>2.4</commons-io.version>
@@ -148,12 +148,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <!--开启分层编译支持-->
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
-                </configuration>
+<!--                <configuration>-->
+<!--                    &lt;!&ndash;开启分层编译支持&ndash;&gt;-->
+<!--                    <layers>-->
+<!--                        <enabled>true</enabled>-->
+<!--                    </layers>-->
+<!--                </configuration>-->
                 <executions>
                     <execution>
                         <goals>
@@ -163,26 +163,6 @@
                 </executions>
                 <!-- 开启注册为liunx服务功能 -->
                 <!-- <configuration><executable>true</executable></configuration> -->
-            </plugin>
-            <!--docker 构建-->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.12</version>
-                <configuration>
-                    <imageName>${docker.image.name}</imageName>
-                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                    <imageTags>
-                        <imageTag>${docker.image.tag}</imageTag>
-                    </imageTags>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

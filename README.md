@@ -35,15 +35,15 @@ npm run build => src/main/resources/public 里是编译好的文件
 docker run -p 8071:8071 --restart always  --name dbhelp \
 -v ~/ars/dbhelp:/root/ars/dbhelp \
 -e code.data.git-url=https://gitee.com/resources1/themeList.git \
--d johnnywjh/dbhelp:v.2.30
+-d johnnywjh/dbhelp:v.2.31
 
 或者 (hub.docker推送有限制了)
-registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.30
-registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.30.arm
+registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.31
+registry.cn-shanghai.aliyuncs.com/johnnywjh/dbhelp:v.2.31.arm
 
 # 也可以自己编译镜像
 # mvn clean package docker:build
-# docker build -t johnnywjh/dbhelp:v.2.30 .
+# docker build -t johnnywjh/dbhelp:v.2.31 .
 ```
 - [Dockerfile](./src/main/docker/Dockerfile)
 - [docker-compose.yml](build/compose/docker-compose.yml)
