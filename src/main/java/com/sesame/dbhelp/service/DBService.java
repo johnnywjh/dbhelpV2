@@ -1,5 +1,6 @@
 package com.sesame.dbhelp.service;
 
+import com.sesame.dbhelp.config.SpringContextUtil;
 import com.sesame.dbhelp.entity.Column;
 import com.sesame.dbhelp.entity.DbInfo;
 import com.sesame.dbhelp.entity.QueryDbTableReq;
@@ -7,6 +8,7 @@ import com.sesame.dbhelp.entity.Table;
 import com.sesame.dbhelp.util.StringUtil;
 import com.sesame.dbhelp.util.TableUtil;
 import lombok.extern.apachecommons.CommonsLog;
+import com.sesame.dbhelp.config.BaseConfig;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -40,6 +42,7 @@ public abstract class DBService {
      * 表结构
      */
     public abstract String parseTableDDL(String tableName, Connection conn);
+
     public abstract String queryDbName(Connection conn);
 
     /**
@@ -52,6 +55,7 @@ public abstract class DBService {
      */
     public static void init(List<Column> list) {
         String str = "";
+        String[] booleanList = SpringContextUtil.getBean(BaseConfig.class).getBooleanList().split(",");
         for (Column c : list) {
 
             c.setJavaName(TableUtil.hump(c.getName(), false));
@@ -62,8 +66,20 @@ public abstract class DBService {
             } else {
                 str = c.getType();
             }
-            if (StringUtil.equals(str, "int") || StringUtil.equals(str, "integer")) {
-                c.setJavaType("Integer");
+//            if (StringUtil.equals(str, "int") || StringUtil.equals(str, "integer")) {
+            if (StringUtil.equals(str, new String[]{"tinyint", "int", "integer"})) {
+                boolean flag = false;
+                for (String s : booleanList) {
+                    if (c.getName().toLowerCase().contains(s)) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag) {
+                    c.setJavaType("Boolean");
+                } else {
+                    c.setJavaType("Integer");
+                }
             } else if (StringUtil.equals(str, "long")) {
                 c.setJavaType("Long");
             } else if (StringUtil.equals(str, "bigint")) {
@@ -77,14 +93,15 @@ public abstract class DBService {
             } else if (StringUtil.equals(str, new String[]{"datetime", "date", "timestamp"})) {
 //                c.setJavaType("Date");
                 c.setJavaType("LocalDateTime");
-            } else if (StringUtil.equals(str, new String[]{"tinyint"})) {
-                if ("tinyint(1)".equals(c.getType())) {
-                    c.setJavaType("Boolean");
-                } else {
-                    c.setJavaType("Integer");
-                }
-
-            } else {
+            }
+//            else if (StringUtil.equals(str, new String[]{"tinyint"})) {
+//                if ("tinyint(1)".equals(c.getType())) {
+//                    c.setJavaType("Boolean");
+//                } else {
+//                    c.setJavaType("Integer");
+//                }
+//            }
+            else {
                 c.setJavaType("String");
                 log.info("<<>>没有匹配到这个类型javatype:" + str);
             }

@@ -20,6 +20,11 @@ public class BaseConfig {
      */
     private String themeDicName = "themeList";
 
+    /**
+     * 布尔类型的字段集合
+     */
+    private String booleanList = "deleted,iz_";
+
     private boolean gitEnable = false;
     private String gitUrl = "https://gitee.com/resources1/themeList.git";
     private String gitUser;
