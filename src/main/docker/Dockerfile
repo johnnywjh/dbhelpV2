@@ -30,4 +30,4 @@ ENV JVM_OPTS="-XX:MaxRAMPercentage=80.0"
 ENV JAVA_OPTS=""
 ENTRYPOINT ["sh","-c","java $JVM_OPTS $JAVA_OPTS org.springframework.boot.loader.JarLauncher"]
 
-# docker build -t johnnywjh/dbhelp:v.2.29 .
+# docker build -t johnnywjh/dbhelp:v.2.30 .
