@@ -27,15 +27,15 @@
                   :value="item.value"
               />
             </el-select>
-<!--            <el-popconfirm-->
-<!--                v-if="dbKey"-->
-<!--                :title="'确定要清除 ' + dbKey + ' 的所有缓存?'"-->
-<!--                @confirm="cleanDbCache"-->
-<!--            >-->
-<!--              <template #reference>-->
-<!--                <el-button>清除当前DB缓存</el-button>-->
-<!--              </template>-->
-<!--            </el-popconfirm>-->
+            <!--            <el-popconfirm-->
+            <!--                v-if="dbKey"-->
+            <!--                :title="'确定要清除 ' + dbKey + ' 的所有缓存?'"-->
+            <!--                @confirm="cleanDbCache"-->
+            <!--            >-->
+            <!--              <template #reference>-->
+            <!--                <el-button>清除当前DB缓存</el-button>-->
+            <!--              </template>-->
+            <!--            </el-popconfirm>-->
             <el-popconfirm
                 v-if="dbKey"
                 :title="'确定重新加载 ' + dbKey + ' 的缓存?'"
@@ -190,7 +190,7 @@
                         <el-input v-model="scope.row.dir2"/>
                       </template>
                     </el-table-column>
-                    <el-table-column prop="remarkVal" label="注释" width="100">
+                    <el-table-column prop="remarkVal" label="注释" width="150">
                       <template #default="scope">
                         <el-input v-model="scope.row.remarkVal"/>
                       </template>
@@ -517,7 +517,11 @@ const selectClick = function (row) {
   row.selected = true
   row.dir1 = 'aaa'
   row.dir2 = 'bbb'
-  row.remarkVal = 'xx'
+  if (row.comment) {
+    row.remarkVal = row.comment.replace(new RegExp('表', 'g'), ``)
+  } else {
+    row.remarkVal = 'xx'
+  }
   selectTable.value.push(row)
 }
 const selectTableDel = function (row) {
