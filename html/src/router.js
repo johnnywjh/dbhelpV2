@@ -1,10 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import Index from './view/index.vue';
 import Tpl from './view/tpl.vue';
+import globalMenu from './view/global/global_menu.vue';
 
 const routes = [
-    { path: '/', component: Index },
-    { path: '/tpl', component: Tpl }
+    {name: 'index', path: '/', component: Index}
+    , {name: 'tpl', path: '/tpl', component: Tpl}
+    , {name: 'menu', path: '/menu', component: globalMenu}
 ];
 
 const router = createRouter({
