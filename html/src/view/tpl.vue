@@ -4,13 +4,22 @@
     <div class="topDiv">
       <el-space>
         <input type="file" ref="fileInput" @change="handleFileChange" accept=".json"/>
+
+        <el-select v-model="selectKey" filterable @change="selectVersionValue" placeholder="选择版本">
+          <el-option
+              v-for="item in keyList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
       </el-space>
     </div>
     <div class="content">
       <el-table border
                 :data="dataSource"
                 row-key="index"
-                size="small"
+
       >
 
         <el-table-column v-for="(item,key,index) in dataSource[0]"
@@ -34,7 +43,8 @@ import SwitchTheme from "@/view/theme/switch-theme.vue"
 const tpl_data = ref(null);
 const table_column = ref(null);
 
-const select_key = ref(null);
+const keyList = ref([{label: "选择数据-0", value: 0}])
+const selectKey = ref(null);
 const dataSource = ref([])
 
 const fileInput = ref(null);
@@ -45,7 +55,11 @@ const handleFileChange = () => {
     tpl_data.value = jsonData.tpl_data
     table_column.value = jsonData.table_column
 
-    select_key.value = 'v1.2.3'
+    for(let key in tpl_data.value){
+      keyList.value.push({label: key, value: key})
+    }
+
+    selectKey.value = 'v1.2.3'
     // console.log(JSON.stringify(tpl_data.value))
     // console.log(JSON.stringify(table_column.value))
 
@@ -58,7 +72,7 @@ const handleFileChange = () => {
 const getTableData = () => {
   // dataSource.value = []
   let dataSourceArr = []
-  var list = tpl_data.value[select_key.value]
+  var list = tpl_data.value[selectKey.value]
   let index = 1;
   for (let d of list) {
     let data = {
@@ -78,30 +92,41 @@ const getTableData = () => {
   console.log(dataSourceArr)
 }
 
+const selectVersionValue = () => {
+  getTableData()
+}
+
 </script>
 <style>
 #container {
   padding: 10px 50px;
 }
+
 .topDiv {
   margin-left: 50px;
 }
+
 .content {
   margin-top: 20px;
 }
-a{
+
+a {
 
 }
-.a_dev{
+
+.a_dev {
   color: blue;
 }
-.a_test{
+
+.a_test {
   color: green;
 }
-.a_pre{
+
+.a_pre {
   color: #67C23A;
 }
-.a_prod{
+
+.a_prod {
   color: #67C23A;
 }
 
