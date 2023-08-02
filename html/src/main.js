@@ -1,5 +1,6 @@
 import {createApp} from 'vue';
 import App from './App.vue';
+import router from './router';
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -19,4 +20,5 @@ app.component('copy', Copy)
 
 app.use(ElementPlus);
 app.use(hljsVuePlugin);
+app.use(router);
 app.mount('#app');

@@ -65,6 +65,8 @@
             <el-button type="success" v-if="dbList.length>1" @click="showQueryTable" plain>搜索表名</el-button>
             <el-button type="success" v-else disabled plain>搜索表名</el-button>
 
+            <router-link to="/tpl">跳转到tpl.vue</router-link>
+
           </el-space>
         </el-col>
         <el-col :span="4">

@@ -2,6 +2,7 @@ package com.sesame.dbhelp.run;
 
 import com.sesame.dbhelp.config.BaseConfig;
 import com.sesame.dbhelp.util.FileUtil;
+import com.sesame.dbhelp.util.Theme;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
@@ -23,6 +24,8 @@ public class LoadTheme implements ApplicationRunner {
 
     @Autowired
     private BaseConfig baseConfig;
+    @Autowired
+    private Theme theme;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -68,5 +71,7 @@ public class LoadTheme implements ApplicationRunner {
         }
         cloneCommand.call();
         log.info("git clone 成功: {}", path);
+
+        theme.reloadTheme();
     }
 }
