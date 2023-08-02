@@ -4,7 +4,7 @@
 
 <template>
   <main>
-    <div style="margin-left: 100px;margin-top: 2px;">
+    <div style="margin-left: 100px;margin-top: 2px;margin-bottom: 0px;">
       <router-link to="/">index</router-link> &nbsp;&nbsp;
       <router-link to="/tpl">tpl</router-link>
     </div>
