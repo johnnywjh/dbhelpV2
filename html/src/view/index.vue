@@ -518,7 +518,8 @@ const selectClick = function (row) {
   row.dir1 = 'aaa'
   row.dir2 = 'bbb'
   if (row.comment) {
-    row.remarkVal = row.comment.replace(new RegExp('表', 'g'), ``)
+    // row.remarkVal = row.comment.replace(new RegExp('表', 'g'), ``)
+    row.remarkVal = row.comment.replace('表', ``)
   } else {
     row.remarkVal = 'xx'
   }
@@ -747,7 +748,7 @@ const catTableDetail = (tableName, dbName) => {
 </script>
 <style>
 #container {
-  padding: 20px 50px;
+  padding: 5px 50px;
 }
 
 .topDiv {
