@@ -37,8 +37,17 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref,onMounted} from 'vue';
 import SwitchTheme from "@/view/theme/switch-theme.vue"
+
+let json_file_key = 'json_file_key'
+
+onMounted(() => {
+  let jsonStr = localStorage.getItem(json_file_key)
+  if(jsonStr){
+    loadSelectData(jsonStr)
+  }
+})
 
 const tpl_data = ref(null);
 const table_column = ref(null);
@@ -51,21 +60,27 @@ const fileInput = ref(null);
 const handleFileChange = () => {
   const reader = new FileReader();
   reader.onload = (event) => {
-    let jsonData = JSON.parse(event.target.result);
-    tpl_data.value = jsonData.tpl_data
-    table_column.value = jsonData.table_column
+    let jsonStr = event.target.result;
+    localStorage.setItem(json_file_key, jsonStr)
 
-    for(let key in tpl_data.value){
-      keyList.value.push({label: key, value: key})
-    }
+    loadSelectData(jsonStr)
 
-    selectKey.value = 'v1.2.3'
     // console.log(JSON.stringify(tpl_data.value))
     // console.log(JSON.stringify(table_column.value))
 
     getTableData()
   };
   reader.readAsText(fileInput.value.files[0]);
+}
+
+const loadSelectData = (jsonStr)=>{
+  let jsonData = JSON.parse(jsonStr);
+  tpl_data.value = jsonData.tpl_data
+  table_column.value = jsonData.table_column
+
+  for(let key in tpl_data.value){
+    keyList.value.push({label: key, value: key})
+  }
 }
 
 // 生成表格数据
@@ -89,7 +104,7 @@ const getTableData = () => {
     index++
   }
   dataSource.value = dataSourceArr
-  console.log(dataSourceArr)
+  // console.log(dataSourceArr)
 }
 
 const selectVersionValue = () => {
