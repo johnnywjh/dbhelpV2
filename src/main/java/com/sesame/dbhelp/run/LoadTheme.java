@@ -30,16 +30,16 @@ public class LoadTheme implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        log.info("\n----------------------------------------------------------\n\t" +
-                "BaseConfig 配置:\n" +
-                "basePath: " + baseConfig.getBasePath() + "\n" +
-                "themeDicName: " + baseConfig.getThemeDicName() + "\n" +
-                "gitEnable: " + baseConfig.isGitEnable() + "\n" +
-                "git.url: " + baseConfig.getGitUrl() + "\n" +
-                "git.user: " + baseConfig.getGitUser() + "\n" +
-                "git.pwd: " + baseConfig.getGitPwd() + "\n" +
-                "git.branch: " + baseConfig.getBranch() + "\n" +
-                "----------------------------------------------------------");
+//        log.info("\n----------------------------------------------------------\n\t" +
+//                "BaseConfig 配置:\n" +
+//                "basePath: " + baseConfig.getBasePath() + "\n" +
+//                "themeDicName: " + baseConfig.getThemeDicName() + "\n" +
+//                "gitEnable: " + baseConfig.isGitEnable() + "\n" +
+//                "git.url: " + baseConfig.getGitUrl() + "\n" +
+//                "git.user: " + baseConfig.getGitUser() + "\n" +
+//                "git.pwd: " + baseConfig.getGitPwd() + "\n" +
+//                "git.branch: " + baseConfig.getBranch() + "\n" +
+//                "----------------------------------------------------------");
 
         if (!baseConfig.isGitEnable()) {
             return;
