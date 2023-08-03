@@ -13,6 +13,11 @@
               :value="item.value"
           />
         </el-select>
+
+        &nbsp;&nbsp;&nbsp;
+
+        <el-input v-if="selectKey" v-model="tempAppName" placeholder="服务名称"/>
+        <el-button v-if="selectKey" @click="tempAppNameAdd">临时添加服务</el-button>
       </el-space>
     </div>
     <div class="content">
@@ -39,6 +44,7 @@
 <script setup>
 import {ref, onMounted} from 'vue';
 import SwitchTheme from "@/view/theme/switch-theme.vue"
+import {ElMessage} from "element-plus";
 
 let json_file_key = 'tpl_json_file_key'
 let user_select_key = 'tpl_user_select_key'
@@ -84,10 +90,10 @@ const loadSelectData = (jsonStr) => {
 
   let user_select_val = localStorage.getItem(user_select_key)
   let isLoadTable = false;
-  keyList.value = []
+  keyList.value = [{label: "选择数据-0", value: 0}]
   for (let key in tpl_data.value) {
     keyList.value.push({label: key, value: key})
-    if(user_select_val){
+    if (user_select_val) {
       if (key == user_select_val) {
         isLoadTable = true;
       }
@@ -105,6 +111,10 @@ const loadSelectData = (jsonStr) => {
 const getTableData = () => {
   // dataSource.value = []
   let dataSourceArr = []
+  if(selectKey.value == 0){
+    dataSource.value = dataSourceArr
+    return;
+  }
   var list = tpl_data.value[selectKey.value]
   let index = 1;
   for (let d of list) {
@@ -141,6 +151,44 @@ const selectVersionValue = () => {
   getTableData()
 }
 
+
+const tempAppName = ref(null)
+const tempAppNameAdd = () => {
+  if (!tempAppName.value) {
+    ElMessage.warning('需要输入服务名');
+    return;
+  }
+  tempAppName.value = tempAppName.value.trim()
+  if (!tempAppName.value) {
+    ElMessage.warning('需要输入服务名');
+    return;
+  }
+  let jsonStr = localStorage.getItem(json_file_key)
+  if (jsonStr) {
+    let jsonData = JSON.parse(jsonStr);
+    let tpl_data = jsonData.tpl_data
+    let selectData = tpl_data[selectKey.value]
+
+    let isExist = selectData.includes(tempAppName.value);
+    console.log(tempAppName.value.length)
+    for(let appNameStr of selectData){
+      if(appNameStr == tempAppName.value){
+        isExist = true;
+        break;
+      }
+    }
+    if(isExist){
+      ElMessage.success('服务名已存在');
+    }else{
+      selectData.push(tempAppName.value)
+      localStorage.setItem(json_file_key, JSON.stringify(jsonData))
+      jsonStr = localStorage.getItem(json_file_key)
+      loadSelectData(jsonStr)
+    }
+
+  }
+}
+
 </script>
 <style>
 #container {
@@ -160,7 +208,7 @@ a {
 }
 
 .a_dev {
-  color: #31BDEC;
+//color: #31BDEC;
 }
 
 .a_test {
