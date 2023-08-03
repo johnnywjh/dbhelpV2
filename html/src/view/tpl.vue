@@ -37,20 +37,22 @@
 </template>
 
 <script setup>
-import {ref,onMounted} from 'vue';
+import {ref, onMounted} from 'vue';
 import SwitchTheme from "@/view/theme/switch-theme.vue"
 
-let json_file_key = 'json_file_key'
+let json_file_key = 'tpl_json_file_key'
+let user_select_key = 'tpl_user_select_key'
 
 onMounted(() => {
   let jsonStr = localStorage.getItem(json_file_key)
-  if(jsonStr){
+  if (jsonStr) {
     loadSelectData(jsonStr)
   }
 })
 
 const tpl_data = ref(null);
 const table_column = ref(null);
+const appNameKey = ref(null);
 
 const keyList = ref([{label: "选择数据-0", value: 0}])
 const selectKey = ref(null);
@@ -60,6 +62,7 @@ const fileInput = ref(null);
 const handleFileChange = () => {
   const reader = new FileReader();
   reader.onload = (event) => {
+    localStorage.removeItem(json_file_key)
     let jsonStr = event.target.result;
     localStorage.setItem(json_file_key, jsonStr)
 
@@ -73,13 +76,28 @@ const handleFileChange = () => {
   reader.readAsText(fileInput.value.files[0]);
 }
 
-const loadSelectData = (jsonStr)=>{
+const loadSelectData = (jsonStr) => {
   let jsonData = JSON.parse(jsonStr);
   tpl_data.value = jsonData.tpl_data
   table_column.value = jsonData.table_column
+  appNameKey.value = jsonData.appNameKey
 
-  for(let key in tpl_data.value){
+  let user_select_val = localStorage.getItem(user_select_key)
+  let isLoadTable = false;
+  keyList.value = []
+  for (let key in tpl_data.value) {
     keyList.value.push({label: key, value: key})
+    if(user_select_val){
+      if (key == user_select_val) {
+        isLoadTable = true;
+      }
+    }
+  }
+
+
+  if (isLoadTable && user_select_val) {
+    selectKey.value = user_select_val
+    getTableData()
   }
 }
 
@@ -96,8 +114,19 @@ const getTableData = () => {
     }
     for (let c of table_column.value) {
       // data[c.key + '_key'] = c.key
-      let url = c.url.replace('[appName]', d)
-      let linkHtml = `<a href="${url}" type="success" target='_blank'>链接</a>`
+      let appNameKeyStr = appNameKey.value || 'appName'
+      let url = c.url.replace(appNameKeyStr, d)
+      let styleStr = '';
+      if (c.key.indexOf('dev') > -1) {
+        styleStr = 'a_dev'
+      } else if (c.key.indexOf('test') > -1) {
+        styleStr = 'a_test'
+      } else if (c.key.indexOf('pre') > -1) {
+        styleStr = 'a_pre'
+      } else if (c.key.indexOf('prod') > -1) {
+        styleStr = 'a_prod'
+      }
+      let linkHtml = `<a href="${url}" class="${styleStr}" target='_blank'>链接</a>`
       data[c.key + '_url'] = linkHtml
     }
     dataSourceArr.push(data)
@@ -108,6 +137,7 @@ const getTableData = () => {
 }
 
 const selectVersionValue = () => {
+  localStorage.setItem(user_select_key, selectKey.value)
   getTableData()
 }
 
@@ -130,19 +160,19 @@ a {
 }
 
 .a_dev {
-  color: blue;
+  color: #31BDEC;
 }
 
 .a_test {
-  color: green;
+  color: #16b777;
 }
 
 .a_pre {
-  color: #67C23A;
+  color: #FFB800;
 }
 
 .a_prod {
-  color: #67C23A;
+  color: #FF5722;
 }
 
 </style>
