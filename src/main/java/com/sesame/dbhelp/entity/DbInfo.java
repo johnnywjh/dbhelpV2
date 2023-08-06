@@ -31,6 +31,8 @@ public class DbInfo extends BaseRequest {
     private String packagePath;// 总包地址
     private String modelName;// 模块名称
 
+    private String fileName;
+
     /**
      * 根据数据库连接自动判断数据库类型
      *

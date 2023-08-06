@@ -108,8 +108,11 @@ public class DbController extends AbstractWebController {
     public void generate(@RequestBody DbInfo bean, HttpServletRequest request, HttpServletResponse response) {
         bean.viferyDbType();
         String basePath = getFileDir("download");
-        String systime = DateUtil.formatString(new Date(), "yyyyMMddHHmmss");
-        String fileDir = bean.getFkType() + "_" + systime; // 文件夹的名字
+        String fileDir = bean.getFileName();
+        if (StringUtils.isEmpty(bean.getFileName())) {
+            String systime = DateUtil.formatString(new Date(), "yyyyMMdd_HHmmss");
+            fileDir = bean.getFkType() + "_" + systime; // 文件夹的名字
+        }
 
         generateCode(bean, basePath, fileDir);
 

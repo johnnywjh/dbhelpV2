@@ -263,6 +263,7 @@ import DbData from '@/utils/DbData'
 import {apiGenerate, apiGetTables, apiGetThemes, apiRelaodThemes, apiSearchTableDetail} from '@/api/buss'
 import {ElMessage} from 'element-plus'
 import {Search, Delete} from '@element-plus/icons-vue'
+import dayjs from 'dayjs';
 
 import SwitchTheme from "@/view/theme/switch-theme.vue"
 import TableDetail from '@/view/modal/table-detail.vue'
@@ -585,6 +586,10 @@ const subform = function () {
   //
   // document.body.appendChild(form);
   // form.submit();
+
+  // console.log(dayjs().format())
+  // console.log(dayjs().format('YYYYMMDD_HHmmss'))
+  let fileName = data.fkType + '_' + dayjs().format('YYYYMMDD_HHmmss')
   apiGenerate(data, (res) => {
     const {data, headers} = res
     const fileName = headers['content-disposition'].replace(/\w+;filename=(.*)/, '$1').split('=')[1]

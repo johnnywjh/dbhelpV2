@@ -28,7 +28,7 @@
       >
 
         <el-table-column v-for="(item,key,index) in dataSource[0]"
-                         :key="index" :label="key" width="150">
+                         :key="index" :label="key" :width="getWidth(key)">
           <template #default="scope">
             <span v-html="scope.row[key]"></span>
             <!--          <copy :content="scope.row[key]" :style-val="{'margin-left':'5px'}"/>-->
@@ -136,7 +136,14 @@ const getTableData = () => {
       } else if (c.key.indexOf('prod') > -1) {
         styleStr = 'a_prod'
       }
-      let linkHtml = `<a href="${url}" class="${styleStr}" target='_blank'>链接</a>`
+      let linkName = '链接'
+      if(c.key.indexOf('_') > -1){
+        let linkKeyArr = c.key.split('_')
+        if(linkKeyArr.length > 1){
+          linkName = linkKeyArr[1]
+        }
+      }
+      let linkHtml = `<a href="${url}" class="${styleStr}" target='_blank'>${linkName}</a>`
       data[c.key + '_url'] = linkHtml
     }
     dataSourceArr.push(data)
@@ -170,7 +177,7 @@ const tempAppNameAdd = () => {
     let selectData = tpl_data[selectKey.value]
 
     let isExist = selectData.includes(tempAppName.value);
-    console.log(tempAppName.value.length)
+    // console.log(tempAppName.value.length)
     for(let appNameStr of selectData){
       if(appNameStr == tempAppName.value){
         isExist = true;
@@ -186,6 +193,16 @@ const tempAppNameAdd = () => {
       loadSelectData(jsonStr)
     }
 
+  }
+}
+
+const getWidth = (key)=>{
+  if(key === 'index'){
+    return 80
+  }else if (key === 'appName') {
+    return 200
+  }else{
+    return 150
   }
 }
 
