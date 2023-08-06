@@ -1,0 +1,91 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1316.vd2290d3341a_f">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2144.v077a_d1928a_40"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2144.v077a_d1928a_40">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>image_name</name>
+          <description>固定镜像名称</description>
+          <defaultValue>dbhelp</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>git_code_url</name>
+          <description>代码仓库地址</description>
+          <defaultValue>https://gitee.com/sesamekim/dbhelpV2.git</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>git_code_branch</name>
+          <description>代码分支</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>master</string>
+              <string>dev</string>
+              <string>test</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>project_path</name>
+          <description>项目路径</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>project_prot</name>
+          <description>项目端口</description>
+          <defaultValue>8071</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <me.leejay.jenkins.dateparameter.DateParameterDefinition plugin="date-parameter@0.0.4">
+          <name>date</name>
+          <description>日期参数</description>
+          <stringLocalDateValue>
+            <stringLocalDate>LocalDate.now()</stringLocalDate>
+            <stringDateFormat>MMdd_HHmmss</stringDateFormat>
+          </stringLocalDateValue>
+        </me.leejay.jenkins.dateparameter.DateParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>git_pull_user_id</name>
+          <description>git更新项目的唯一id</description>
+          <defaultValue>3b531a48-4479-41c7-9621-2b713befcfe7</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@3717.va_180a_fe9d3cd">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@5.2.0">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>https://gitee.com/sesame_kim/jenkins_pipeline.git</url>
+          <credentialsId>3b531a48-4479-41c7-9621-2b713befcfe7</credentialsId>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/master</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="empty-list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>jenkinsfile</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
