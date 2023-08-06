@@ -20,8 +20,8 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: '../src/main/resources/public',
-        // outDir: '../target/classes/public',
+        outDir: '../src/main/resources/static',
+        // outDir: '../target/classes/static',
         emptyOutDir: true
     },
     server: {
