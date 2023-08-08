@@ -75,5 +75,3 @@ code:
 - 生成的文件   ClassName**Controller.java**
 -  生成后的文件目录保持和模板的目录结构一样。
 
-
-
